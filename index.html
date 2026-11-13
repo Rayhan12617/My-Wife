@@ -1,3012 +1,753 @@
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Heart,
-  Mail,
-  Image as ImageIcon,
-  Clock,
-  Sparkles,
-  Music,
-  Gift,
-  Lock,
-  Unlock,
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Volume2,
-  VolumeX,
-  Shuffle,
-  Calendar,
-  Star,
-  Eye,
-  EyeOff,
-  Menu,
-  Crown,
-  BookOpen,
-  RotateCcw,
-  Disc,
-  Check,
-  ArrowDown,
-} from 'lucide-react';
-
-/**
- * ============================================================================
- *  CUSTOMIZATION CONFIGURATION (SITE_CONFIG)
- *  Mr. Han: Edit values below anytime to personalize photos, music, or password.
- * ============================================================================
- */
-export const SITE_CONFIG = {
-  wifeName: 'Rimjhim',
-  wifePetName: 'My Pakhi',
-  husbandName: 'Mr. Han',
-  weddingDate: '2026-01-06T00:00:00',
-
-  /**
-   * Secret Sanctuary Password:
-   * Default is "06012026" (January 6, 2026).
-   * Note: Frontend-only password gating is designed as a romantic keepsake lock
-   * and is not a substitute for server-side authentication if strict privacy is needed.
-   */
-  secretPassword: '06012026',
-  secretPasswordHint: 'Our wedding date (DDMMYYYY)',
-
-  /**
-   * Exact 5 Real Memories Photos (Preserved verbatim — never altered or replaced)
-   */
-  photos: [
-    {
-      id: 1,
-      url: 'https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png',
-      caption: 'My Favorite Person ❤️',
-      chapter: 'Our Beginning',
-      story: 'The moment you walked into my life, every ordinary day turned into magic.',
-    },
-    {
-      id: 2,
-      url: 'https://cdn.suipump.org/icons/07f7d686b0407b66130b82b34a453d29.png',
-      caption: 'Forever Together',
-      chapter: 'Our Beautiful Memories',
-      story: 'Every smile we share is a treasure I hold close to my heartbeat.',
-    },
-    {
-      id: 3,
-      url: 'https://cdn.suipump.org/icons/f9f702f556629b6e532ed1ef443f4374.png',
-      caption: 'My Beautiful Rimjhim',
-      chapter: 'Our Special Moments',
-      story: 'In your eyes, I found my home, my peace, and my forever.',
-    },
-    {
-      id: 4,
-      url: 'https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png',
-      caption: 'Our Precious Memories',
-      chapter: 'Our Wedding Day',
-      story: 'January 6, 2026 — The day two souls became one eternal promise.',
-    },
-    {
-      id: 5,
-      url: 'https://cdn.suipump.org/icons/6b9abfefc44e06e3aca1effcde6fa84e.png',
-      caption: 'My Happiness ❤️',
-      chapter: 'Our Forever Journey',
-      story: 'Hand in hand, lifetime after lifetime, always you and me.',
-    },
-  ],
-
-  /**
-   * Romantic Music Player Tracks:
-   * Paste any direct .mp3 URL into `url` to play your custom song.
-   * When `url` is empty (""), the built-in romantic piano & music-box synthesizer
-   * automatically plays soothing melodies on user interaction.
-   */
-  musicTracks: [
-    {
-      id: 1,
-      title: 'Pakhi’s Midnight Serenade',
-      subtitle: 'Composed for Rimjhim ❤️',
-      durationSec: 180,
-      url: '', // Optional: paste your custom MP3 URL here
-      tempo: 460,
-      notes: [261.63, 329.63, 392.0, 493.88, 523.25, 493.88, 392.0, 329.63, 293.66, 349.23, 440.0, 523.25, 493.88, 392.0, 329.63, 293.66],
-    },
-    {
-      id: 2,
-      title: 'January 6th Eternal Waltz',
-      subtitle: 'Our Wedding Melody ♾️',
-      durationSec: 210,
-      url: '', // Optional: paste your custom MP3 URL here
-      tempo: 520,
-      notes: [220.0, 261.63, 329.63, 440.0, 392.0, 329.63, 261.63, 246.94, 293.66, 349.23, 440.0, 392.0, 329.63, 293.66, 246.94, 220.0],
-    },
-    {
-      id: 3,
-      title: 'তুমি আমার ভালোবাসা (Forever Yours)',
-      subtitle: 'From Mr. Han to My Wife 💌',
-      durationSec: 195,
-      url: '', // Optional: paste your custom MP3 URL here
-      tempo: 490,
-      notes: [329.63, 392.0, 493.88, 587.33, 523.25, 493.88, 392.0, 349.23, 440.0, 523.25, 659.25, 587.33, 493.88, 392.0, 329.63, 293.66],
-    },
-  ],
-};
-
-/**
- * ============================================================================
- *  100 UNIQUE EMOTIONAL BENGALI REASONS WHY MR. HAN LOVES RIMJHIM
- * ============================================================================
- */
-const HUNDRED_BENGALI_REASONS: string[] = [
-  'তোমার হাসি আমার পৃথিবী সুন্দর করে।',
-  'তুমি আমার সবচেয়ে প্রিয় মানুষ।',
-  'তোমার সঙ্গে প্রতিটি মুহূর্ত অসাধারণ।',
-  'তোমার ভালোবাসা আমার শান্তি।',
-  'তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।',
-  'তোমার চোখের দিকে তাকালে আমি সব দুঃখ ভুলে যাই।',
-  'আমার পাখি, তুমি আমার হৃদয়ের প্রতিটি স্পন্দনে আছো।',
-  'তোমার কণ্ঠস্বর আমার দিনের সবচেয়ে মিষ্টি সুর।',
-  'তুমি পাশে থাকলে পৃথিবীর কোনো ভয় আমাকে ছুঁতে পারে না।',
-  'তোমার সরলতা ও পবিত্র মন আমাকে প্রতিদিন নতুন করে মুগ্ধ করে।',
-  'তুমি আমার ক্লান্ত দিনের পর সবচেয়ে প্রশান্তির আশ্রয়।',
-  'তোমার হাত ধরলে মনে হয় আমি পুরো পৃথিবী জয় করেছি।',
-  'তুমি আমাকে যেমন আছি ঠিক তেমনভাবেই ভালোবাসো।',
-  'তোমার ছোট ছোট অভিমানগুলোও আমার কাছে ভীষণ মিষ্টি লাগে।',
-  'তুমি আমার জীবনের অন্ধকার দূর করা সবচেয়ে উজ্জ্বল তারা।',
-  'তোমার যত্ন আর মমতা আমাকে প্রতিদিন নতুন জীবন দেয়।',
-  'তুমি শুধু আমার স্ত্রী নও, তুমি আমার সবচেয়ে ভালো বন্ধু।',
-  'তোমার হাসির শব্দ শুনলে আমার মন আনন্দে ভরে ওঠে।',
-  'তুমি আমার প্রতিটি প্রার্থনার সবচেয়ে সুন্দর উত্তর।',
-  'তোমার সঙ্গে কাটানো প্রতিটি সেকেন্ড আমার কাছে অমূল্য।',
-  'তুমি আমাকে আরও ভালো মানুষ হতে অনুপ্রাণিত করো।',
-  'তোমার মুখের মায়া আমাকে বারবার তোমার প্রেমে ফেলে।',
-  'তুমি আমার স্বপ্নের চেয়েও অনেক বেশি সুন্দর।',
-  'তোমার ভালোবাসা আমাকে শিখিয়েছে প্রকৃত সুখ কাকে বলে।',
-  'তুমি আমার জীবনের সবচেয়ে মিষ্টি কবিতা।',
-  'তোমার উপস্থিতি আমার চারপাশ ভালোবাসায় ভরিয়ে রাখে।',
-  'তুমি যখন আমার নাম ধরে ডাকো, তখন আমার হৃদয় নেচে ওঠে।',
-  'তোমার ধৈর্য ও বোঝাপড়া আমাদের সম্পর্ককে অটুট রেখেছে।',
-  'তুমি আমার জীবনের প্রতিটি ঋতুকে বসন্ত করে তুলেছো।',
-  'তোমার স্পর্শে আমার সব ক্লান্তি মুহূর্তেই মিলিয়ে যায়।',
-  'তুমি আমার কাছে আল্লাহর দেওয়া সবচেয়ে বড় নেয়ামত।',
-  'তোমার চোখের জল আমি কখনো সহ্য করতে পারি না, তোমার হাসিই আমার লক্ষ্য।',
-  'তুমি আমার জীবনের প্রতিটি গল্পের একমাত্র নায়িকা।',
-  'তোমার সঙ্গে ভবিষ্যতের প্রতিটি দিন কল্পনা করতে আমার ভীষণ ভালো লাগে।',
-  'তুমি আমাকে নিঃস্বার্থভাবে ভালোবাসতে শিখিয়েছো।',
-  'তোমার হৃদয়ের উষ্ণতা আমার জীবনের সবচেয়ে নিরাপদ জায়গা।',
-  'তুমি পাশে থাকলে সাধারণ একটি চায়ের কাপও উৎসব মনে হয়।',
-  'তোমার প্রতিটি কথা আমার মনের গভীরে দাগ কাটে।',
-  'তুমি আমার জীবনের সেই সুর, যা কখনো থামবে না।',
-  'তোমার ভালোবাসা আমার আত্মার সঙ্গে মিশে গেছে।',
-  'তুমি যখন লজ্জা পেয়ে হাসো, তখন তোমাকে অপ্সরীর মতো লাগে।',
-  'আমার কঠিন সময়ে তুমিই আমার সবচেয়ে বড় শক্তি হয়ে দাঁড়াও।',
-  'তোমার মনের সৌন্দর্য তোমার বাইরের সৌন্দর্যের চেয়েও বেশি উজ্জ্বল।',
-  'তুমি আমার জীবনের প্রতিটি সকালকে আশীর্বাদময় করে তুলেছো।',
-  'তোমার সঙ্গে বুড়ো হওয়াটাই আমার জীবনের সবচেয়ে বড় স্বপ্ন।',
-  'তুমি আমার সব না বলা কথাও চোখ দেখেই বুঝে ফেলো।',
-  'তোমার ভালোবাসায় কোনো শর্ত নেই, আছে শুধু গভীর মায়া।',
-  'তুমি আমার হৃদয়ের রানী, আমার প্রিয় রিমঝিম।',
-  'তোমার নামের মতোই তুমি আমার জীবনে বৃষ্টির স্নিগ্ধতা নিয়ে এসেছো।',
-  'তুমি আমার জীবনের সবচেয়ে সুন্দর অধ্যায়।',
-  'তোমার হাসিমুখ দেখলে আমার সব দুশ্চিন্তা দূর হয়ে যায়।',
-  'তুমি আমাকে বিশ্বাস করো এবং আমার ওপর ভরসা রাখো।',
-  'তোমার সঙ্গে কাটানো প্রতিটি স্মৃতি আমি হৃদয়ের সিন্দুকে জমিয়ে রাখি।',
-  'তুমি আমার জীবনের সবচেয়ে মিষ্টি অভ্যাস।',
-  'তোমার ভালোবাসা আমাকে প্রতিদিন নতুন স্বপ্ন দেখতে শেখায়।',
-  'তুমি যখন আমার দিকে তাকিয়ে হাসো, সময় যেন থমকে দাঁড়ায়।',
-  'তোমার প্রতিটি ছোট খাটো পছন্দ-অপছন্দ জানতে আমার ভালো লাগে।',
-  'তুমি আমার ঘরের আলো এবং আমার মনের শান্তি।',
-  'তোমার সঙ্গে কথা না বললে আমার দিনটাই অসম্পূর্ণ মনে হয়।',
-  'তুমি আমার জীবনের সবচেয়ে মূল্যবান রত্ন।',
-  'তোমার মমতাময়ী হৃদয় সবাইকে আপন করে নিতে জানে।',
-  'তুমি আমাকে শিখিয়েছো কীভাবে ভালোবাসা দিয়ে সব জয় করা যায়।',
-  'তোমার পাশে শুয়ে আকাশের তারা দেখার স্বপ্ন আমি প্রতিদিন দেখি।',
-  'তুমি আমার জীবনের প্রতিটি সাফল্যের পেছনের অনুপ্রেরণা।',
-  'তোমার মিষ্টি রাগ ভাঙাতে আমার ভীষণ ভালো লাগে।',
-  'তুমি আমার জন্য নিজেকে উজাড় করে ভালোবাসো।',
-  'তোমার কণ্ঠে আমার নাম শুনলে পৃথিবীটা স্বর্গ মনে হয়।',
-  'তুমি আমার জীবনের সবচেয়ে সুন্দর বাস্তবতা।',
-  'তোমার চোখের গভীরতায় আমি আমার পুরো পৃথিবী খুঁজে পাই।',
-  'তুমি আমার প্রতিদিনের বেঁচে থাকার সবচেয়ে সুন্দর কারণ।',
-  'তোমার ভালোবাসা আমার হৃদয়কে কোমল ও পূর্ণ করে রেখেছে।',
-  'তুমি ছাড়া আমি নিজেকে কল্পনাও করতে পারি না।',
-  'তোমার প্রতিটি চাওয়া পূরণ করাটাই আমার জীবনের সবচেয়ে বড় আনন্দ।',
-  'তুমি আমার জীবনের চিরন্তন বসন্ত।',
-  'তোমার সঙ্গে হাঁটতে হাঁটতে অনন্ত পথ পাড়ি দিতে চাই।',
-  'তুমি আমার মনের সব অস্থিরতা শান্ত করে দাও।',
-  'তোমার হাসি আমার জীবনের সবচেয়ে প্রিয় দৃশ্য।',
-  'তুমি আমার ভালোবাসার প্রথম এবং শেষ ঠিকানা।',
-  '৬ জানুয়ারি ২০২৬ আমার জীবনের শ্রেষ্ঠ দিন, কারণ সেদিন তুমি আমার হয়েছিলে।',
-  'তোমার ভালোবাসা আমাকে পূর্ণতা দিয়েছে।',
-  'তুমি আমার প্রতিটি নিঃশ্বাসের সঙ্গে জড়িয়ে আছো।',
-  'তোমার কোমল স্বভাব আমাকে বারবার মুগ্ধ করে।',
-  'তুমি আমার জীবনের সবচেয়ে মধুর আশীর্বাদ।',
-  'তোমার সঙ্গে কাটানো প্রতিটি রাত আর দিন আমার কাছে উৎসব।',
-  'তুমি আমার হৃদয়ের একমাত্র অধিকারী।',
-  'তোমার ভালোবাসা সময়ের সাথে সাথে আরও গভীর হচ্ছে।',
-  'তুমি আমার জীবনের সবচেয়ে সুন্দর গান।',
-  'তোমার মুখের এক চিলতে হাসির জন্য আমি সব করতে পারি।',
-  'তুমি আমার পাশে থাকলে কোনো কিছুই অসম্ভব মনে হয় না।',
-  'তোমার হৃদয়ের পবিত্রতা আমাকে শ্রদ্ধায় নত করে।',
-  'তুমি আমার জীবনের সবচেয়ে মিষ্টি অনুভূতি।',
-  'তোমার সঙ্গে প্রতিটি জন্ম কাটাতে চাই, আমার পাখি।',
-  'তুমি আমার অন্ধকার রাতের পূর্ণিমার চাঁদ।',
-  'তোমার ভালোবাসায় আমি নিজেকে সবচেয়ে ভাগ্যবান পুরুষ মনে করি।',
-  'তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরকাল।',
-  'তোমার প্রতিটি স্বপ্নকে নিজের স্বপ্ন মনে করি।',
-  'তুমি আমার জীবনের অবিচ্ছেদ্য অংশ।',
-  'তোমার ভালোবাসা ছাড়া আমার জীবন অর্থহীন।',
-  'আমি তোমাকে ভালোবাসি, কারণ তুমি শুধুই তুমি—আমার রিমঝিম।',
-  'প্রতিটি জন্মে আমি তোমাকেই আমার স্ত্রী হিসেবে বেছে নেব, আমার প্রিয় পাখি ❤️।',
-];
-
-/**
- * ============================================================================
- *  SECRET HIDDEN HEART EASTER EGGS (Scattered gently across sections)
- * ============================================================================
- */
-const HIDDEN_WHISPERS = [
-  {
-    id: 'egg-1',
-    note: 'Secret Note #1: তুমি জানো কি পাখি, তোমার হাসি দেখলেই আমার সব ক্লান্তি নিমিষেই শেষ হয়ে যায়! ❤️',
-  },
-  {
-    id: 'egg-2',
-    note: 'Secret Note #2: Every heartbeat of Mr. Han whispers only one name — Rimjhim ❤️',
-  },
-  {
-    id: 'egg-3',
-    note: 'Secret Note #3: January 6, 2026 was the luckiest day of my entire life! ♾️',
-  },
-  {
-    id: 'egg-4',
-    note: 'Secret Note #4: You are my forever home, my peace, and my greatest blessing, My Pakhi 💌',
-  },
-];
-
-/**
- * ============================================================================
- *  HOOK: Inject Google Fonts, SEO Metadata & Luxury Custom CSS
- * ============================================================================
- */
-function useLuxuryThemeSetup() {
-  useEffect(() => {
-    document.title = 'For My Beloved Wife Rimjhim ❤️ | From Mr. Han';
-
-    const setMeta = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
-    setMeta(
-      'description',
-      'A romantic interactive love gift dedicated to Rimjhim (My Pakhi) from her husband Mr. Han, celebrating their wedding on January 6, 2026.'
-    );
-    setMeta('theme-color', '#050505');
-
-    // Inject Google Fonts
-    if (!document.getElementById('rimjhim-romantic-fonts')) {
-      const link = document.createElement('link');
-      link.id = 'rimjhim-romantic-fonts';
-      link.rel = 'stylesheet';
-      link.href =
-        'https://fonts.googleapis.com/css2?family=Great+Vibes&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap';
-      document.head.appendChild(link);
-    }
-
-    // Inject Custom Keyframes & Font Utilities
-    if (!document.getElementById('rimjhim-luxury-styles')) {
-      const style = document.createElement('style');
-      style.id = 'rimjhim-luxury-styles';
-      style.textContent = `
-        html {
-          scroll-behavior: smooth;
-          background-color: #050505;
-          color: #ffffff;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        body {
-          background-color: #050505;
-          overflow-x: hidden;
-        }
-        .font-cursive {
-          font-family: 'Great Vibes', cursive;
-        }
-        .font-serif-luxury {
-          font-family: 'Playfair Display', serif;
-        }
-        .font-bengali {
-          font-family: 'Hind Siliguri', 'Noto Serif Bengali', sans-serif;
-        }
-        .font-body {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        @keyframes shimmerGoldCrimson {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .text-shimmer-love {
-          background: linear-gradient(90deg, #ff003c, #ff6b8b, #ffd700, #ff2a5f, #ff003c);
-          background-size: 250% 250%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shimmerGoldCrimson 6s ease infinite;
-        }
-        @keyframes spinVinyl {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-vinyl {
-          animation: spinVinyl 7s linear infinite;
-        }
-        .animate-vinyl-paused {
-          animation: spinVinyl 7s linear infinite;
-          animation-play-state: paused;
-        }
-        /* Custom luxury scrollbar */
-        ::-webkit-scrollbar {
-          width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #050505;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #ff003c, #800020);
-          border-radius: 9999px;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }, []);
-}
-
-/**
- * ============================================================================
- *  COMPONENT: Romantic Preloader Screen
- * ============================================================================
- */
-const PreloaderOverlay: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onFinish();
-    }, 2400);
-    return () => clearTimeout(timer);
-  }, [onFinish]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.85, ease: 'easeInOut' } }}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] px-6 text-center"
-    >
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(255,0,60,0.22) 0%, rgba(5,5,5,1) 68%)',
-        }}
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#ff003c] selection:text-white relative overflow-x-hidden">
+      
+      {/* Background Audio (Using calm classical/romantic copyright free stream) */}
+      <audio 
+        ref={audioRef} 
+        loop 
+        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-guitars-112133.mp3" 
       />
 
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1, 1.15, 1],
-        }}
-        transition={{
-          duration: 1.4,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        className="relative mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-[#ff003c]/50 bg-[#ff003c]/10 shadow-[0_0_50px_rgba(255,0,60,0.55)]"
-      >
-        <Heart className="h-12 w-12 fill-[#ff003c] text-[#ff003c] drop-shadow-[0_0_15px_#ff003c]" />
-      </motion.div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="font-cursive text-4xl sm:text-5xl text-shimmer-love mb-2"
-      >
-        For My Pakhi, {SITE_CONFIG.wifeName}...
-      </motion.p>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.8 }}
-        transition={{ delay: 0.55 }}
-        className="font-bengali text-base sm:text-lg text-rose-200/80 mb-8"
-      >
-        তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার ❤️
-      </motion.p>
-
-      <button
-        onClick={onFinish}
-        className="relative z-10 rounded-full border border-[#ff003c]/40 bg-white/5 px-5 py-2 text-xs uppercase tracking-widest text-rose-200 hover:bg-[#ff003c]/20 transition"
-      >
-        Enter Our Love World ✨
-      </button>
-    </motion.div>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Ambient Floating Rose Petals, Hearts & Golden Sparkles
- * ============================================================================
- */
-const AmbientRomanceLayer: React.FC = () => {
-  const petals = React.useMemo(
-    () =>
-      Array.from({ length: 16 }, (_, i) => ({
-        id: i,
-        left: `${(i * 6.3 + 3) % 98}%`,
-        delay: (i * 0.7) % 8,
-        duration: 11 + (i % 6) * 2,
-        size: 12 + (i % 4) * 4,
-        isHeart: i % 3 === 0,
-        isGold: i % 5 === 0,
-      })),
-    []
-  );
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      {/* Ambient Radial Luxury Glows */}
-      <div
-        className="absolute -top-40 left-1/2 h-[540px] w-[540px] -translate-x-1/2 rounded-full opacity-35 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #ff003c 0%, transparent 70%)' }}
-      />
-      <div
-        className="absolute bottom-10 -right-24 h-[420px] w-[420px] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #ff1e56 0%, transparent 70%)' }}
-      />
-
-      {petals.map((item) => (
-        <motion.div
-          key={item.id}
-          initial={{ y: -40, opacity: 0, rotate: 0 }}
-          animate={{
-            y: ['0vh', '105vh'],
-            x: [0, item.id % 2 === 0 ? 35 : -35, 0],
-            opacity: [0, 0.75, 0.65, 0],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: item.duration,
-            delay: item.delay,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-          style={{ left: item.left }}
-          className="absolute top-0"
-        >
-          {item.isGold ? (
-            <span
-              className="block rounded-full bg-[#ffd700] shadow-[0_0_8px_#ffd700]"
-              style={{ width: 4, height: 4 }}
-            />
-          ) : item.isHeart ? (
-            <Heart
-              style={{ width: item.size, height: item.size }}
-              className="fill-[#ff003c]/40 text-[#ff003c]/70 drop-shadow-[0_0_6px_rgba(255,0,60,0.6)]"
-            />
-          ) : (
-            /* Custom SVG Rose Petal */
-            <svg
-              width={item.size}
-              height={item.size}
-              viewBox="0 0 24 24"
-              fill="none"
-              className="drop-shadow-[0_0_6px_rgba(255,0,60,0.45)]"
-            >
-              <path
-                d="M12 2C7 5 4 11 7 17C9 20.5 15 21 18 17C21 12 17 5 12 2Z"
-                fill="url(#petalGrad)"
-              />
-              <defs>
-                <linearGradient id="petalGrad" x1="4" y1="2" x2="20" y2="20" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#ff003c" stopOpacity="0.85" />
-                  <stop offset="1" stopColor="#6b001a" stopOpacity="0.55" />
-                </linearGradient>
-              </defs>
-            </svg>
-          )}
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Desktop Floating Heart Cursor Trail (Throttled for 60fps)
- * ============================================================================
- */
-interface TrailHeart {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-}
-
-const HeartCursorTrail: React.FC = () => {
-  const [hearts, setHearts] = useState<TrailHeart[]>([]);
-  const lastSpawnRef = useRef<number>(0);
-
-  useEffect(() => {
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    if (isTouch) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const now = Date.now();
-      if (now - lastSpawnRef.current < 95) return;
-      lastSpawnRef.current = now;
-
-      const id = now + Math.random();
-      const newHeart: TrailHeart = {
-        id,
-        x: e.clientX,
-        y: e.clientY,
-        size: 10 + Math.random() * 8,
-      };
-      setHearts((prev) => [...prev.slice(-14), newHeart]);
-      setTimeout(() => {
-        setHearts((prev) => prev.filter((h) => h.id !== id));
-      }, 900);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-50 hidden md:block">
-      <AnimatePresence>
-        {hearts.map((h) => (
-          <motion.div
-            key={h.id}
-            initial={{ opacity: 0.9, scale: 0.5, x: h.x - h.size / 2, y: h.y - h.size / 2 }}
-            animate={{ opacity: 0, scale: 1.35, y: h.y - 45 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-            className="fixed top-0 left-0"
+      {/* Floating Rose Petals & Hearts Background Effect */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
+        {[...Array(15)].map((_, i) => (
+          <div 
+            key={i} 
+            className="absolute animate-bounce text-[#ff003c]"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              fontSize: `${Math.random() * 1.5 + 0.8}rem`,
+              animationDuration: `${Math.random() * 6 + 4}s`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
           >
-            <Heart
-              style={{ width: h.size, height: h.size }}
-              className="fill-[#ff003c] text-[#ff4d79] drop-shadow-[0_0_8px_#ff003c]"
-            />
-          </motion.div>
+            {i % 2 === 0 ? '❤️' : '🌹'}
+          </div>
         ))}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Clickable Hidden Heart Easter Egg
- * ============================================================================
- */
-const SecretHeartEgg: React.FC<{
-  whisperIndex: number;
-  foundIds: string[];
-  onDiscover: (id: string, note: string) => void;
-  className?: string;
-}> = ({ whisperIndex, foundIds, onDiscover, className = '' }) => {
-  const whisper = HIDDEN_WHISPERS[whisperIndex];
-  const isFound = foundIds.includes(whisper.id);
-
-  return (
-    <motion.button
-      type="button"
-      onClick={() => onDiscover(whisper.id, whisper.note)}
-      whileHover={{ scale: 1.25 }}
-      whileTap={{ scale: 0.9 }}
-      animate={{ opacity: isFound ? [0.7, 1, 0.7] : [0.25, 0.65, 0.25] }}
-      transition={{ duration: 2.5, repeat: Infinity }}
-      aria-label="Hidden romantic note"
-      title="Tap this secret glowing heart ✨"
-      className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#ff003c]/30 bg-[#ff003c]/10 hover:border-[#ffd700] hover:bg-[#ff003c]/25 transition ${className}`}
-    >
-      <Heart
-        className={`h-3.5 w-3.5 ${
-          isFound
-            ? 'fill-[#ffd700] text-[#ffd700] drop-shadow-[0_0_8px_#ffd700]'
-            : 'fill-[#ff003c] text-[#ff003c]'
-        }`}
-      />
-    </motion.button>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Responsive Luxury Navigation Bar
- * ============================================================================
- */
-const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: Heart },
-  { id: 'love-letter', label: 'Love Letter', icon: Mail },
-  { id: 'memories', label: 'Memories', icon: ImageIcon },
-  { id: 'our-story', label: 'Our Story', icon: BookOpen },
-  { id: 'reasons', label: '100 Reasons', icon: Sparkles },
-  { id: 'music', label: 'Music', icon: Music },
-  { id: 'surprise', label: 'Surprise', icon: Gift },
-  { id: 'secret', label: 'Secret Page', icon: Lock },
-];
-
-const Navbar: React.FC<{
-  activeSection: string;
-  onNavigate: (id: string) => void;
-  foundEggsCount: number;
-}> = ({ activeSection, onNavigate, foundEggsCount }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleSelect = (id: string) => {
-    setMobileMenuOpen(false);
-    onNavigate(id);
-  };
-
-  return (
-    <header className="sticky top-0 z-40 border-b border-[#ff003c]/25 bg-[#050505]/85 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Monogram Logo */}
-        <button
-          onClick={() => handleSelect('home')}
-          className="group flex items-center gap-2.5 text-left focus:outline-none"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ff003c]/50 bg-gradient-to-br from-[#ff003c]/30 to-black shadow-[0_0_18px_rgba(255,0,60,0.45)] group-hover:scale-105 transition">
-            <Heart className="h-5 w-5 fill-[#ff003c] text-[#ff003c]" />
-          </div>
-          <div>
-            <span className="font-cursive text-2xl sm:text-3xl text-shimmer-love leading-none block">
-              Rimjhim &amp; Mr. Han
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.22em] text-rose-200/60">
-              Forever ♾️ 06.01.2026
-            </span>
-          </div>
-        </button>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleSelect(item.id)}
-                className={`relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-medium transition-all ${
-                  isActive
-                    ? 'text-white bg-[#ff003c]/20 border border-[#ff003c]/60 shadow-[0_0_18px_rgba(255,0,60,0.4)]'
-                    : 'text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent'
-                }`}
-              >
-                <Icon
-                  className={`h-3.5 w-3.5 ${
-                    isActive ? 'text-[#ff003c] drop-shadow-[0_0_6px_#ff003c]' : 'text-rose-300/70'
-                  }`}
-                />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Right Status + Mobile Toggle */}
-        <div className="flex items-center gap-2.5">
-          <div
-            title="Hidden romantic notes discovered"
-            className="hidden sm:flex items-center gap-1.5 rounded-full border border-[#ffd700]/30 bg-[#ffd700]/10 px-3 py-1 text-xs text-[#ffd700]"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>{foundEggsCount}/4 Notes</span>
-          </div>
-
-          <button
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle navigation menu"
-            className="flex lg:hidden h-10 w-10 items-center justify-center rounded-full border border-[#ff003c]/40 bg-[#ff003c]/15 text-white hover:bg-[#ff003c]/25 transition"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
       </div>
 
-      {/* Mobile Dropdown Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-[#ff003c]/25 bg-[#080507]/95 backdrop-blur-2xl lg:hidden"
+      {/* NAVIGATION BAR */}
+      <nav className="sticky top-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-[#ff003c]/20 px-4 py-3">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('home')}>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff003c] to-pink-500 flex items-center justify-center shadow-[0_0_15px_#ff003c]">
+              <Heart className="w-5 h-5 text-white animate-pulse" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold tracking-wider bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">Rimjhim & Han</h1>
+              <p className="text-[10px] text-gray-400 tracking-widest uppercase">Forever Love Gift</p>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1 no-scrollbar">
+            {[
+              { id: 'home', label: 'Home', icon: Sparkles },
+              { id: 'letter', label: 'Love Letter', icon: Mail },
+              { id: 'memories', label: 'Memories', icon: ImageIcon },
+              { id: 'story', label: 'Our Story', icon: BookOpen },
+              { id: 'reasons', label: '100 Reasons', icon: ListOrdered },
+              { id: 'music', label: 'Music', icon: Music },
+              { id: 'surprise', label: 'Surprise', icon: Gift },
+              { id: 'secret', label: 'Secret', icon: Lock },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 relative whitespace-nowrap ${
+                    isActive 
+                      ? 'bg-[#ff003c] text-white shadow-[0_0_20px_rgba(255,0,60,0.6)]' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{tab.label}</span>
+                  {isActive && (
+                    <motion.div 
+                      layoutId="activeIndicator"
+                      className="absolute inset-0 border border-white/40 rounded-full pointer-events-none" 
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Quick Music Toggle in Nav */}
+          <button 
+            onClick={toggleMusic}
+            className={`p-2.5 rounded-full border transition-all ${
+              isMusicPlaying 
+                ? 'border-[#ff003c] bg-[#ff003c]/20 text-[#ff003c] shadow-[0_0_15px_#ff003c]' 
+                : 'border-white/10 text-gray-400 hover:text-white'
+            }`}
+            title={isMusicPlaying ? "Pause Music" : "Play Romantic Music"}
           >
-            <div className="grid grid-cols-2 gap-2 p-4">
-              {NAV_ITEMS.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeSection === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleSelect(item.id)}
-                    className={`flex items-center gap-2.5 rounded-xl px-3.5 py-3 text-left text-xs font-medium transition ${
-                      isActive
-                        ? 'border border-[#ff003c] bg-[#ff003c]/20 text-white shadow-[0_0_16px_rgba(255,0,60,0.35)]'
-                        : 'border border-white/10 bg-white/[0.03] text-rose-100/80 hover:border-[#ff003c]/40'
-                    }`}
-                  >
-                    <Icon className="h-4 w-4 text-[#ff003c]" />
-                    <span>{item.label}</span>
-                  </button>
-                );
-              })}
+            {isMusicPlaying ? <Volume2 className="w-4 h-4 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+        </div>
+      </nav>
+
+      {/* MAIN CONTENT CONTAINER */}
+      <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
+        
+        {/* ================= HOMEPAGE ================= */}
+        {activeTab === 'home' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-16"
+          >
+            {/* Hero Section */}
+            <div className="relative rounded-3xl p-8 sm:p-12 overflow-hidden border border-[#ff003c]/30 bg-gradient-to-b from-[#120306] via-[#050505] to-[#050505] shadow-[0_0_50px_rgba(255,0,60,0.15)]">
+              <div className="absolute -right-20 -top-20 w-96 h-96 bg-[#ff003c]/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -left-20 -bottom-20 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                <div className="space-y-6 text-center lg:text-left">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ff003c]/10 border border-[#ff003c]/30 text-[#ff003c] text-xs font-semibold tracking-wider uppercase shadow-[0_0_15px_rgba(255,0,60,0.3)]">
+                    <Flame className="w-3.5 h-3.5" /> A Dedicated Love Gift for My Wife
+                  </div>
+                  
+                  <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                    To My Beloved Wife <br />
+                    <span className="bg-gradient-to-r from-[#ff003c] via-pink-500 to-red-400 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(255,0,60,0.5)]">
+                      Rimjhim ❤️
+                    </span>
+                  </h1>
+
+                  <p className="text-lg sm:text-xl text-gray-300 font-medium italic">
+                    "তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।"
+                  </p>
+                  <p className="text-sm sm:text-base text-gray-400">
+                    You are my favorite person in this entire world.
+                  </p>
+
+                  <div className="pt-2 text-sm text-[#ff003c] font-semibold tracking-wide">
+                    From your forever lover, Mr. Han ❤️
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
+                    <button 
+                      onClick={() => setActiveTab('letter')}
+                      className="px-6 py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:shadow-[0_0_30px_rgba(255,0,60,0.8)] transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+                    >
+                      <Mail className="w-4 h-4" /> Open My Love Letter 💌
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('memories')}
+                      className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 backdrop-blur-md transition-all flex items-center gap-2"
+                    >
+                      <ImageIcon className="w-4 h-4" /> Our Memories ❤️
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('surprise')}
+                      className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:shadow-[0_0_30px_rgba(244,63,94,0.7)] transition-all flex items-center gap-2"
+                    >
+                      <Gift className="w-4 h-4" /> A Surprise for You 🎁
+                    </button>
+                  </div>
+                </div>
+
+                {/* Hero Illustration / Couple Card */}
+                <div className="relative flex justify-center">
+                  <div className="w-72 sm:w-80 h-96 sm:h-[420px] rounded-3xl overflow-hidden border-2 border-[#ff003c]/40 shadow-[0_0_40px_rgba(255,0,60,0.4)] relative group bg-[#0a0a0a]">
+                    <img 
+                      src={photos[0].url} 
+                      alt="Rimjhim & Mr. Han" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+                    <div className="absolute bottom-6 left-6 right-6 text-center">
+                      <div className="inline-block p-2 rounded-full bg-[#ff003c]/30 backdrop-blur-md mb-2 border border-[#ff003c]/50">
+                        <Heart className="w-6 h-6 text-[#ff003c] fill-[#ff003c] animate-pulse" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Rimjhim & Mr. Han</h3>
+                      <p className="text-xs text-gray-300 mt-1">Together Forever ♾️</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* LIVE LOVE COUNTER SECTION */}
+            <div className="rounded-3xl p-8 bg-gradient-to-r from-[#120306] via-[#0b0406] to-[#120306] border border-[#ff003c]/30 shadow-[0_0_30px_rgba(255,0,60,0.15)] text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#ff003c]/10 via-transparent to-transparent pointer-events-none" />
+              <div className="relative z-10 space-y-4">
+                <div className="inline-flex p-3 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 text-[#ff003c] mb-2 shadow-[0_0_20px_#ff003c]">
+                  <Heart className="w-8 h-8 fill-[#ff003c] animate-pulse" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Together Forever ❤️</h2>
+                <p className="text-sm text-gray-400">Since January 6, 2026 ❤️</p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto pt-4">
+                  {[
+                    { label: 'Days', value: timeLeft.days },
+                    { label: 'Hours', value: timeLeft.hours },
+                    { label: 'Minutes', value: timeLeft.minutes },
+                    { label: 'Seconds', value: timeLeft.seconds },
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-[0_0_15px_rgba(255,0,60,0.1)]">
+                      <div className="text-3xl sm:text-4xl font-black text-[#ff003c] font-mono">{item.value}</div>
+                      <div className="text-xs uppercase tracking-wider text-gray-400 mt-1 font-semibold">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Interactive Widgets */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div 
+                onClick={() => setActiveModal('hug')}
+                className="p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer group text-center space-y-3 shadow-lg"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-[#ff003c] group-hover:scale-110 transition-transform">
+                  🤗
+                </div>
+                <h3 className="text-lg font-bold">Hug Me</h3>
+                <p className="text-xs text-gray-400">Click to send a warm cozy hug straight to Mr. Han's arms.</p>
+              </div>
+
+              <div 
+                onClick={() => setActiveModal('kiss')}
+                className="p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer group text-center space-y-3 shadow-lg"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-[#ff003c] group-hover:scale-110 transition-transform">
+                  😘
+                </div>
+                <h3 className="text-lg font-bold">Kiss Me</h3>
+                <p className="text-xs text-gray-400">Send a sweet flying kiss filled with endless affection.</p>
+              </div>
+
+              <div 
+                onClick={() => setHeartClicks(prev => prev + 1)}
+                className="p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer group text-center space-y-3 shadow-lg relative overflow-hidden"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-[#ff003c] group-hover:scale-110 transition-transform">
+                  ❤️
+                </div>
+                <h3 className="text-lg font-bold">Tap For Love ({heartClicks})</h3>
+                <p className="text-xs text-gray-400">Click to shower hearts for Rimjhim & Mr. Han.</p>
+              </div>
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </header>
-  );
-};
 
-/**
- * ============================================================================
- *  COMPONENT: Bespoke Anime-Style Romantic Couple SVG Illustration
- * ============================================================================
- */
-const AnimeRomanticCoupleIllustration: React.FC = () => {
-  return (
-    <div className="relative mx-auto flex h-72 w-72 sm:h-80 sm:w-80 items-center justify-center">
-      {/* Pulsing Crimson Heart Halo */}
-      <motion.div
-        animate={{ scale: [1, 1.07, 1], opacity: [0.65, 0.95, 0.65] }}
-        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute inset-0 rounded-full border-2 border-[#ff003c]/60 bg-gradient-to-b from-[#ff003c]/25 via-[#3d0010]/30 to-black/80 shadow-[0_0_65px_rgba(255,0,60,0.45)]"
-      />
-      <div className="absolute inset-3 rounded-full border border-[#ffd700]/30" />
-
-      {/* Custom SVG Anime Couple Embracing Inside Glowing Heart Aura */}
-      <svg
-        viewBox="0 0 320 320"
-        className="relative z-10 h-full w-full drop-shadow-[0_0_18px_rgba(255,0,60,0.5)]"
-        fill="none"
-      >
-        <defs>
-          <radialGradient id="coupleBgGlow" cx="50%" cy="45%" r="50%">
-            <stop offset="0%" stopColor="#ff003c" stopOpacity="0.45" />
-            <stop offset="65%" stopColor="#590016" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#050505" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="neonHeartStroke" x1="40" y1="40" x2="280" y2="270" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ff003c" />
-            <stop offset="50%" stopColor="#ffd700" />
-            <stop offset="100%" stopColor="#ff2a6d" />
-          </linearGradient>
-          <linearGradient id="groomSuit" x1="110" y1="150" x2="165" y2="280" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#1f1624" />
-            <stop offset="100%" stopColor="#09060c" />
-          </linearGradient>
-          <linearGradient id="brideSaree" x1="155" y1="155" x2="225" y2="285" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ff003c" />
-            <stop offset="60%" stopColor="#a80028" />
-            <stop offset="100%" stopColor="#4a0012" />
-          </linearGradient>
-          <linearGradient id="skinTone" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ffe5d9" />
-            <stop offset="100%" stopColor="#f4c2b2" />
-          </linearGradient>
-        </defs>
-
-        <circle cx="160" cy="160" r="145" fill="url(#coupleBgGlow)" />
-
-        {/* Glowing Heart Frame Behind Couple */}
-        <path
-          d="M160 258C160 258 64 195 64 122C64 88 90 64 120 64C140 64 154 75 160 88C166 75 180 64 200 64C230 64 256 88 256 122C256 195 160 258 160 258Z"
-          stroke="url(#neonHeartStroke)"
-          strokeWidth="3"
-          fill="rgba(255,0,60,0.08)"
-        />
-
-        {/* Sparkle Stars */}
-        <circle cx="95" cy="95" r="2.2" fill="#ffd700" />
-        <circle cx="228" cy="92" r="2.5" fill="#ffd700" />
-        <circle cx="82" cy="155" r="1.8" fill="#ff7597" />
-        <circle cx="240" cy="150" r="2" fill="#ff7597" />
-
-        {/* GROOM (Mr. Han) - Left */}
-        <g>
-          {/* Groom Hair Back */}
-          <path
-            d="M104 124C102 96 122 82 142 86C158 89 164 105 160 126C146 120 116 120 104 124Z"
-            fill="#141019"
-          />
-          {/* Groom Face */}
-          <path
-            d="M112 116C112 103 122 95 135 96C148 97 154 107 152 121C150 133 141 141 131 140C120 139 112 130 112 116Z"
-            fill="url(#skinTone)"
-          />
-          {/* Anime Bangs */}
-          <path
-            d="M108 114C112 97 132 90 151 101C155 107 155 114 153 119C147 109 138 106 132 113C128 106 119 108 112 118Z"
-            fill="#141019"
-          />
-          {/* Groom Gentle Closed Eye & Smile */}
-          <path d="M136 116C139 114 143 114 146 116" stroke="#3b1d2a" strokeWidth="2" strokeLinecap="round" />
-          <path d="M135 128C138 130 142 130 144 128" stroke="#c95b73" strokeWidth="1.8" strokeLinecap="round" />
-          {/* Groom Tuxedo Torso */}
-          <path
-            d="M92 248C94 195 106 154 134 152C155 151 167 170 168 248H92Z"
-            fill="url(#groomSuit)"
-            stroke="#ff003c"
-            strokeOpacity="0.35"
-            strokeWidth="1.2"
-          />
-          {/* White Shirt Collar & Crimson Tie */}
-          <path d="M128 152L138 175L147 153Z" fill="#fff5f7" />
-          <path d="M136 160L140 160L142 184L138 190L134 184Z" fill="#ff003c" />
-        </g>
-
-        {/* BRIDE (Rimjhim) - Right, leaning lovingly */}
-        <g>
-          {/* Flowing Long Hair */}
-          <path
-            d="M156 124C156 97 178 88 198 96C216 104 224 136 220 198C210 190 202 174 198 158C184 154 164 142 156 124Z"
-            fill="#180d16"
-          />
-          {/* Bridal Dupatta / Veil Shimmer */}
-          <path
-            d="M168 95C192 88 218 106 226 146C232 178 228 216 218 244"
-            stroke="#ffd700"
-            strokeOpacity="0.65"
-            strokeWidth="1.8"
-            strokeDasharray="3 3"
-          />
-          {/* Bride Face */}
-          <path
-            d="M158 122C158 109 168 101 180 102C192 103 199 113 197 126C195 137 185 144 175 143C164 142 158 134 158 122Z"
-            fill="url(#skinTone)"
-          />
-          {/* Tiny Crimson Bindi & Golden Tikli */}
-          <circle cx="173" cy="113" r="1.5" fill="#ff003c" />
-          <circle cx="174" cy="105" r="2" fill="#ffd700" />
-          {/* Anime Hair Bangs */}
-          <path
-            d="M156 120C159 102 182 96 198 110C201 116 200 124 197 129C192 117 182 112 174 116C167 112 161 116 157 124Z"
-            fill="#180d16"
-          />
-          {/* Bride Blissful Eye, Blush & Smile */}
-          <path d="M164 121C167 119 171 119 174 121" stroke="#3b1d2a" strokeWidth="2" strokeLinecap="round" />
-          <ellipse cx="167" cy="127" rx="4" ry="2.2" fill="#ff4d79" fillOpacity="0.45" />
-          <path d="M166 133C169 135 173 135 175 133" stroke="#d9385a" strokeWidth="1.8" strokeLinecap="round" />
-          {/* Crimson & Gold Bridal Saree */}
-          <path
-            d="M148 248C150 184 162 155 184 155C206 155 218 192 222 248H148Z"
-            fill="url(#brideSaree)"
-            stroke="#ffd700"
-            strokeOpacity="0.55"
-            strokeWidth="1.4"
-          />
-          {/* Golden Saree Border */}
-          <path d="M162 160L206 238" stroke="#ffd700" strokeWidth="2.2" strokeOpacity="0.85" />
-          {/* Groom's Protective Arm Holding Her */}
-          <path
-            d="M126 184C144 194 166 194 182 184"
-            stroke="#2a1d30"
-            strokeWidth="11"
-            strokeLinecap="round"
-          />
-        </g>
-
-        {/* Floating Mini Heart Between Their Heads */}
-        <path
-          d="M155 82C155 82 146 75 146 69C146 65.5 148.8 63 152 63C153.8 63 154.6 64 155 65C155.4 64 156.2 63 158 63C161.2 63 164 65.5 164 69C164 75 155 82 155 82Z"
-          fill="#ff003c"
-        />
-
-        {/* Decorative Red Roses at Base */}
-        <g transform="translate(115, 245)">
-          <circle cx="0" cy="0" r="11" fill="#b80028" />
-          <circle cx="0" cy="0" r="7" fill="#ff003c" />
-          <circle cx="0" cy="0" r="3" fill="#ff7597" />
-        </g>
-        <g transform="translate(160, 250)">
-          <circle cx="0" cy="0" r="13" fill="#9e0022" />
-          <circle cx="0" cy="0" r="8.5" fill="#ff003c" />
-          <circle cx="0" cy="0" r="3.5" fill="#ffd700" />
-        </g>
-        <g transform="translate(205, 245)">
-          <circle cx="0" cy="0" r="11" fill="#b80028" />
-          <circle cx="0" cy="0" r="7" fill="#ff003c" />
-          <circle cx="0" cy="0" r="3" fill="#ff7597" />
-        </g>
-      </svg>
-    </div>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Hero Section
- * ============================================================================
- */
-const HeroSection: React.FC<{
-  onNavigate: (id: string) => void;
-  onOpenLightbox: (index: number) => void;
-  foundEggs: string[];
-  onDiscoverEgg: (id: string, note: string) => void;
-}> = ({ onNavigate, onOpenLightbox, foundEggs, onDiscoverEgg }) => {
-  return (
-    <section
-      id="home"
-      className="relative overflow-hidden pt-10 pb-20 sm:pt-16 sm:pb-28 px-4 sm:px-6"
-    >
-      {/* Hidden Easter Egg #1 */}
-      <div className="mx-auto max-w-6xl flex justify-end mb-2">
-        <SecretHeartEgg whisperIndex={0} foundIds={foundEggs} onDiscover={onDiscoverEgg} />
-      </div>
-
-      <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          {/* Left Column: Romantic Typography & CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-            className="lg:col-span-7 text-center lg:text-left"
+        {/* ================= LOVE LETTER ================= */}
+        {activeTab === 'letter' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-3xl mx-auto space-y-8"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#ff003c]/45 bg-[#ff003c]/10 px-4 py-1.5 text-xs font-medium tracking-wider text-rose-200 shadow-[0_0_20px_rgba(255,0,60,0.25)] mb-5">
-              <Crown className="h-3.5 w-3.5 text-[#ffd700]" />
-              <span>EXCLUSIVELY MADE FOR MY QUEEN</span>
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                A Love Letter For Rimjhim 💌
+              </h2>
+              <p className="text-sm text-gray-400">Written with pure soul and eternal devotion by Mr. Han.</p>
             </div>
 
-            <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-4xl text-rose-100/95 tracking-wide">
-              To My Beloved Wife
-            </h2>
-
-            <h1 className="font-cursive text-7xl sm:text-8xl md:text-9xl text-shimmer-love py-2 leading-none drop-shadow-[0_0_28px_rgba(255,0,60,0.45)]">
-              {SITE_CONFIG.wifeName}
-            </h1>
-
-            <p className="mt-2 text-base sm:text-lg font-medium text-[#ffd700] tracking-wide">
-              From your forever lover, {SITE_CONFIG.husbandName} ❤️
-            </p>
-
-            {/* Primary Bengali Romantic Highlight */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.35, duration: 0.7 }}
-              className="mt-6 rounded-2xl border border-[#ff003c]/35 bg-black/60 backdrop-blur-xl p-5 shadow-[0_0_35px_rgba(255,0,60,0.2)]"
-            >
-              <p className="font-bengali text-2xl sm:text-3xl font-semibold text-white leading-relaxed">
-                “তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।”
-              </p>
-              <p className="mt-2 text-sm sm:text-base text-rose-200/85 italic">
-                “You are my favorite person in this entire world.”
-              </p>
-            </motion.div>
-
-            {/* 3 Glowing Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onNavigate('love-letter')}
-                className="rounded-full bg-gradient-to-r from-[#ff003c] via-[#d90032] to-[#ff1e56] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_28px_rgba(255,0,60,0.6)] hover:shadow-[0_0_40px_rgba(255,0,60,0.85)] transition"
-              >
-                Open My Love Letter 💌
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onNavigate('memories')}
-                className="rounded-full border border-[#ff003c]/60 bg-black/70 px-6 py-3.5 text-sm font-semibold text-rose-100 shadow-[0_0_20px_rgba(255,0,60,0.25)] hover:bg-[#ff003c]/20 transition"
-              >
-                Our Memories ❤️
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onNavigate('surprise')}
-                className="rounded-full border border-[#ffd700]/50 bg-gradient-to-r from-[#ffd700]/15 to-[#ff003c]/20 px-6 py-3.5 text-sm font-semibold text-[#ffd700] shadow-[0_0_22px_rgba(255,215,0,0.22)] hover:border-[#ffd700] transition"
-              >
-                A Surprise for You 🎁
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Right Column: Anime Couple Illustration + Featured Real Photo Frames */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="lg:col-span-5 flex flex-col items-center"
-          >
-            <AnimeRomanticCoupleIllustration />
-
-            {/* Floating Real Memories Preview Strip */}
-            <div className="mt-6 flex items-center justify-center gap-3">
-              {SITE_CONFIG.photos.slice(0, 3).map((photo, idx) => (
-                <motion.button
-                  key={photo.id}
-                  whileHover={{ y: -6, scale: 1.06 }}
-                  onClick={() => onOpenLightbox(idx)}
-                  className={`group relative h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-2xl border-2 border-[#ff003c]/60 bg-black shadow-[0_0_22px_rgba(255,0,60,0.35)] ${
-                    idx === 1 ? '-translate-y-2 border-[#ffd700]/70' : ''
-                  }`}
+            {!isEnvelopeOpen ? (
+              <div className="flex flex-col items-center justify-center py-12">
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsEnvelopeOpen(true)}
+                  className="w-72 sm:w-80 h-48 sm:h-56 bg-gradient-to-br from-rose-950 via-zinc-900 to-black border-2 border-[#ff003c] rounded-2xl shadow-[0_0_40px_rgba(255,0,60,0.5)] flex flex-col items-center justify-center cursor-pointer relative group"
                 >
-                  <img
-                    src={photo.url}
-                    alt={photo.caption}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end justify-center p-1">
-                    <span className="text-[9px] text-white font-medium truncate">
-                      {photo.caption}
-                    </span>
+                  <div className="absolute top-4 w-12 h-12 rounded-full bg-[#ff003c] border-2 border-white/40 flex items-center justify-center shadow-[0_0_20px_#ff003c]">
+                    <Heart className="w-6 h-6 text-white fill-white" />
                   </div>
-                </motion.button>
-              ))}
-            </div>
-            <p className="mt-2.5 text-xs text-rose-200/60">
-              Tap any memory frame to view fullscreen ✨
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Scroll Cue */}
-        <div className="mt-14 flex justify-center">
-          <motion.button
-            animate={{ y: [0, 7, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            onClick={() => onNavigate('love-counter')}
-            className="flex flex-col items-center gap-1 text-xs text-rose-200/60 hover:text-white transition"
-          >
-            <span>Scroll through our love story</span>
-            <ArrowDown className="h-4 w-4 text-[#ff003c]" />
-          </motion.button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Live Love Counter ("Together Forever" since January 6, 2026)
- * ============================================================================
- */
-const LoveCounterSection: React.FC = () => {
-  const [elapsed, setElapsed] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  useEffect(() => {
-    const startTimestamp = new Date(SITE_CONFIG.weddingDate).getTime();
-
-    const updateTimer = () => {
-      const now = Date.now();
-      const diff = Math.max(0, now - startTimestamp);
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      setElapsed({ days, hours, minutes, seconds });
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const units = [
-    { label: 'Days', value: elapsed.days },
-    { label: 'Hours', value: elapsed.hours },
-    { label: 'Minutes', value: elapsed.minutes },
-    { label: 'Seconds', value: elapsed.seconds },
-  ];
-
-  return (
-    <section id="love-counter" className="relative py-16 sm:py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75 }}
-          className="relative overflow-hidden rounded-3xl border border-[#ff003c]/45 bg-black/70 backdrop-blur-2xl p-7 sm:p-12 text-center shadow-[0_0_50px_rgba(255,0,60,0.22)]"
-        >
-          {/* Decorative Corner Gold Glow */}
-          <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[#ff003c]/20 blur-3xl" />
-
-          <motion.div
-            animate={{ scale: [1, 1.18, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#ff003c]/50 bg-[#ff003c]/15 shadow-[0_0_25px_rgba(255,0,60,0.55)]"
-          >
-            <Heart className="h-7 w-7 fill-[#ff003c] text-[#ff003c]" />
-          </motion.div>
-
-          <h2 className="font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Together Forever
-          </h2>
-          <p className="mt-2 text-sm sm:text-base font-medium text-[#ffd700] tracking-wide">
-            Since January 6, 2026 ❤️
-          </p>
-
-          {/* Live 4-Unit Grid */}
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-5">
-            {units.map((unit) => (
-              <div
-                key={unit.label}
-                className="rounded-2xl border border-[#ff003c]/35 bg-gradient-to-b from-[#ff003c]/15 to-black/90 p-4 sm:p-6 shadow-[0_0_24px_rgba(255,0,60,0.18)]"
-              >
-                <div className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white tabular-nums drop-shadow-[0_0_12px_rgba(255,0,60,0.6)]">
-                  {String(unit.value).padStart(2, '0')}
-                </div>
-                <div className="mt-1.5 text-xs uppercase tracking-[0.2em] text-rose-200/75">
-                  {unit.label}
-                </div>
+                  <Mail className="w-12 h-12 text-[#ff003c] mt-6 mb-2" />
+                  <p className="text-lg font-bold text-white tracking-wide">Click to Open Envelope 💌</p>
+                  <p className="text-xs text-gray-400 mt-1">For My Dearest Rimjhim</p>
+                </motion.div>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-8 flex items-center justify-center gap-3 text-sm text-rose-100/80">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#ff003c]" />
-            <span className="text-2xl drop-shadow-[0_0_10px_#ffd700]">♾️</span>
-            <span className="font-bengali text-base text-rose-200">
-              অনন্তকালের পথচলা শুরু
-            </span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#ff003c]" />
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Interactive Animated Love Letter (Envelope + Wax Seal + Typewriter)
- * ============================================================================
- */
-const LETTER_OPENING = 'আমার প্রিয় পাখি ❤️';
-const LETTER_BODY =
-  'তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। তোমাকে পাওয়া আমার জীবনের সবচেয়ে সুন্দর অনুভূতি। তোমার হাসি আমার শান্তি, তোমার ভালোবাসা আমার পৃথিবী। প্রতিটি দিন তোমাকে আরও বেশি ভালোবাসতে চাই। জীবনের প্রতিটি মুহূর্তে তোমার পাশে থাকতে চাই। তুমি শুধু আমার স্ত্রী নও, তুমি আমার সবচেয়ে প্রিয় মানুষ, আমার সুখ, আমার শান্তি এবং আমার চিরদিনের ভালোবাসা।';
-const LETTER_ENDING = 'Forever yours, Mr. Han ❤️';
-
-const LoveLetterSection: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [typedLength, setTypedLength] = useState(0);
-  const [burstHearts, setBurstHearts] = useState<number[]>([]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setTypedLength(0);
-      return;
-    }
-    const interval = setInterval(() => {
-      setTypedLength((prev) => {
-        if (prev >= LETTER_BODY.length) {
-          clearInterval(interval);
-          return prev;
-        }
-        return prev + 2;
-      });
-    }, 28);
-    return () => clearInterval(interval);
-  }, [isOpen]);
-
-  const handleOpenEnvelope = () => {
-    setIsOpen(true);
-    setTypedLength(0);
-    setBurstHearts(Array.from({ length: 14 }, (_, i) => Date.now() + i));
-  };
-
-  return (
-    <section id="love-letter" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-4xl text-center">
-        <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-          Straight From My Heart
-        </span>
-        <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-          A Love Letter for You 💌
-        </h2>
-        <p className="mt-2 text-sm text-rose-200/75">
-          Tap the crimson wax seal or click “Read My Heart” to open your letter
-        </p>
-
-        {/* Bursting Floating Hearts When Opened */}
-        <div className="pointer-events-none relative mx-auto h-0 w-full">
-          <AnimatePresence>
-            {burstHearts.map((id, idx) => (
-              <motion.div
-                key={id}
-                initial={{ opacity: 1, y: 80, x: 0, scale: 0.5 }}
-                animate={{
-                  opacity: 0,
-                  y: -160 - (idx % 4) * 35,
-                  x: (idx - 7) * 28,
-                  scale: 1.3,
-                }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.8, ease: 'easeOut' }}
-                className="absolute left-1/2 top-0"
-              >
-                <Heart className="h-6 w-6 fill-[#ff003c] text-[#ff4d79] drop-shadow-[0_0_10px_#ff003c]" />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-
-        {/* Envelope & Sliding Letter Stage */}
-        <div className="mt-10 flex flex-col items-center">
-          <AnimatePresence mode="wait">
-            {!isOpen ? (
-              /* Closed Realistic Luxury Envelope */
-              <motion.div
-                key="closed-envelope"
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, y: -30, scale: 0.95 }}
-                whileHover={{ scale: 1.02 }}
-                onClick={handleOpenEnvelope}
-                className="group relative w-full max-w-lg cursor-pointer overflow-hidden rounded-3xl border-2 border-[#ff003c]/60 bg-gradient-to-br from-[#2b030e] via-[#120307] to-[#26020c] p-8 sm:p-12 shadow-[0_0_55px_rgba(255,0,60,0.35)]"
-              >
-                {/* Gold Filigree Border */}
-                <div className="pointer-events-none absolute inset-3 rounded-2xl border border-[#ffd700]/30" />
-
-                {/* Envelope Flap Lines */}
-                <svg
-                  viewBox="0 0 400 220"
-                  className="pointer-events-none absolute inset-0 h-full w-full opacity-45"
-                  preserveAspectRatio="none"
-                >
-                  <path d="M0 0 L200 125 L400 0" stroke="#ffd700" strokeWidth="1.5" fill="none" />
-                  <path d="M0 220 L155 105" stroke="#ff003c" strokeWidth="1.2" fill="none" />
-                  <path d="M400 220 L245 105" stroke="#ff003c" strokeWidth="1.2" fill="none" />
-                </svg>
-
-                <div className="relative z-10 flex flex-col items-center py-6">
-                  <p className="font-cursive text-3xl text-[#ffd700] mb-4">
-                    For My Beloved Rimjhim
-                  </p>
-
-                  {/* 3D Red Wax Heart Seal */}
-                  <motion.div
-                    animate={{ scale: [1, 1.08, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#990024] bg-gradient-to-br from-[#ff003c] via-[#b8002b] to-[#6e0019] shadow-[0_6px_28px_rgba(255,0,60,0.75)] group-hover:shadow-[0_0_40px_#ff003c] transition"
-                  >
-                    <Heart className="h-9 w-9 fill-[#ffd700] text-[#ffd700]" />
-                  </motion.div>
-
-                  <span className="mt-5 text-xs uppercase tracking-[0.25em] text-rose-200/80">
-                    Tap Wax Seal To Open
-                  </span>
-                </div>
-              </motion.div>
             ) : (
-              /* Opened Letter Parchment Card with Typewriter Animation */
-              <motion.div
-                key="opened-letter"
-                initial={{ opacity: 0, y: 55, scale: 0.94 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-                className="relative w-full max-w-2xl rounded-3xl border border-[#ffd700]/45 bg-gradient-to-b from-[#17060b]/95 via-[#0d0407]/95 to-[#14050a]/95 backdrop-blur-2xl p-7 sm:p-11 text-left shadow-[0_0_65px_rgba(255,0,60,0.35)]"
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[#0a0a0a] border border-[#ff003c]/40 p-6 sm:p-10 rounded-3xl shadow-[0_0_50px_rgba(255,0,60,0.2)] relative"
               >
-                <div className="flex items-center justify-between border-b border-[#ff003c]/30 pb-4">
-                  <span className="text-xs uppercase tracking-[0.22em] text-[#ffd700]">
-                    Personal Love Letter • 06.01.2026
-                  </span>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-full border border-white/15 px-3 py-1 text-xs text-rose-200 hover:bg-white/10 transition"
+                <div className="absolute top-6 right-6">
+                  <button 
+                    onClick={() => setIsEnvelopeOpen(false)}
+                    className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/20 transition-all"
                   >
                     Close Envelope
                   </button>
                 </div>
 
-                {/* Letter Opening */}
-                <h3 className="mt-6 font-bengali text-2xl sm:text-3xl font-bold text-[#ff2a5f]">
-                  {LETTER_OPENING}
-                </h3>
-
-                {/* Letter Body (Typewriter) */}
-                <p className="mt-5 font-bengali text-lg sm:text-xl leading-loose text-rose-50/95 min-h-[190px]">
-                  {LETTER_BODY.slice(0, typedLength)}
-                  {typedLength < LETTER_BODY.length && (
-                    <span className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-[#ffd700]" />
-                  )}
-                </p>
-
-                {/* Letter Ending */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: typedLength >= LETTER_BODY.length - 10 ? 1 : 0.4 }}
-                  className="mt-8 border-t border-[#ff003c]/25 pt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <p className="font-cursive text-3xl sm:text-4xl text-[#ffd700]">
-                    {LETTER_ENDING}
-                  </p>
-                  <button
-                    onClick={() => setTypedLength(0)}
-                    className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#ff003c]/40 bg-[#ff003c]/15 px-4 py-1.5 text-xs text-rose-200 hover:bg-[#ff003c]/25 transition"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    <span>Replay Typing</span>
-                  </button>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Dedicated "Read My Heart" Action Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={handleOpenEnvelope}
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff003c] to-[#b8002b] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_0_28px_rgba(255,0,60,0.55)] hover:shadow-[0_0_40px_rgba(255,0,60,0.85)] transition"
-          >
-            <Heart className="h-4 w-4 fill-white" />
-            <span>{isOpen ? 'Read My Heart Again ❤️' : 'Read My Heart'}</span>
-          </motion.button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Individual Memory Photo Card with Graceful Error Handling
- * ============================================================================
- */
-const MemoryPhotoCard: React.FC<{
-  photo: (typeof SITE_CONFIG.photos)[number];
-  index: number;
-  onOpen: (index: number) => void;
-}> = ({ photo, index, onOpen }) => {
-  const [hasError, setHasError] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -6 }}
-      onClick={() => onOpen(index)}
-      className={`group relative cursor-pointer overflow-hidden rounded-3xl border border-[#ff003c]/45 bg-black/70 shadow-[0_0_32px_rgba(255,0,60,0.2)] hover:border-[#ffd700]/70 hover:shadow-[0_0_42px_rgba(255,0,60,0.45)] transition-all ${
-        index === 0 ? 'sm:col-span-2 lg:col-span-2' : ''
-      }`}
-    >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#120408]">
-        {!hasError ? (
-          <img
-            src={photo.url}
-            alt={photo.caption}
-            loading="lazy"
-            onError={() => setHasError(true)}
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
-            <Heart className="h-10 w-10 text-[#ff003c] mb-2" />
-            <p className="text-sm font-medium text-rose-200">{photo.caption}</p>
-            <p className="mt-1 text-xs text-rose-200/60">Tap to open memory frame</p>
-          </div>
-        )}
-
-        {/* Cinematic Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-85 group-hover:opacity-95 transition" />
-
-        {/* Top Badge */}
-        <div className="absolute top-3.5 right-3.5 rounded-full border border-white/20 bg-black/50 backdrop-blur-md px-3 py-1 text-[11px] text-rose-100">
-          #{index + 1} • View Full
-        </div>
-
-        {/* Romantic Caption */}
-        <div className="absolute bottom-0 inset-x-0 p-5">
-          <p className="font-serif-luxury text-xl sm:text-2xl font-semibold text-white drop-shadow">
-            {photo.caption}
-          </p>
-          <p className="mt-1 text-xs sm:text-sm text-rose-200/80 line-clamp-2">
-            {photo.story}
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Our Memories Gallery + Fullscreen Swipeable Lightbox
- * ============================================================================
- */
-const MemoriesSection: React.FC<{
-  lightboxIndex: number | null;
-  setLightboxIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  foundEggs: string[];
-  onDiscoverEgg: (id: string, note: string) => void;
-}> = ({ lightboxIndex, setLightboxIndex, foundEggs, onDiscoverEgg }) => {
-  const touchStartX = useRef<number | null>(null);
-  const photos = SITE_CONFIG.photos;
-
-  const handlePrev = useCallback(() => {
-    setLightboxIndex((prev) =>
-      prev === null ? null : (prev - 1 + photos.length) % photos.length
-    );
-  }, [photos.length, setLightboxIndex]);
-
-  const handleNext = useCallback(() => {
-    setLightboxIndex((prev) => (prev === null ? null : (prev + 1) % photos.length));
-  }, [photos.length, setLightboxIndex]);
-
-  // Keyboard support for Lightbox
-  useEffect(() => {
-    if (lightboxIndex === null) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxIndex(null);
-      if (e.key === 'ArrowLeft') handlePrev();
-      if (e.key === 'ArrowRight') handleNext();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [lightboxIndex, handlePrev, handleNext, setLightboxIndex]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 45) {
-      if (diff > 0) handleNext();
-      else handlePrev();
-    }
-    touchStartX.current = null;
-  };
-
-  return (
-    <section id="memories" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col items-center text-center mb-12">
-          <div className="flex items-center gap-3">
-            <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-              Precious Moments Captured
-            </span>
-            <SecretHeartEgg whisperIndex={1} foundIds={foundEggs} onDiscover={onDiscoverEgg} />
-          </div>
-          <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Our Memories ❤️
-          </h2>
-          <p className="mt-2 max-w-xl text-sm sm:text-base text-rose-200/75">
-            Every photograph with you is a piece of my heart frozen in time. Tap any photo to view its full uncropped beauty.
-          </p>
-        </div>
-
-        {/* 5 Real Photos Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {photos.map((photo, idx) => (
-            <MemoryPhotoCard
-              key={photo.id}
-              photo={photo}
-              index={idx}
-              onOpen={(i) => setLightboxIndex(i)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Fullscreen Lightbox Modal (Preserves Original Image Proportions) */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 backdrop-blur-2xl p-4 sm:p-8"
-          >
-            {/* Top Bar */}
-            <div className="flex w-full max-w-5xl items-center justify-between pb-4">
-              <span className="rounded-full border border-[#ff003c]/40 bg-[#ff003c]/15 px-3.5 py-1 text-xs text-rose-200">
-                Memory {lightboxIndex + 1} of {photos.length}
-              </span>
-              <button
-                onClick={() => setLightboxIndex(null)}
-                aria-label="Close lightbox"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-[#ff003c] transition"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Main Uncropped Photo Container */}
-            <div className="relative flex max-h-[72vh] w-full max-w-5xl flex-1 items-center justify-center">
-              <button
-                onClick={handlePrev}
-                aria-label="Previous photo"
-                className="absolute left-1 sm:left-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[#ff003c]/50 bg-black/75 text-white shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:bg-[#ff003c] transition"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-
-              <motion.img
-                key={photos[lightboxIndex].url}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                src={photos[lightboxIndex].url}
-                alt={photos[lightboxIndex].caption}
-                className="max-h-[70vh] max-w-full rounded-2xl border border-[#ff003c]/50 object-contain shadow-[0_0_50px_rgba(255,0,60,0.35)]"
-              />
-
-              <button
-                onClick={handleNext}
-                aria-label="Next photo"
-                className="absolute right-1 sm:right-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[#ff003c]/50 bg-black/75 text-white shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:bg-[#ff003c] transition"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-            </div>
-
-            {/* Caption & Swipe Hint */}
-            <div className="mt-4 text-center max-w-xl">
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-white">
-                {photos[lightboxIndex].caption}
-              </h3>
-              <p className="mt-1 text-sm text-rose-200/80">
-                {photos[lightboxIndex].story}
-              </p>
-              <p className="mt-2 text-[11px] text-rose-300/50">
-                Swipe left/right or use arrow keys to browse memories
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Our Love Story Timeline
- * ============================================================================
- */
-const TIMELINE_CHAPTERS = [
-  {
-    title: 'Our Beginning',
-    badge: 'Chapter I',
-    description:
-      'When two paths crossed and my heart immediately recognized its forever home in you, Rimjhim.',
-    photoIndex: 0,
-    highlight: false,
-  },
-  {
-    title: 'Our Beautiful Memories',
-    badge: 'Chapter II',
-    description:
-      'Every shared laugh, every whispered promise, and every moment that painted my world in crimson and gold.',
-    photoIndex: 1,
-    highlight: false,
-  },
-  {
-    title: 'Our Special Moments',
-    badge: 'Chapter III',
-    description:
-      'Discovering that home isn’t a place on a map—it’s wherever I am holding your hand, My Pakhi.',
-    photoIndex: 2,
-    highlight: false,
-  },
-  {
-    title: 'Our Wedding Day',
-    badge: 'January 6, 2026 — The Beginning of Forever ❤️',
-    description:
-      'The most sacred, unforgettable day of Mr. Han’s life—the day Rimjhim became my beloved wife forever.',
-    photoIndex: 3,
-    highlight: true,
-  },
-  {
-    title: 'Our Forever Journey',
-    badge: 'Chapter V • ♾️',
-    description:
-      'Through every sunrise and every lifetime yet to come, I will always love, cherish, and choose you.',
-    photoIndex: 4,
-    highlight: false,
-  },
-];
-
-const OurStorySection: React.FC<{
-  onOpenLightbox: (index: number) => void;
-}> = ({ onOpenLightbox }) => {
-  return (
-    <section id="our-story" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-5xl">
-        <div className="text-center mb-14">
-          <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-            Written In The Stars
-          </span>
-          <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Our Love Story 💑
-          </h2>
-        </div>
-
-        {/* Vertical Timeline */}
-        <div className="relative">
-          {/* Glowing Vertical Center Line */}
-          <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-gradient-to-b from-[#ff003c] via-[#ffd700] to-[#ff003c] shadow-[0_0_15px_#ff003c]" />
-
-          <div className="space-y-12">
-            {TIMELINE_CHAPTERS.map((chapter, idx) => {
-              const photo = SITE_CONFIG.photos[chapter.photoIndex];
-              const isEven = idx % 2 === 0;
-
-              return (
-                <motion.div
-                  key={chapter.title}
-                  initial={{ opacity: 0, y: 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.65, delay: 0.1 }}
-                  className={`relative flex flex-col md:flex-row items-start md:items-center ${
-                    isEven ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Glowing Heart Timeline Node */}
-                  <div className="absolute left-5 md:left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 border-[#ffd700] bg-[#050505] shadow-[0_0_22px_#ff003c]">
-                    <Heart className="h-4 w-4 fill-[#ff003c] text-[#ff003c]" />
+                <div className="space-y-6 pt-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 flex items-center justify-center text-[#ff003c]">
+                      <Heart className="w-5 h-5 fill-[#ff003c]" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white">From Mr. Han to Rimjhim</h4>
+                      <p className="text-xs text-gray-400">January 6, 2026 & Forever</p>
+                    </div>
                   </div>
 
-                  {/* Card Container */}
-                  <div className="ml-14 md:ml-0 md:w-[46%]">
-                    <div
-                      className={`overflow-hidden rounded-3xl border p-5 sm:p-6 backdrop-blur-xl transition ${
-                        chapter.highlight
-                          ? 'border-[#ffd700] bg-gradient-to-br from-[#360512]/90 via-black/90 to-[#29040e]/90 shadow-[0_0_45px_rgba(255,215,0,0.28)]'
-                          : 'border-[#ff003c]/40 bg-black/70 shadow-[0_0_30px_rgba(255,0,60,0.18)]'
-                      }`}
-                    >
-                      <div className="inline-flex items-center gap-1.5 rounded-full border border-[#ff003c]/40 bg-[#ff003c]/15 px-3 py-1 text-xs font-semibold text-[#ffd700]">
-                        <Calendar className="h-3.5 w-3.5" />
-                        <span>{chapter.badge}</span>
-                      </div>
+                  <div className="bg-black/40 border border-white/10 p-6 rounded-2xl">
+                    <p className="whitespace-pre-line text-gray-200 text-base sm:text-lg leading-relaxed font-serif">
+                      {typedText}
+                      <span className="inline-block w-2 h-5 bg-[#ff003c] ml-1 animate-pulse" />
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
 
-                      <h3 className="mt-3 font-serif-luxury text-2xl font-bold text-white">
-                        {chapter.title}
-                      </h3>
+        {/* ================= MEMORIES ================= */}
+        {activeTab === 'memories' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-8"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                Our Precious Memories 📸
+              </h2>
+              <p className="text-sm text-gray-400">Every single moment with you is a treasure, Rimjhim.</p>
+            </div>
 
-                      <p className="mt-2 text-sm leading-relaxed text-rose-100/80">
-                        {chapter.description}
-                      </p>
-
-                      {/* Integrated Real Photo */}
-                      <div
-                        onClick={() => onOpenLightbox(chapter.photoIndex)}
-                        className="mt-4 group relative aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-2xl border border-[#ff003c]/40"
-                      >
-                        <img
-                          src={photo.url}
-                          alt={photo.caption}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-3">
-                          <span className="text-xs font-medium text-rose-100">
-                            {photo.caption}
-                          </span>
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {photos.map((photo, index) => (
+                <motion.div 
+                  key={index}
+                  whileHover={{ y: -5 }}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className="group bg-[#0a0a0a] border border-[#ff003c]/30 rounded-3xl overflow-hidden shadow-[0_0_20px_rgba(255,0,60,0.1)] cursor-pointer relative"
+                >
+                  <div className="h-72 overflow-hidden relative">
+                    <img 
+                      src={photo.url} 
+                      alt={photo.caption} 
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70" />
+                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                      <span className="text-sm font-bold text-white bg-black/60 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
+                        {photo.caption}
+                      </span>
+                      <div className="w-8 h-8 rounded-full bg-[#ff003c] flex items-center justify-center text-white shadow-[0_0_10px_#ff003c]">
+                        <Eye className="w-4 h-4" />
                       </div>
                     </div>
                   </div>
                 </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: 100 Reasons I Love You (Interactive Bengali Card Spotlight)
- * ============================================================================
- */
-const ReasonsSection: React.FC<{
-  foundEggs: string[];
-  onDiscoverEgg: (id: string, note: string) => void;
-}> = ({ foundEggs, onDiscoverEgg }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [favorites, setFavorites] = useState<number[]>(() => {
-    try {
-      const saved = localStorage.getItem('rimjhim_favorite_reasons');
-      return saved ? JSON.parse(saved) : [0, 4];
-    } catch {
-      return [0, 4];
-    }
-  });
-  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
-
-  const toggleFavorite = (idx: number) => {
-    setFavorites((prev) => {
-      const updated = prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx];
-      try {
-        localStorage.setItem('rimjhim_favorite_reasons', JSON.stringify(updated));
-      } catch {
-        // Ignore storage errors
-      }
-      return updated;
-    });
-  };
-
-  const handleNext = () => {
-    if (showOnlyFavorites && favorites.length > 0) {
-      const pos = favorites.indexOf(currentIndex);
-      const nextFav = favorites[(pos + 1) % favorites.length];
-      setCurrentIndex(nextFav);
-    } else {
-      setCurrentIndex((prev) => (prev + 1) % HUNDRED_BENGALI_REASONS.length);
-    }
-  };
-
-  const handlePrev = () => {
-    if (showOnlyFavorites && favorites.length > 0) {
-      const pos = favorites.indexOf(currentIndex);
-      const prevFav = favorites[(pos - 1 + favorites.length) % favorites.length];
-      setCurrentIndex(prevFav);
-    } else {
-      setCurrentIndex(
-        (prev) => (prev - 1 + HUNDRED_BENGALI_REASONS.length) % HUNDRED_BENGALI_REASONS.length
-      );
-    }
-  };
-
-  const handleRandom = () => {
-    let next = Math.floor(Math.random() * HUNDRED_BENGALI_REASONS.length);
-    if (next === currentIndex) {
-      next = (next + 1) % HUNDRED_BENGALI_REASONS.length;
-    }
-    setShowOnlyFavorites(false);
-    setCurrentIndex(next);
-  };
-
-  const isFav = favorites.includes(currentIndex);
-
-  return (
-    <section id="reasons" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2">
-          <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-            100 Reasons Why I Adore You
-          </span>
-          <SecretHeartEgg whisperIndex={2} foundIds={foundEggs} onDiscover={onDiscoverEgg} />
-        </div>
-        <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-          100 Reasons I Love You ❤️
-        </h2>
-        <p className="mt-2 text-sm text-rose-200/75">
-          Every single reason from Mr. Han’s heart for Rimjhim
-        </p>
-
-        {/* Spotlight Card */}
-        <div className="mt-10 relative overflow-hidden rounded-3xl border border-[#ff003c]/50 bg-gradient-to-b from-[#1f040c]/90 via-black/90 to-[#140308]/95 backdrop-blur-2xl p-7 sm:p-12 shadow-[0_0_55px_rgba(255,0,60,0.28)]">
-          {/* Header Bar */}
-          <div className="flex items-center justify-between gap-2 mb-6">
-            <span className="rounded-full border border-[#ffd700]/40 bg-[#ffd700]/10 px-4 py-1 text-xs font-semibold text-[#ffd700]">
-              Reason #{currentIndex + 1} / {HUNDRED_BENGALI_REASONS.length}
-            </span>
-
-            <div className="flex items-center gap-2">
-              {favorites.length > 0 && (
-                <button
-                  onClick={() => {
-                    const nextMode = !showOnlyFavorites;
-                    setShowOnlyFavorites(nextMode);
-                    if (nextMode && !favorites.includes(currentIndex)) {
-                      setCurrentIndex(favorites[0]);
-                    }
-                  }}
-                  className={`rounded-full px-3 py-1 text-xs border transition ${
-                    showOnlyFavorites
-                      ? 'border-[#ff003c] bg-[#ff003c]/25 text-white'
-                      : 'border-white/15 bg-white/5 text-rose-200/75 hover:text-white'
-                  }`}
-                >
-                  Saved ({favorites.length})
-                </button>
-              )}
-
-              <motion.button
-                whileTap={{ scale: 0.85 }}
-                onClick={() => toggleFavorite(currentIndex)}
-                aria-label="Save favorite reason"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#ff003c]/40 bg-[#ff003c]/10 hover:bg-[#ff003c]/25 transition"
-              >
-                <Heart
-                  className={`h-4 w-4 ${
-                    isFav ? 'fill-[#ff003c] text-[#ff003c]' : 'text-rose-200'
-                  }`}
-                />
-              </motion.button>
+              ))}
             </div>
-          </div>
+          </motion.div>
+        )}
 
-          {/* Animated Bengali Reason Text */}
-          <div className="min-h-[130px] flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={currentIndex}
-                initial={{ opacity: 0, y: 18, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -18, scale: 0.97 }}
-                transition={{ duration: 0.35 }}
-                className="font-bengali text-2xl sm:text-3xl md:text-4xl font-semibold text-white leading-relaxed"
-              >
-                “{HUNDRED_BENGALI_REASONS[currentIndex]}”
-              </motion.p>
-            </AnimatePresence>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <button
-              onClick={handlePrev}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs sm:text-sm font-medium text-rose-100 hover:border-[#ff003c]/60 hover:bg-[#ff003c]/15 transition"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <span>Previous</span>
-            </button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleRandom}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff003c] to-[#b8002b] px-6 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-[0_0_25px_rgba(255,0,60,0.5)] hover:shadow-[0_0_35px_rgba(255,0,60,0.85)] transition"
-            >
-              <Shuffle className="h-4 w-4" />
-              <span>Random Reason ❤️</span>
-            </motion.button>
-
-            <button
-              onClick={handleNext}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs sm:text-sm font-medium text-rose-100 hover:border-[#ff003c]/60 hover:bg-[#ff003c]/15 transition"
-            >
-              <span>Next</span>
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Romantic Music Player (Custom MP3 + Built-in Piano Synth Fallback)
- * ============================================================================
- */
-const MusicPlayerSection: React.FC = () => {
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(0.75);
-  const [isMuted, setIsMuted] = useState(false);
-  const [bgMusicKeepAlive, setBgMusicKeepAlive] = useState(true);
-
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthTimerRef = useRef<number | null>(null);
-  const noteStepRef = useRef<number>(0);
-
-  const currentTrack = SITE_CONFIG.musicTracks[trackIndex];
-  const hasCustomUrl = Boolean(currentTrack.url && currentTrack.url.trim().length > 0);
-
-  const stopSynth = useCallback(() => {
-    if (synthTimerRef.current !== null) {
-      window.clearInterval(synthTimerRef.current);
-      synthTimerRef.current = null;
-    }
-  }, []);
-
-  const playGentlePianoNote = useCallback(
-    (freq: number) => {
-      try {
-        const AudioCtx =
-          window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        if (!audioCtxRef.current) {
-          audioCtxRef.current = new AudioCtx();
-        }
-        const ctx = audioCtxRef.current;
-        if (ctx.state === 'suspended') {
-          ctx.resume();
-        }
-
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const harmonic = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now);
-
-        harmonic.type = 'triangle';
-        harmonic.frequency.setValueAtTime(freq * 2, now);
-
-        const effectiveVol = isMuted ? 0 : volume * 0.14;
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, effectiveVol), now + 0.06);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.35);
-
-        const harmonicGain = ctx.createGain();
-        harmonicGain.gain.setValueAtTime(0.22, now);
-
-        osc.connect(gain);
-        harmonic.connect(harmonicGain);
-        harmonicGain.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(now);
-        harmonic.start(now);
-        osc.stop(now + 1.4);
-        harmonic.stop(now + 1.4);
-      } catch {
-        // Web Audio not available
-      }
-    },
-    [isMuted, volume]
-  );
-
-  // Manage playback (Custom MP3 if configured, otherwise soothing built-in music box)
-  useEffect(() => {
-    stopSynth();
-
-    if (hasCustomUrl && audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
-      if (isPlaying) {
-        audioRef.current.play().catch(() => {
-          setIsPlaying(false);
-        });
-      } else {
-        audioRef.current.pause();
-      }
-      return;
-    }
-
-    if (isPlaying) {
-      const notes = currentTrack.notes;
-      playGentlePianoNote(notes[noteStepRef.current % notes.length]);
-      noteStepRef.current += 1;
-
-      synthTimerRef.current = window.setInterval(() => {
-        playGentlePianoNote(notes[noteStepRef.current % notes.length]);
-        noteStepRef.current += 1;
-        setProgress((prev) => (prev >= 100 ? 0 : prev + 0.6));
-      }, currentTrack.tempo);
-    }
-
-    return () => stopSynth();
-  }, [
-    isPlaying,
-    trackIndex,
-    hasCustomUrl,
-    currentTrack,
-    playGentlePianoNote,
-    stopSynth,
-    isMuted,
-    volume,
-  ]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      stopSynth();
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close().catch(() => {});
-      }
-    };
-  }, [stopSynth]);
-
-  const handleTogglePlay = () => {
-    setIsPlaying((prev) => !prev);
-  };
-
-  const handlePrevTrack = () => {
-    setProgress(0);
-    noteStepRef.current = 0;
-    setTrackIndex(
-      (prev) => (prev - 1 + SITE_CONFIG.musicTracks.length) % SITE_CONFIG.musicTracks.length
-    );
-  };
-
-  const handleNextTrack = () => {
-    setProgress(0);
-    noteStepRef.current = 0;
-    setTrackIndex((prev) => (prev + 1) % SITE_CONFIG.musicTracks.length);
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = Number(e.target.value);
-    setProgress(val);
-    if (hasCustomUrl && audioRef.current && audioRef.current.duration) {
-      audioRef.current.currentTime = (val / 100) * audioRef.current.duration;
-    }
-  };
-
-  return (
-    <section id="music" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-4xl">
-        <div className="text-center mb-10">
-          <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-            Romantic Soundscape
-          </span>
-          <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Melodies For Rimjhim 🎵
-          </h2>
-        </div>
-
-        <div className="relative overflow-hidden rounded-3xl border border-[#ff003c]/45 bg-gradient-to-br from-[#1b040b]/90 via-black/95 to-[#170309]/90 backdrop-blur-2xl p-6 sm:p-10 shadow-[0_0_55px_rgba(255,0,60,0.25)]">
-          {hasCustomUrl && (
-            <audio
-              ref={audioRef}
-              src={currentTrack.url}
-              onTimeUpdate={() => {
-                if (audioRef.current && audioRef.current.duration) {
-                  setProgress(
-                    (audioRef.current.currentTime / audioRef.current.duration) * 100
-                  );
-                }
-              }}
-              onEnded={handleNextTrack}
-            />
-          )}
-
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            {/* Animated Spinning Vinyl Record + Album Heart Artwork */}
-            <div className="relative flex h-44 w-44 sm:h-52 sm:w-52 shrink-0 items-center justify-center">
-              <div
-                className={`relative flex h-full w-full items-center justify-center rounded-full border-4 border-[#2b0912] bg-[radial-gradient(circle,#1f1f1f_0%,#050505_65%,#1a0309_100%)] shadow-[0_0_35px_rgba(255,0,60,0.4)] ${
-                  isPlaying ? 'animate-vinyl' : 'animate-vinyl-paused'
-                }`}
-              >
-                {/* Vinyl Grooves */}
-                <div className="absolute inset-4 rounded-full border border-white/10" />
-                <div className="absolute inset-8 rounded-full border border-white/10" />
-                <div className="absolute inset-12 rounded-full border border-white/10" />
-
-                {/* Center Crimson-Gold Album Label */}
-                <div className="flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-[#ffd700] bg-gradient-to-br from-[#ff003c] to-[#7a001d] text-center shadow-inner">
-                  <Heart className="h-6 w-6 fill-[#ffd700] text-[#ffd700]" />
-                  <span className="mt-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
-                    R &amp; H
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Track Info & Controls */}
-            <div className="flex-1 w-full text-center md:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#ff003c]/40 bg-[#ff003c]/15 px-3.5 py-1 text-xs text-rose-200 mb-3">
-                <Disc className={`h-3.5 w-3.5 text-[#ff003c] ${isPlaying ? 'animate-spin' : ''}`} />
-                <span>
-                  {isPlaying
-                    ? 'Playing a romantic love melody for Rimjhim ❤️'
-                    : 'Tap Play to start romantic music'}
-                </span>
-              </div>
-
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white">
-                {currentTrack.title}
-              </h3>
-              <p className="mt-1 text-sm text-[#ffd700]">{currentTrack.subtitle}</p>
-
-              {/* Progress Bar */}
-              <div className="mt-6">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  step={0.5}
-                  value={progress}
-                  onChange={handleSeek}
-                  aria-label="Music progress"
-                  className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-white/15 accent-[#ff003c]"
-                />
-                <div className="mt-1.5 flex justify-between text-[11px] text-rose-200/60">
-                  <span>{isPlaying ? 'Now Playing' : 'Paused'}</span>
-                  <span>
-                    Track {trackIndex + 1} of {SITE_CONFIG.musicTracks.length}
-                  </span>
-                </div>
-              </div>
-
-              {/* Transport + Volume Controls */}
-              <div className="mt-5 flex flex-wrap items-center justify-center md:justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={handlePrevTrack}
-                    aria-label="Previous track"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white hover:border-[#ff003c] transition"
-                  >
-                    <SkipBack className="h-5 w-5" />
-                  </button>
-
-                  <motion.button
-                    whileTap={{ scale: 0.92 }}
-                    onClick={handleTogglePlay}
-                    aria-label={isPlaying ? 'Pause music' : 'Play music'}
-                    className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#ff003c] to-[#b8002b] text-white shadow-[0_0_28px_rgba(255,0,60,0.65)] hover:shadow-[0_0_40px_#ff003c] transition"
-                  >
-                    {isPlaying ? (
-                      <Pause className="h-6 w-6 fill-white" />
-                    ) : (
-                      <Play className="h-6 w-6 fill-white ml-0.5" />
-                    )}
-                  </motion.button>
-
-                  <button
-                    onClick={handleNextTrack}
-                    aria-label="Next track"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white hover:border-[#ff003c] transition"
-                  >
-                    <SkipForward className="h-5 w-5" />
-                  </button>
-                </div>
-
-                {/* Volume & Background Toggle */}
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setIsMuted((m) => !m)}
-                    aria-label="Mute or unmute"
-                    className="text-rose-200 hover:text-white"
-                  >
-                    {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-                  </button>
-                  <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.05}
-                    value={isMuted ? 0 : volume}
-                    onChange={(e) => {
-                      setIsMuted(false);
-                      setVolume(Number(e.target.value));
-                    }}
-                    aria-label="Volume control"
-                    className="h-1.5 w-24 cursor-pointer appearance-none rounded-lg bg-white/15 accent-[#ffd700]"
-                  />
-
-                  <button
-                    onClick={() => setBgMusicKeepAlive((v) => !v)}
-                    className={`rounded-full border px-3 py-1 text-[11px] transition ${
-                      bgMusicKeepAlive
-                        ? 'border-[#ffd700]/50 bg-[#ffd700]/15 text-[#ffd700]'
-                        : 'border-white/15 bg-white/5 text-rose-200/60'
-                    }`}
-                  >
-                    BG Mode: {bgMusicKeepAlive ? 'ON' : 'OFF'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Cinematic Surprise Experience (Blooming Rose Bouquet + Confetti)
- * ============================================================================
- */
-const AnimatedRoseBouquet: React.FC = () => {
-  return (
-    <motion.svg
-      initial={{ scale: 0.5, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 1.2, ease: 'easeOut' }}
-      viewBox="0 0 260 260"
-      className="mx-auto h-52 w-52 sm:h-60 sm:w-60 drop-shadow-[0_0_28px_rgba(255,0,60,0.65)]"
-      fill="none"
-    >
-      {/* Bouquet Wrap Paper */}
-      <path
-        d="M65 115 L130 242 L195 115 Q130 135 65 115 Z"
-        fill="rgba(255,0,60,0.22)"
-        stroke="#ffd700"
-        strokeWidth="2"
-      />
-      {/* Stems & Leaves */}
-      <path d="M130 235 L130 95" stroke="#1f8a4c" strokeWidth="4" strokeLinecap="round" />
-      <path d="M130 220 L92 110" stroke="#1f8a4c" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M130 220 L168 110" stroke="#1f8a4c" strokeWidth="3.5" strokeLinecap="round" />
-      <ellipse cx="95" cy="148" rx="16" ry="8" transform="rotate(-30 95 148)" fill="#1b7a42" />
-      <ellipse cx="165" cy="148" rx="16" ry="8" transform="rotate(30 165 148)" fill="#1b7a42" />
-
-      {/* Center Blooming Crimson Rose */}
-      <motion.g
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.35, duration: 0.9, type: 'spring' }}
-      >
-        <circle cx="130" cy="86" r="28" fill="#8f0020" />
-        <circle cx="130" cy="86" r="21" fill="#d90032" />
-        <circle cx="130" cy="86" r="14" fill="#ff003c" />
-        <circle cx="130" cy="86" r="7" fill="#ff7597" />
-      </motion.g>
-
-      {/* Left Rose */}
-      <motion.g
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.55, duration: 0.85, type: 'spring' }}
-      >
-        <circle cx="88" cy="104" r="23" fill="#8f0020" />
-        <circle cx="88" cy="104" r="16" fill="#ff003c" />
-        <circle cx="88" cy="104" r="8" fill="#ff85a2" />
-      </motion.g>
-
-      {/* Right Rose */}
-      <motion.g
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.7, duration: 0.85, type: 'spring' }}
-      >
-        <circle cx="172" cy="104" r="23" fill="#8f0020" />
-        <circle cx="172" cy="104" r="16" fill="#ff003c" />
-        <circle cx="172" cy="104" r="8" fill="#ff85a2" />
-      </motion.g>
-
-      {/* Top Left & Right Buds */}
-      <motion.circle
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.85 }}
-        cx="106"
-        cy="68"
-        r="15"
-        fill="#ff1e56"
-      />
-      <motion.circle
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.95 }}
-        cx="154"
-        cy="68"
-        r="15"
-        fill="#ff1e56"
-      />
-
-      {/* Golden Ribbon Bow */}
-      <path
-        d="M112 182 Q130 172 148 182 Q130 192 112 182 Z"
-        fill="#ffd700"
-      />
-      <circle cx="130" cy="182" r="5" fill="#ff003c" />
-    </motion.svg>
-  );
-};
-
-const SurpriseSection: React.FC = () => {
-  const [surpriseOpen, setSurpriseOpen] = useState(false);
-  const [typedStep, setTypedStep] = useState(0);
-
-  const mainLine = 'I would choose you in every lifetime, Rimjhim.';
-
-  useEffect(() => {
-    if (!surpriseOpen) {
-      setTypedStep(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      setTypedStep((prev) => {
-        if (prev >= mainLine.length) {
-          clearInterval(timer);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 45);
-    return () => clearInterval(timer);
-  }, [surpriseOpen]);
-
-  const confettiPieces = React.useMemo(
-    () =>
-      Array.from({ length: 28 }, (_, i) => ({
-        id: i,
-        left: `${(i * 3.6 + 2) % 96}%`,
-        delay: (i * 0.18) % 3,
-        duration: 3.5 + (i % 4),
-        isGold: i % 2 === 0,
-      })),
-    []
-  );
-
-  return (
-    <section id="surprise" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-4xl text-center">
-        <div className="rounded-3xl border border-[#ffd700]/45 bg-gradient-to-b from-[#24040e]/90 via-black/95 to-[#170308]/95 p-8 sm:p-14 shadow-[0_0_60px_rgba(255,0,60,0.28)]">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-[#ffd700]/50 bg-[#ffd700]/10 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-            <Gift className="h-8 w-8 text-[#ffd700]" />
-          </div>
-
-          <h2 className="font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            A Special Surprise For My Pakhi 🎁
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm sm:text-base text-rose-200/80">
-            Close your eyes for a second, take a deep breath, and tap the button below to open a piece of my soul.
-          </p>
-
-          <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setSurpriseOpen(true)}
-            className="mt-8 inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#ff003c] via-[#e60036] to-[#ffd700] px-8 py-4 text-base font-bold text-white shadow-[0_0_35px_rgba(255,0,60,0.7)] hover:shadow-[0_0_50px_rgba(255,215,0,0.65)] transition"
+        {/* ================= OUR LOVE STORY ================= */}
+        {activeTab === 'story' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-4xl mx-auto space-y-12"
           >
-            <span>Open Your Surprise ❤️</span>
-          </motion.button>
-        </div>
-      </div>
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                Our Love Story 💑
+              </h2>
+              <p className="text-sm text-gray-400">The beautiful milestones of Mr. Han & Rimjhim.</p>
+            </div>
 
-      {/* Fullscreen Dark Cinematic Surprise Overlay */}
+            <div className="relative border-l-2 border-[#ff003c]/40 ml-4 sm:ml-8 space-y-12 py-4">
+              {[
+                {
+                  title: "Our Beginning",
+                  date: "When Our Paths Crossed",
+                  desc: "The magical moment when our eyes first met, and my heart instantly knew you were the one, Rimjhim.",
+                  img: photos[0].url
+                },
+                {
+                  title: "Our Beautiful Memories",
+                  date: "Growing Closer Every Day",
+                  desc: "Countless late-night conversations, shared smiles, laughter, and building a world built entirely on love.",
+                  img: photos[1].url
+                },
+                {
+                  title: "Our Special Moments",
+                  date: "Hand in Hand",
+                  desc: "Every challenge conquered together made our bond unbreakable and our love deeper than the ocean.",
+                  img: photos[2].url
+                },
+                {
+                  title: "Our Wedding Day",
+                  date: "January 6, 2026 — The Beginning of Forever ❤️",
+                  desc: "The glorious day we became one soul in two bodies. Mr. Han & Rimjhim, bound together for eternity.",
+                  img: photos[3].url
+                },
+                {
+                  title: "Our Forever Journey",
+                  date: "Today & All Tomorrows ♾️",
+                  desc: "Walking hand-in-hand towards a future filled with endless joy, peace, and eternal companionship.",
+                  img: photos[4].url
+                },
+              ].map((milestone, idx) => (
+                <div key={idx} className="relative pl-8 sm:pl-12 group">
+                  <div className="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-[#050505] border-2 border-[#ff003c] flex items-center justify-center shadow-[0_0_15px_#ff003c]">
+                    <Heart className="w-3.5 h-3.5 text-[#ff003c] fill-[#ff003c]" />
+                  </div>
+
+                  <div className="bg-[#0a0a0a] border border-[#ff003c]/30 rounded-3xl p-6 sm:p-8 shadow-[0_0_20px_rgba(255,0,60,0.1)] grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div className="md:col-span-2 space-y-3">
+                      <span className="text-xs font-semibold text-[#ff003c] tracking-widest uppercase">{milestone.date}</span>
+                      <h3 className="text-2xl font-bold text-white">{milestone.title}</h3>
+                      <p className="text-gray-300 text-sm leading-relaxed">{milestone.desc}</p>
+                    </div>
+                    <div className="h-40 rounded-2xl overflow-hidden border border-white/10 shadow-md">
+                      <img src={milestone.img} alt={milestone.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ================= 100 REASONS ================= */}
+        {activeTab === 'reasons' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-3xl mx-auto space-y-8"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                100 Reasons Why I Love You ❤️
+              </h2>
+              <p className="text-sm text-gray-400">Click below to discover why Mr. Han loves Rimjhim endlessly.</p>
+            </div>
+
+            <div className="bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.2)]">
+              <div className="inline-flex p-3 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 text-[#ff003c] shadow-[0_0_15px_#ff003c]">
+                <Heart className="w-6 h-6 fill-[#ff003c] animate-pulse" />
+              </div>
+              <div className="text-xs uppercase tracking-widest text-[#ff003c] font-semibold">
+                Reason #{currentReasonIndex + 1} of 100
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white font-serif leading-relaxed min-h-[100px] flex items-center justify-center">
+                "{bengaliReasons[currentReasonIndex]}"
+              </h3>
+
+              <div className="flex flex-wrap gap-4 justify-center pt-4">
+                <button 
+                  onClick={() => setCurrentReasonIndex((currentReasonIndex + 1) % 100)}
+                  className="px-6 py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:shadow-[0_0_30px_rgba(255,0,60,0.8)] transition-all"
+                >
+                  Next Reason ❤️
+                </button>
+                <button 
+                  onClick={() => setCurrentReasonIndex(Math.floor(Math.random() * 100))}
+                  className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition-all"
+                >
+                  Random Reason 🎲
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ================= MUSIC PLAYER ================= */}
+        {activeTab === 'music' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-2xl mx-auto space-y-8"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                Our Romantic Soundtrack 🎵
+              </h2>
+              <p className="text-sm text-gray-400">The melody of love dedicated to Rimjhim by Mr. Han.</p>
+            </div>
+
+            <div className="bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-8 shadow-[0_0_40px_rgba(255,0,60,0.2)] text-center">
+              {/* Vinyl Disc Animation */}
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto flex items-center justify-center">
+                <div className={`w-full h-full rounded-full bg-black border-4 border-zinc-800 shadow-[0_0_30px_rgba(255,0,60,0.3)] flex items-center justify-center ${isMusicPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '6s' }}>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#ff003c] to-pink-500 border-2 border-white flex items-center justify-center">
+                    <Heart className="w-8 h-8 text-white fill-white animate-pulse" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-white">Romantic Guitars & Love Melody</h3>
+                <p className="text-xs text-gray-400">Playing exclusively for Rimjhim ❤️</p>
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center justify-center gap-6">
+                <button 
+                  onClick={toggleMusic}
+                  className="w-16 h-16 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white flex items-center justify-center shadow-[0_0_25px_#ff003c] hover:scale-105 transition-transform"
+                >
+                  {isMusicPlaying ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ml-1" />}
+                </button>
+              </div>
+
+              {/* Volume Slider */}
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <VolumeX className="w-4 h-4 text-gray-400" />
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="1" 
+                  step="0.01" 
+                  value={volume}
+                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  className="w-48 accent-[#ff003c] cursor-pointer"
+                />
+                <Volume2 className="w-4 h-4 text-gray-400" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ================= SURPRISE ================= */}
+        {activeTab === 'surprise' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-2xl mx-auto space-y-8 text-center"
+          >
+            <div className="space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                A Magical Surprise 🎁
+              </h2>
+              <p className="text-sm text-gray-400">A special interactive surprise crafted just for my wife Rimjhim.</p>
+            </div>
+
+            {!isSurpriseActive ? (
+              <div className="py-12">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsSurpriseActive(true)}
+                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#ff003c] via-pink-600 to-red-600 text-white font-bold text-lg shadow-[0_0_30px_rgba(255,0,60,0.6)] hover:shadow-[0_0_50px_rgba(255,0,60,0.9)] transition-all flex items-center gap-3 mx-auto"
+                >
+                  <Gift className="w-6 h-6 animate-bounce" /> Open Your Surprise ❤️
+                </motion.button>
+              </div>
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-12 space-y-8 shadow-[0_0_60px_rgba(255,0,60,0.3)] relative overflow-hidden"
+              >
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#ff003c]/20 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="text-6xl animate-bounce">🌹</div>
+
+                <div className="space-y-4">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-serif">
+                    "I would choose you in every lifetime, Rimjhim."
+                  </h3>
+                  <p className="text-lg text-[#ff003c] font-semibold">
+                    তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরদিন।
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    I Love You Forever, My Pakhi ❤️
+                  </p>
+                </div>
+
+                <div className="pt-4">
+                  <button 
+                    onClick={() => setIsSurpriseActive(false)}
+                    className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all"
+                  >
+                    Close Surprise
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+
+        {/* ================= SECRET PAGE ================= */}
+        {activeTab === 'secret' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-xl mx-auto space-y-8"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent">
+                Secret Love Vault 🔐
+              </h2>
+              <p className="text-sm text-gray-400">Locked exclusively for Rimjhim by Mr. Han.</p>
+            </div>
+
+            {!isSecretUnlocked ? (
+              <form onSubmit={handleUnlockSecret} className="bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.2)] text-center">
+                <div className="w-16 h-16 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/50 flex items-center justify-center mx-auto text-[#ff003c] shadow-[0_0_20px_#ff003c]">
+                  <Lock className="w-8 h-8" />
+                </div>
+                
+                <div className="space-y-1">
+                  <h3 className="text-xl font-bold text-white">Enter Passcode</h3>
+                  <p className="text-xs text-gray-400">Hint: Try entering "rimjhim" or wedding date code</p>
+                </div>
+
+                <div className="space-y-4">
+                  <input 
+                    type="password" 
+                    value={secretPasscode}
+                    onChange={(e) => setSecretPasscode(e.target.value)}
+                    placeholder="Enter passcode..."
+                    className="w-full bg-black/60 border border-white/20 rounded-full px-6 py-3 text-center text-white placeholder-gray-500 focus:border-[#ff003c] focus:outline-none shadow-inner"
+                  />
+                  {secretError && (
+                    <p className="text-xs text-red-500 font-semibold">Incorrect passcode! Try 'rimjhim' or '0106'.</p>
+                  )}
+                  <button 
+                    type="submit"
+                    className="w-full py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:shadow-[0_0_30px_rgba(255,0,60,0.8)] transition-all"
+                  >
+                    Unlock Secret Vault 🔓
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.3)] text-center"
+              >
+                <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center mx-auto text-green-400 shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Vault Unlocked Successfully! ❤️</h3>
+                <p className="text-gray-300 text-sm leading-relaxed font-serif">
+                  "আমার সোনা পাখি Rimjhim, তুমি আমার জীবনের একমাত্র কবিতা। তোমার সাথে কাটানো প্রতিটি মুহূর্ত আমার কাছে স্বর্গের মতো। Mr. Han তোমাকে পৃথিবীর সবকিছুর চেয়ে বেশি ভালোবাসে।"
+                </p>
+                <button 
+                  onClick={() => setIsSecretUnlocked(false)}
+                  className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all"
+                >
+                  Lock Vault Again
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+
+      </main>
+
+      {/* FOOTER */}
+      <footer className="mt-20 border-t border-[#ff003c]/20 bg-[#050505] py-8 text-center text-gray-400 text-xs sm:text-sm space-y-2 relative z-10">
+        <div className="flex items-center justify-center gap-2">
+          <Heart className="w-4 h-4 text-[#ff003c] fill-[#ff003c] animate-pulse" />
+          <span className="font-semibold text-white">Made with endless love by Mr. Han ❤️</span>
+        </div>
+        <p className="text-gray-500">Rimjhim & Mr. Han — Together Forever ♾️</p>
+      </footer>
+
+      {/* FULLSCREEN LIGHTBOX MODAL */}
       <AnimatePresence>
-        {surpriseOpen && (
-          <motion.div
+        {selectedImageIndex !== null && (
+          <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-y-auto bg-[#030102]/97 backdrop-blur-2xl px-4 py-10 text-center"
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
           >
-            {/* Confetti & Floating Hearts */}
-            <div className="pointer-events-none fixed inset-0 overflow-hidden">
-              {confettiPieces.map((c) => (
-                <motion.div
-                  key={c.id}
-                  initial={{ y: -30, opacity: 0 }}
-                  animate={{
-                    y: ['0vh', '105vh'],
-                    rotate: [0, 360],
-                    opacity: [0, 1, 1, 0],
-                  }}
-                  transition={{
-                    duration: c.duration,
-                    delay: c.delay,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                  style={{ left: c.left }}
-                  className="absolute top-0"
-                >
-                  {c.isGold ? (
-                    <span className="block h-2.5 w-2.5 rounded-sm bg-[#ffd700] shadow-[0_0_8px_#ffd700]" />
-                  ) : (
-                    <Heart className="h-4 w-4 fill-[#ff003c] text-[#ff003c]" />
-                  )}
-                </motion.div>
-              ))}
-            </div>
-
-            <button
-              onClick={() => setSurpriseOpen(false)}
-              aria-label="Close surprise"
-              className="fixed top-5 right-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-[#ff003c] transition"
+            <button 
+              onClick={() => setSelectedImageIndex(null)}
+              className="absolute top-6 right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50"
             >
-              <X className="h-5 w-5" />
+              <X className="w-6 h-6" />
             </button>
 
-            <div className="relative z-10 max-w-2xl">
-              <AnimatedRoseBouquet />
+            <button 
+              onClick={() => setSelectedImageIndex((selectedImageIndex - 1 + photos.length) % photos.length)}
+              className="absolute left-4 sm:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
 
-              {/* Typed Main Message */}
-              <h3 className="mt-4 font-serif-luxury text-2xl sm:text-4xl font-bold text-white leading-snug min-h-[72px]">
-                “{mainLine.slice(0, typedStep)}”
-              </h3>
+            <button 
+              onClick={() => setSelectedImageIndex((selectedImageIndex + 1) % photos.length)}
+              className="absolute right-4 sm:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
 
-              {/* Bengali Message */}
-              <motion.p
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 0.9 }}
-                className="mt-4 font-bengali text-2xl sm:text-3xl font-semibold text-[#ffd700]"
-              >
-                “তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরদিন।”
-              </motion.p>
-
-              {/* Final Signature */}
-              <motion.p
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 2.3, duration: 0.8 }}
-                className="mt-6 font-cursive text-4xl sm:text-6xl text-shimmer-love"
-              >
-                I Love You Forever, My Pakhi ❤️
-              </motion.p>
+            <div className="max-w-4xl max-h-[85vh] flex flex-col items-center space-y-4">
+              <img 
+                src={photos[selectedImageIndex].url} 
+                alt="Fullscreen memory" 
+                className="max-h-[75vh] max-w-full object-contain rounded-2xl border border-[#ff003c]/40 shadow-[0_0_50px_rgba(255,0,60,0.3)]"
+              />
+              <p className="text-white font-semibold text-base sm:text-lg bg-black/60 px-6 py-2 rounded-full border border-white/10">
+                {photos[selectedImageIndex].caption}
+              </p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
-  );
-};
 
-/**
- * ============================================================================
- *  COMPONENT: Password-Protected Secret Sanctuary Page
- * ============================================================================
- */
-const SecretPageSection: React.FC<{
-  foundEggs: string[];
-  onDiscoverEgg: (id: string, note: string) => void;
-}> = ({ foundEggs, onDiscoverEgg }) => {
-  const [passwordInput, setPasswordInput] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [errorShake, setErrorShake] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (passwordInput.trim() === SITE_CONFIG.secretPassword) {
-      setIsUnlocked(true);
-      setErrorMessage('');
-    } else {
-      setErrorShake(true);
-      setErrorMessage('That is not our secret code, My Pakhi. Try our wedding date ❤️');
-      setTimeout(() => setErrorShake(false), 550);
-    }
-  };
-
-  return (
-    <section id="secret" className="relative py-20 px-4 sm:px-6">
-      <div className="mx-auto max-w-3xl">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2">
-            <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-              Private Sanctuary For Rimjhim
-            </span>
-            <SecretHeartEgg whisperIndex={3} foundIds={foundEggs} onDiscover={onDiscoverEgg} />
-          </div>
-          <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Secret Love Vault 🔐
-          </h2>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {!isUnlocked ? (
-            <motion.form
-              key="locked-form"
-              onSubmit={handleUnlock}
-              animate={errorShake ? { x: [-10, 10, -8, 8, 0] } : { x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="mx-auto max-w-md rounded-3xl border border-[#ff003c]/50 bg-black/75 backdrop-blur-2xl p-8 text-center shadow-[0_0_45px_rgba(255,0,60,0.25)]"
+      {/* INTERACTIVE HUG / KISS MODALS */}
+      <AnimatePresence>
+        {activeModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.8, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 20 }}
+              className="bg-[#0a0a0a] border border-[#ff003c]/50 rounded-3xl p-8 max-w-md w-full text-center space-y-6 shadow-[0_0_50px_rgba(255,0,60,0.4)]"
             >
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-[#ff003c]/60 bg-[#ff003c]/15 shadow-[0_0_25px_rgba(255,0,60,0.45)]"
-              >
-                <Lock className="h-7 w-7 text-[#ff003c]" />
-              </motion.div>
-
-              <h3 className="font-serif-luxury text-2xl font-bold text-white">
-                Only For My Wife’s Eyes
-              </h3>
-              <p className="mt-2 text-xs sm:text-sm text-rose-200/75">
-                Hint: {SITE_CONFIG.secretPasswordHint}
-              </p>
-
-              <div className="relative mt-6">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Enter secret password..."
-                  className="w-full rounded-2xl border border-[#ff003c]/40 bg-white/5 px-4 py-3.5 pr-11 text-center text-sm tracking-widest text-white placeholder-rose-200/40 focus:border-[#ffd700] focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  aria-label="Toggle password visibility"
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-rose-200/60 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+              <div className="text-6xl animate-bounce">
+                {activeModal === 'hug' ? '🤗' : '😘'}
               </div>
-
-              {errorMessage && (
-                <p className="mt-3 text-xs text-[#ff4d79]">{errorMessage}</p>
-              )}
-
-              <button
-                type="submit"
-                className="mt-6 w-full rounded-full bg-gradient-to-r from-[#ff003c] to-[#b8002b] py-3.5 text-sm font-semibold text-white shadow-[0_0_25px_rgba(255,0,60,0.5)] hover:shadow-[0_0_38px_#ff003c] transition"
+              <h3 className="text-2xl font-bold text-white">
+                {activeModal === 'hug' ? 'Warm Hug Sent to Mr. Han! ❤️' : 'Sweet Flying Kiss Sent! ❤️'}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-300">
+                {activeModal === 'hug' 
+                  ? 'Rimjhim, your virtual hug has wrapped Mr. Han in infinite warmth and comfort.' 
+                  : 'A lovely kiss loaded with sweetness delivered straight to your forever lover!'}
+              </p>
+              <button 
+                onClick={() => setActiveModal(null)}
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-xs shadow-[0_0_20px_#ff003c]"
               >
-                Unlock My Secret Heart ❤️
+                Close ❤️
               </button>
-
-              <p className="mt-4 text-[10px] text-rose-200/40">
-                Romantic keepsake lock • Configurable in SITE_CONFIG
-              </p>
-            </motion.form>
-          ) : (
-            <motion.div
-              key="unlocked-sanctuary"
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="rounded-3xl border border-[#ffd700]/60 bg-gradient-to-br from-[#29040f]/95 via-black/95 to-[#1c030a]/95 p-7 sm:p-11 shadow-[0_0_60px_rgba(255,215,0,0.28)]"
-            >
-              <div className="flex items-center justify-between border-b border-[#ffd700]/25 pb-4">
-                <div className="flex items-center gap-2 text-[#ffd700]">
-                  <Unlock className="h-5 w-5" />
-                  <span className="text-xs font-semibold uppercase tracking-widest">
-                    Secret Sanctuary Unlocked
-                  </span>
-                </div>
-                <button
-                  onClick={() => {
-                    setIsUnlocked(false);
-                    setPasswordInput('');
-                  }}
-                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-rose-200 hover:bg-white/10"
-                >
-                  Lock Vault
-                </button>
-              </div>
-
-              <h3 className="mt-6 font-cursive text-4xl sm:text-5xl text-shimmer-love">
-                My Midnight Promise To You, Rimjhim
-              </h3>
-
-              <p className="mt-4 font-bengali text-lg sm:text-xl leading-loose text-rose-50">
-                “আমার প্রিয় রিমঝিম, পৃথিবীর সব কোলাহল থেমে গেলে, রাতের নীরবতায় আমার মন শুধু তোমার কথাই ভাবে। তুমি আমার জীবনের সবচেয়ে নিরাপদ আশ্রয়। আমি ওয়াদা করছি—জীবনের প্রতিটি ঝড়ে আমি তোমার ঢাল হয়ে থাকবো, প্রতিটি আনন্দে তোমার পাশের মানুষ হয়ে হাসবো। তুমি আমার আজ, তুমি আমার চিরকাল।”
-              </p>
-
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="rounded-2xl border border-[#ff003c]/35 bg-black/60 p-4 text-center">
-                  <Star className="mx-auto h-5 w-5 text-[#ffd700] mb-1.5" />
-                  <p className="text-xs font-semibold text-white">Vow #1</p>
-                  <p className="mt-1 text-xs text-rose-200/75">
-                    To always listen with patience &amp; love
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-[#ff003c]/35 bg-black/60 p-4 text-center">
-                  <Heart className="mx-auto h-5 w-5 fill-[#ff003c] text-[#ff003c] mb-1.5" />
-                  <p className="text-xs font-semibold text-white">Vow #2</p>
-                  <p className="mt-1 text-xs text-rose-200/75">
-                    To protect your smile every single day
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-[#ff003c]/35 bg-black/60 p-4 text-center">
-                  <Crown className="mx-auto h-5 w-5 text-[#ffd700] mb-1.5" />
-                  <p className="text-xs font-semibold text-white">Vow #3</p>
-                  <p className="mt-1 text-xs text-rose-200/75">
-                    To love you endlessly in every lifetime
-                  </p>
-                </div>
-              </div>
-
-              <p className="mt-7 text-right font-cursive text-3xl text-[#ffd700]">
-                Eternally Yours, Mr. Han ❤️
-              </p>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
-  );
-};
-
-/**
- * ============================================================================
- *  COMPONENT: Interactive Affection Dock ("I Love You", "Hug Me", "Kiss Me")
- *             + Forever Together Ending Screen & Footer
- * ============================================================================
- */
-const AffectionAndEndingSection: React.FC = () => {
-  const [loveCount, setLoveCount] = useState<number>(() => {
-    try {
-      const saved = localStorage.getItem('rimjhim_love_clicks');
-      return saved ? Number(saved) : 108;
-    } catch {
-      return 108;
-    }
-  });
-  const [activeReaction, setActiveReaction] = useState<'love' | 'hug' | 'kiss' | null>(null);
-  const [floatingIcons, setFloatingIcons] = useState<{ id: number; symbol: string; x: number }[]>(
-    []
-  );
-
-  const triggerFloatingBurst = (symbol: string) => {
-    const batch = Array.from({ length: 12 }, (_, i) => ({
-      id: Date.now() + i + Math.random(),
-      symbol,
-      x: (i - 5.5) * 32,
-    }));
-    setFloatingIcons((prev) => [...prev, ...batch]);
-    setTimeout(() => {
-      setFloatingIcons((prev) => prev.filter((item) => !batch.some((b) => b.id === item.id)));
-    }, 1700);
-  };
-
-  const handleLoveClick = () => {
-    const next = loveCount + 1;
-    setLoveCount(next);
-    try {
-      localStorage.setItem('rimjhim_love_clicks', String(next));
-    } catch {
-      // ignore
-    }
-    setActiveReaction('love');
-    triggerFloatingBurst('❤️');
-  };
-
-  const handleHugClick = () => {
-    setActiveReaction('hug');
-    triggerFloatingBurst('🤗');
-  };
-
-  const handleKissClick = () => {
-    setActiveReaction('kiss');
-    triggerFloatingBurst('💋');
-  };
-
-  return (
-    <>
-      <section className="relative py-20 px-4 sm:px-6">
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold">
-            Send Affection Anytime
-          </span>
-          <h2 className="mt-2 font-cursive text-5xl sm:text-6xl text-shimmer-love">
-            Tap For Instant Love ❤️
-          </h2>
-
-          {/* Floating Reaction Burst Stage */}
-          <div className="pointer-events-none relative mx-auto h-0 w-full">
-            <AnimatePresence>
-              {floatingIcons.map((item) => (
-                <motion.span
-                  key={item.id}
-                  initial={{ opacity: 1, y: 20, x: item.x * 0.3, scale: 0.7 }}
-                  animate={{ opacity: 0, y: -150, x: item.x, scale: 1.5 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1.5, ease: 'easeOut' }}
-                  className="absolute left-1/2 top-0 text-2xl sm:text-3xl"
-                >
-                  {item.symbol}
-                </motion.span>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {/* 3 Interactive Affection Buttons */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.92 }}
-              onClick={handleLoveClick}
-              className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#ff003c] to-[#b8002b] px-7 py-4 text-sm sm:text-base font-bold text-white shadow-[0_0_28px_rgba(255,0,60,0.6)]"
-            >
-              <span>I Love You ❤️</span>
-              <span className="rounded-full bg-black/40 px-2.5 py-0.5 text-xs text-[#ffd700]">
-                {loveCount}
-              </span>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.92 }}
-              onClick={handleHugClick}
-              className="inline-flex items-center gap-2 rounded-full border border-[#ffd700]/55 bg-[#ffd700]/15 px-7 py-4 text-sm sm:text-base font-bold text-[#ffd700] shadow-[0_0_24px_rgba(255,215,0,0.25)] hover:bg-[#ffd700]/25 transition"
-            >
-              <span>Hug Me 🤗</span>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.92 }}
-              onClick={handleKissClick}
-              className="inline-flex items-center gap-2 rounded-full border border-[#ff4d79]/60 bg-[#ff003c]/20 px-7 py-4 text-sm sm:text-base font-bold text-rose-100 shadow-[0_0_24px_rgba(255,0,60,0.35)] hover:bg-[#ff003c]/35 transition"
-            >
-              <span>Kiss Me 💋</span>
-            </motion.button>
-          </div>
-
-          {/* Interactive Cute Response Card */}
-          <AnimatePresence mode="wait">
-            {activeReaction && (
-              <motion.div
-                key={activeReaction}
-                initial={{ opacity: 0, y: 16, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="mx-auto mt-8 max-w-lg rounded-3xl border border-[#ff003c]/45 bg-black/75 backdrop-blur-xl p-6 shadow-[0_0_35px_rgba(255,0,60,0.28)]"
-              >
-                {activeReaction === 'love' && (
-                  <div>
-                    <p className="text-3xl mb-2">❤️✨❤️</p>
-                    <p className="font-bengali text-xl font-semibold text-white">
-                      আমিও তোমাকে পৃথিবীর সবকিছুর চেয়ে বেশি ভালোবাসি, আমার পাখি!
-                    </p>
-                    <p className="mt-1 text-xs text-rose-200/75">
-                      Love counter: {loveCount} endless heartbeats for Rimjhim
-                    </p>
-                  </div>
-                )}
-
-                {activeReaction === 'hug' && (
-                  <div>
-                    <motion.p
-                      animate={{ scale: [1, 1.18, 1] }}
-                      transition={{ duration: 1.2, repeat: Infinity }}
-                      className="text-4xl mb-2"
-                    >
-                      🫂❤️
-                    </motion.p>
-                    <p className="font-serif-luxury text-xl font-semibold text-[#ffd700]">
-                      Warmest Tightest Bear Hug From Mr. Han!
-                    </p>
-                    <p className="mt-1 font-bengali text-base text-rose-100">
-                      চোখ বন্ধ করো পাখি, আমি তোমাকে শক্ত করে জড়িয়ে ধরে আছি 🤗❤️
-                    </p>
-                  </div>
-                )}
-
-                {activeReaction === 'kiss' && (
-                  <div>
-                    <motion.p
-                      animate={{ rotate: [-6, 6, -6] }}
-                      transition={{ duration: 0.9, repeat: Infinity }}
-                      className="text-4xl mb-2"
-                    >
-                      💋💖💋
-                    </motion.p>
-                    <p className="font-serif-luxury text-xl font-semibold text-[#ff4d79]">
-                      A Sweet Forehead &amp; Cheek Kiss For My Queen!
-                    </p>
-                    <p className="mt-1 font-bengali text-base text-rose-100">
-                      তুমি লজ্জা পেলে আরও মিষ্টি লাগে, আমার প্রিয় রিমঝিম 💋❤️
-                    </p>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Forever Together Ending Tribute Screen */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-20 rounded-3xl border border-[#ff003c]/40 bg-gradient-to-b from-[#1a0309]/80 to-black/90 p-8 sm:p-14 shadow-[0_0_50px_rgba(255,0,60,0.22)]"
-          >
-            <div className="text-4xl sm:text-5xl mb-3">♾️</div>
-            <h2 className="font-cursive text-5xl sm:text-7xl text-shimmer-love">
-              Forever Together
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl font-bengali text-xl sm:text-2xl text-rose-100 leading-relaxed">
-              “যতদিন পৃথিবীতে সূর্য উঠবে, ততদিন আমার ভালোবাসা শুধু তোমারই থাকবে, রিমঝিম।”
-            </p>
-            <p className="mt-3 text-sm text-[#ffd700]">
-              Dedicated exclusively to Rimjhim ❤️ From Mr. Han ❤️ Forever: My Pakhi ♾️
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Luxury Footer */}
-      <footer className="relative border-t border-[#ff003c]/30 bg-[#040203] py-12 px-4 text-center">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-3 flex items-center justify-center gap-2">
-            <Heart className="h-5 w-5 fill-[#ff003c] text-[#ff003c] animate-pulse" />
-            <Heart className="h-6 w-6 fill-[#ffd700] text-[#ffd700]" />
-            <Heart className="h-5 w-5 fill-[#ff003c] text-[#ff003c] animate-pulse" />
-          </div>
-
-          <p className="font-serif-luxury text-lg sm:text-xl font-semibold text-white">
-            Made with endless love by Mr. Han ❤️
-          </p>
-          <p className="mt-1.5 font-cursive text-3xl sm:text-4xl text-shimmer-love">
-            Rimjhim &amp; Mr. Han — Together Forever ♾️
-          </p>
-        </div>
-      </footer>
-    </>
-  );
-};
-
-/**
- * ============================================================================
- *  MAIN APP COMPONENT
- * ============================================================================
- */
-export default function App() {
-  useLuxuryThemeSetup();
-
-  const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState('home');
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [transitionPulse, setTransitionPulse] = useState(false);
-
-  // Secret Hidden Notes State
-  const [foundEggs, setFoundEggs] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem('rimjhim_found_eggs');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-  const [activeWhisperToast, setActiveWhisperToast] = useState<string | null>(null);
-
-  const handleDiscoverEgg = (id: string, note: string) => {
-    setActiveWhisperToast(note);
-    setFoundEggs((prev) => {
-      if (prev.includes(id)) return prev;
-      const updated = [...prev, id];
-      try {
-        localStorage.setItem('rimjhim_found_eggs', JSON.stringify(updated));
-      } catch {
-        // ignore
-      }
-      return updated;
-    });
-  };
-
-  // Auto-dismiss secret note toast
-  useEffect(() => {
-    if (!activeWhisperToast) return;
-    const t = setTimeout(() => setActiveWhisperToast(null), 5000);
-    return () => clearTimeout(t);
-  }, [activeWhisperToast]);
-
-  // Track active section on scroll
-  useEffect(() => {
-    const sectionIds = NAV_ITEMS.map((item) => item.id);
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 220;
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sectionIds[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(sectionIds[i]);
-          break;
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Smooth navigation with subtle heart pulse transition
-  const handleNavigate = (id: string) => {
-    setActiveSection(id);
-    setTransitionPulse(true);
-    setTimeout(() => setTransitionPulse(false), 600);
-
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  return (
-    <div className="relative min-h-screen bg-[#050505] text-white selection:bg-[#ff003c] selection:text-white">
-      {/* Romantic Preloader */}
-      <AnimatePresence>
-        {loading && <PreloaderOverlay onFinish={() => setLoading(false)} />}
-      </AnimatePresence>
-
-      {/* Heart-Shaped Page Transition Pulse */}
-      <AnimatePresence>
-        {transitionPulse && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: 0.85, scale: 1.25 }}
-            exit={{ opacity: 0, scale: 1.8 }}
-            transition={{ duration: 0.55 }}
-            className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center"
-          >
-            <Heart className="h-16 w-16 fill-[#ff003c]/40 text-[#ff003c] drop-shadow-[0_0_30px_#ff003c]" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Secret Whisper Toast Notification */}
-      <AnimatePresence>
-        {activeWhisperToast && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            className="fixed bottom-5 left-1/2 z-50 w-[92%] max-w-md -translate-x-1/2 rounded-2xl border border-[#ffd700]/60 bg-[#17040a]/95 backdrop-blur-xl p-4 shadow-[0_0_35px_rgba(255,0,60,0.5)]"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-2.5">
-                <Check className="h-5 w-5 shrink-0 text-[#ffd700] mt-0.5" />
-                <p className="font-bengali text-sm text-rose-50 leading-relaxed">
-                  {activeWhisperToast}
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveWhisperToast(null)}
-                className="text-rose-200/70 hover:text-white"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Ambient Floating Petals, Hearts & Sparkles */}
-      <AmbientRomanceLayer />
-
-      {/* Desktop Heart Cursor Trail */}
-      <HeartCursorTrail />
-
-      {/* Sticky Navigation */}
-      <Navbar
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        foundEggsCount={foundEggs.length}
-      />
-
-      {/* Main Content Flow */}
-      <main className="relative z-10">
-        <HeroSection
-          onNavigate={handleNavigate}
-          onOpenLightbox={(idx) => setLightboxIndex(idx)}
-          foundEggs={foundEggs}
-          onDiscoverEgg={handleDiscoverEgg}
-        />
-
-        <LoveCounterSection />
-
-        <LoveLetterSection />
-
-        <MemoriesSection
-          lightboxIndex={lightboxIndex}
-          setLightboxIndex={setLightboxIndex}
-          foundEggs={foundEggs}
-          onDiscoverEgg={handleDiscoverEgg}
-        />
-
-        <OurStorySection onOpenLightbox={(idx) => setLightboxIndex(idx)} />
-
-        <ReasonsSection foundEggs={foundEggs} onDiscoverEgg={handleDiscoverEgg} />
-
-        <MusicPlayerSection />
-
-        <SurpriseSection />
-
-        <SecretPageSection foundEggs={foundEggs} onDiscoverEgg={handleDiscoverEgg} />
-
-        <AffectionAndEndingSection />
-      </main>
     </div>
   );
 }
