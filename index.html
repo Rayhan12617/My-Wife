@@ -21,6 +21,7 @@
   <style>
     :root {
       --crimson: #ff003c;
+      --neon-pink: #ff4d8d;
       --deep-black: #050505;
     }
 
@@ -117,6 +118,52 @@
 
     .animate-float {
       animation: floatSlow 4s ease-in-out infinite;
+    }
+
+    /* Floating Chocolate Animations */
+    @keyframes chocoFloatA {
+      0%, 100% { transform: translateY(0px) rotate(-8deg); }
+      50% { transform: translateY(-12px) rotate(8deg); }
+    }
+
+    @keyframes chocoFloatB {
+      0%, 100% { transform: translateY(0px) rotate(10deg); }
+      50% { transform: translateY(-15px) rotate(-6deg); }
+    }
+
+    .animate-choco-a {
+      animation: chocoFloatA 3.4s ease-in-out infinite;
+    }
+
+    .animate-choco-b {
+      animation: chocoFloatB 4.1s ease-in-out infinite;
+    }
+
+    /* Pop-up Mini Heart when clicking a chocolate */
+    @keyframes miniHeartPop {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(0.5);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -34px) scale(1.25);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -56px) scale(0.9);
+      }
+    }
+
+    .choco-pop-heart {
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      pointer-events: none;
+      font-size: 16px;
+      filter: drop-shadow(0 0 8px #ff003c);
+      animation: miniHeartPop 0.95s ease-out forwards;
+      z-index: 30;
     }
 
     /* Scroll Reveal */
@@ -470,13 +517,15 @@
       </div>
     </section>
 
-    <!-- 8. OUR LOVE STORY TIMELINE -->
+    <!-- 8. OUR LOVE STORY TIMELINE (WITH SPECIAL CHOCOLATE SURPRISES MEMORY) -->
     <section id="story" class="py-20 px-4 sm:px-6 reveal">
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-14">
           <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Written In The Stars</p>
           <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">Our Love Story</h2>
-          <p class="text-rose-200/75 text-sm sm:text-base">From our first hello to our eternal vows on January 6, 2026</p>
+          <p class="text-rose-200/75 text-sm sm:text-base">
+            From March 3, 2020 to our Wedding Day on January 6, 2026 &amp; Forever ♾️
+          </p>
         </div>
 
         <div id="timeline-container" class="relative space-y-10 before:content-[''] before:absolute before:left-5 md:before:left-1/2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-[#ff003c] before:via-pink-500 before:to-amber-400"></div>
@@ -832,47 +881,97 @@
       loveLetterText:
         'তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। তোমাকে পাওয়া আমার জীবনের সবচেয়ে সুন্দর অনুভূতি। তোমার হাসি আমার শান্তি, তোমার ভালোবাসা আমার পৃথিবী। প্রতিটি দিন তোমাকে আরও বেশি ভালোবাসতে চাই। জীবনের প্রতিটি মুহূর্তে তোমার পাশে থাকতে চাই। তুমি শুধু আমার স্ত্রী নও, তুমি আমার সবচেয়ে প্রিয় মানুষ, আমার সুখ, আমার শান্তি এবং আমার চিরদিনের ভালোবাসা।',
 
+      // Complete 8-Milestone Love Story Timeline in Exact Order
       timeline: [
         {
-          phase: 'Chapter I',
-          dateLabel: 'The Spark',
-          title: 'Our Beginning',
-          description: 'The moment our paths crossed, my whole world quietly shifted. From our very first conversation, I knew my heart had found its home in you.',
+          phase: 'Milestone I',
+          dateLabel: 'March 3, 2020',
+          title: 'First Conversation 💬',
+          description:
+            'The unforgettable day our words first met. One simple conversation quietly sparked a love story that changed my entire life forever.',
           photoUrl: 'https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png',
-          highlight: false
+          highlight: false,
+          isChocolateMemory: false
         },
         {
-          phase: 'Chapter II',
-          dateLabel: 'Unforgettable Days',
-          title: 'Our Beautiful Memories',
-          description: 'Every laugh we shared, every late-night talk, and every quiet smile turned ordinary days into priceless treasures.',
+          phase: 'Milestone II',
+          dateLabel: 'May 14, 2020',
+          title: 'First Proposal & Relationship Started ❤️',
+          description:
+            'The magical day I confessed my heart to you and our beautiful journey together officially began. Since that moment, my heart has belonged only to you.',
           photoUrl: 'https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png',
-          highlight: false
+          highlight: false,
+          isChocolateMemory: false
         },
         {
-          phase: 'Chapter III',
-          dateLabel: 'Heartbeats Closer',
-          title: 'Our Special Moments',
-          description: 'Through every little look and caring gesture, our bond grew deeper than words could ever express.',
+          phase: 'Milestone III',
+          dateLabel: 'June 21, 2021',
+          title: 'First Phone Call 📞',
+          description:
+            'Hearing your sweet voice for the very first time made my heart race with pure happiness. That call turned into my favorite melody.',
           photoUrl: 'https://cdn.suipump.org/icons/f9f702f556629b6e532ed1ef443f4374.png',
-          highlight: false
+          highlight: false,
+          isChocolateMemory: false
         },
         {
-          phase: 'Chapter IV',
-          dateLabel: 'Sacred Vows',
-          title: 'Our Wedding Day',
-          description: 'January 6, 2026 — The Beginning of Forever ❤️ The most magical day of my life, when you officially became my wife and my forever partner.',
+          phase: 'Sweetest Memory',
+          dateLabel: 'Before June 21, 2022',
+          title: 'Our Little Chocolate Memories 🍫',
+          subtitle: 'Little Chocolate Surprises 🍫',
+          description:
+            'প্রথম স্পেশাল উপহার দেওয়ার আগেই ইশতিয়াকের মাধ্যমে তোমার জন্য ছোট ছোট চকলেট পাঠাতাম। সেই ছোট্ট চকলেটগুলোর মধ্যেও লুকিয়ে ছিল আমার অনেক ভালোবাসা। তখন হয়তো উপহারগুলো ছোট ছিল, কিন্তু তোমার প্রতি আমার ভালোবাসা ছিল অনেক বড়। ❤️',
+          caption: 'Little Chocolates, Endless Love ❤️',
+          highlight: true,
+          isChocolateMemory: true
+        },
+        {
+          phase: 'Milestone V',
+          dateLabel: 'June 21, 2022',
+          title: 'First Special Gift 🎁',
+          description:
+            'After all those sweet little chocolates, came my first special gift wrapped with every dream and prayer I held for you.',
+          photoUrl: 'https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png',
+          highlight: false,
+          isChocolateMemory: false
+        },
+        {
+          phase: 'Milestone VI',
+          dateLabel: 'February 9, 2025',
+          title: 'First Meeting 🥹',
+          description:
+            'Seeing you right in front of my eyes for the first time felt like a dream come true. Every second of waiting was worth that single moment.',
+          photoUrl: 'https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png',
+          highlight: false,
+          isChocolateMemory: false
+        },
+        {
+          phase: 'Milestone VII',
+          dateLabel: 'January 6, 2026',
+          title: 'Wedding Day 💒',
+          description:
+            'January 6, 2026 — The Beginning of Forever ❤️ The most sacred, emotional, and joyful day of my life, when you became my wife forever.',
           photoUrl: 'https://cdn.suipump.org/icons/07f7d686b0407b66130b82b34a453d29.png',
-          highlight: true
+          highlight: true,
+          isChocolateMemory: false
         },
         {
-          phase: 'Chapter V',
-          dateLabel: 'Infinity & Beyond',
-          title: 'Our Forever Journey',
-          description: 'Every sunrise with you is a blessing. Today, tomorrow, and in every lifetime—I will always choose you, Rimjhim.',
+          phase: 'Milestone VIII',
+          dateLabel: 'Forever',
+          title: 'Our Beautiful Future ♾️',
+          description:
+            'Every tomorrow is brighter with you beside me. Hand in hand, lifetime after lifetime—I love you endlessly, my Pakhi.',
           photoUrl: 'https://cdn.suipump.org/icons/6b9abfefc44e06e3aca1effcde6fa84e.png',
-          highlight: false
+          highlight: false,
+          isChocolateMemory: false
         }
+      ],
+
+      // Romantic messages revealed when Rimjhim clicks each chocolate inside the box
+      chocolateNotes: [
+        '🍫 প্রতিটি চকলেটের মিষ্টির চেয়েও অনেক বেশি মিষ্টি ছিল তোমার মুখের হাসিটা, রিমঝিম ❤️',
+        '💖 ইশতিয়াকের হাতে চকলেট পাঠিয়ে অধীর আগ্রহে অপেক্ষা করতাম কখন তুমি খুশি হয়ে হাসবে!',
+        '🍫 উপহারগুলো ছোট ছিল ঠিকই, কিন্তু প্রতিটি চকলেটে লুকানো ছিল আমার আকাশসম ভালোবাসা ❤️',
+        '🥰 আজও যখন চকলেট দেখি, সেই মিষ্টি দিনগুলোর কথা মনে পড়ে—তুমি আমার চিরদিনের মিষ্টি ভালোবাসা ♾️'
       ],
 
       // All 100 Unique Bengali Romantic Reasons
@@ -1088,29 +1187,151 @@
       `;
     }
 
-    /* Render Love Story Timeline */
+    /* Render Love Story Timeline (Including Special Interactive Chocolate Card) */
     function renderTimeline() {
       const container = document.getElementById('timeline-container');
-      container.innerHTML = SITE_CONFIG.timeline.map((item, idx) => `
-        <div class="relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-center gap-6">
-          <div class="absolute left-5 md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-[#050505] border-2 border-[#ff003c] shadow-[0_0_18px_#ff003c] flex items-center justify-center z-10 text-xs">
-            ❤️
-          </div>
-          <div class="w-full md:w-[calc(50%-2rem)] pl-14 md:pl-0">
-            <div class="rounded-3xl p-5 sm:p-6 backdrop-blur-xl border transition-all ${item.highlight ? 'bg-gradient-to-br from-[#2b0612]/90 to-[#110307]/95 border-amber-400/70 shadow-[0_0_38px_rgba(255,0,60,0.35)]' : 'bg-white/[0.04] border-[#ff003c]/35 shadow-[0_0_24px_rgba(255,0,60,0.14)]'}">
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <span class="text-xs font-bold uppercase tracking-widest text-[#ff4d79]">${item.phase}</span>
-                <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#ff003c]/20 text-amber-200 border border-[#ff003c]/30">${item.dateLabel}</span>
+      container.innerHTML = SITE_CONFIG.timeline.map((item, idx) => {
+        if (item.isChocolateMemory) {
+          return `
+            <div class="relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-center gap-6">
+              <div class="absolute left-5 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#1a050c] border-2 border-pink-400 shadow-[0_0_22px_#ff4d8d] flex items-center justify-center z-10 text-sm animate-heartbeat">
+                🍫
               </div>
-              <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-white mb-2">${item.title}</h3>
-              <p class="text-sm text-rose-100/85 leading-relaxed mb-4">${item.description}</p>
-              <div class="aspect-[16/10] rounded-2xl overflow-hidden border border-[#ff003c]/30 bg-[#120408]">
-                <img src="${item.photoUrl}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover" />
+              <div class="w-full md:w-[calc(50%-2rem)] pl-14 md:pl-0">
+                <div class="relative overflow-hidden rounded-3xl p-6 sm:p-7 backdrop-blur-xl bg-gradient-to-br from-[#290714]/95 via-[#18040c]/95 to-[#2d0818]/95 border-2 border-pink-400/70 shadow-[0_0_45px_rgba(255,0,60,0.38),0_0_25px_rgba(255,77,141,0.28)]">
+                  
+                  <!-- Floating Chocolate Accents -->
+                  <span class="absolute top-4 right-5 text-xl animate-choco-a select-none pointer-events-none" aria-hidden="true">🍫</span>
+                  <span class="absolute bottom-24 left-4 text-lg animate-choco-b select-none pointer-events-none opacity-80" aria-hidden="true">🍬</span>
+                  <span class="absolute top-16 right-12 text-sm animate-choco-b select-none pointer-events-none opacity-75" aria-hidden="true">💖</span>
+
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 pr-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-pink-300">${item.subtitle}</span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-[#ff003c]/25 text-pink-100 border border-pink-400/40 font-semibold">${item.dateLabel}</span>
+                  </div>
+
+                  <h3 class="font-cursive text-3xl sm:text-4xl text-white drop-shadow-[0_0_12px_rgba(255,77,141,0.6)] mb-3">
+                    ${item.title}
+                  </h3>
+
+                  <!-- Cute Luxury Heart Chocolate Box Illustration -->
+                  <div class="my-4 p-4 rounded-2xl bg-black/50 border border-pink-400/35 text-center relative">
+                    <div class="w-40 h-28 mx-auto mb-2 flex items-center justify-center">
+                      <svg viewBox="0 0 220 150" class="w-full h-full drop-shadow-[0_0_18px_rgba(255,77,141,0.45)]">
+                        <defs>
+                          <linearGradient id="boxCrimson" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff003c" />
+                            <stop offset="55%" stop-color="#b8002b" />
+                            <stop offset="100%" stop-color="#5e0016" />
+                          </linearGradient>
+                          <linearGradient id="ribbonPink" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ff85b3" />
+                            <stop offset="50%" stop-color="#ffd1e3" />
+                            <stop offset="100%" stop-color="#ff4d8d" />
+                          </linearGradient>
+                        </defs>
+                        <!-- Velvet Gift Box Base -->
+                        <rect x="26" y="46" width="168" height="88" rx="18" fill="url(#boxCrimson)" stroke="#ff85b3" stroke-width="2" />
+                        <!-- Inner Tray -->
+                        <rect x="36" y="56" width="148" height="68" rx="12" fill="#1c060c" stroke="#ff4d8d" stroke-opacity="0.45" />
+                        <!-- Satin Ribbon & Bow -->
+                        <rect x="103" y="46" width="14" height="88" fill="url(#ribbonPink)" opacity="0.9" />
+                        <path d="M110 46 C92 22 68 30 82 46 C94 52 106 48 110 46 Z" fill="url(#ribbonPink)" />
+                        <path d="M110 46 C128 22 152 30 138 46 C126 52 114 48 110 46 Z" fill="url(#ribbonPink)" />
+                        <circle cx="110" cy="46" r="6" fill="#ffd700" />
+                        <!-- Decorative Mini Truffles inside SVG -->
+                        <circle cx="64" cy="76" r="11" fill="#4a2212" stroke="#d97706" stroke-width="1.2" />
+                        <circle cx="88" cy="76" r="11" fill="#5c2a16" stroke="#ff4d8d" stroke-width="1.2" />
+                        <circle cx="132" cy="76" r="11" fill="#4a2212" stroke="#ff4d8d" stroke-width="1.2" />
+                        <circle cx="156" cy="76" r="11" fill="#5c2a16" stroke="#d97706" stroke-width="1.2" />
+                        <circle cx="64" cy="104" r="11" fill="#5c2a16" stroke="#ff4d8d" stroke-width="1.2" />
+                        <circle cx="88" cy="104" r="11" fill="#4a2212" stroke="#d97706" stroke-width="1.2" />
+                        <circle cx="132" cy="104" r="11" fill="#5c2a16" stroke="#d97706" stroke-width="1.2" />
+                        <circle cx="156" cy="104" r="11" fill="#4a2212" stroke="#ff4d8d" stroke-width="1.2" />
+                      </svg>
+                    </div>
+
+                    <p class="text-[11px] uppercase tracking-widest text-pink-200/90 mb-2.5">
+                      Tap a chocolate to unwrap a sweet love note ✨
+                    </p>
+
+                    <!-- 4 Clickable Interactive Chocolates -->
+                    <div class="flex items-center justify-center gap-3 mb-2">
+                      ${[0, 1, 2, 3].map((cIdx) => `
+                        <button
+                          type="button"
+                          onclick="revealChocolateNote(${cIdx}, this)"
+                          aria-label="Click Chocolate ${cIdx + 1}"
+                          class="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-[#6b2f1a] to-[#36150a] border border-pink-400/60 shadow-[0_0_15px_rgba(255,77,141,0.35)] hover:scale-115 active:scale-95 transition-transform flex items-center justify-center text-xl cursor-pointer"
+                        >
+                          🍫
+                        </button>
+                      `).join('')}
+                    </div>
+
+                    <!-- Revealed Romantic Chocolate Message -->
+                    <div id="chocolate-secret-box" class="hidden mt-3 p-3 rounded-xl bg-gradient-to-r from-[#ff003c]/20 to-pink-500/20 border border-pink-300/40">
+                      <p id="chocolate-secret-text" class="font-bengali text-sm sm:text-base text-rose-100 font-medium leading-relaxed"></p>
+                    </div>
+                  </div>
+
+                  <!-- Emotional Bengali Memory Story -->
+                  <p class="font-bengali text-base sm:text-lg text-rose-50/95 leading-[1.85] mb-4">
+                    &ldquo;${item.description}&rdquo;
+                  </p>
+
+                  <!-- Memory Caption Footer -->
+                  <div class="pt-3 border-t border-pink-400/25 flex items-center justify-between">
+                    <span class="font-cursive text-2xl sm:text-3xl text-pink-200">${item.caption}</span>
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-pink-500/20 text-pink-200 border border-pink-400/30">
+                      Sent via Ishtiaq 💌
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-center gap-6">
+            <div class="absolute left-5 md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-[#050505] border-2 border-[#ff003c] shadow-[0_0_18px_#ff003c] flex items-center justify-center z-10 text-xs">
+              ❤️
+            </div>
+            <div class="w-full md:w-[calc(50%-2rem)] pl-14 md:pl-0">
+              <div class="rounded-3xl p-5 sm:p-6 backdrop-blur-xl border transition-all ${item.highlight ? 'bg-gradient-to-br from-[#2b0612]/90 to-[#110307]/95 border-amber-400/70 shadow-[0_0_38px_rgba(255,0,60,0.35)]' : 'bg-white/[0.04] border-[#ff003c]/35 shadow-[0_0_24px_rgba(255,0,60,0.14)]'}">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-xs font-bold uppercase tracking-widest text-[#ff4d79]">${item.phase}</span>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#ff003c]/20 text-amber-200 border border-[#ff003c]/30">${item.dateLabel}</span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-white mb-2">${item.title}</h3>
+                <p class="text-sm text-rose-100/85 leading-relaxed mb-4">${item.description}</p>
+                <div class="aspect-[16/10] rounded-2xl overflow-hidden border border-[#ff003c]/30 bg-[#120408]">
+                  <img src="${item.photoUrl}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+    }
+
+    /* Interactive Chocolate Click Handler (Spawns Animated Heart + Reveals Message) */
+    function revealChocolateNote(noteIdx, btnEl) {
+      // Spawn small animated heart above the clicked chocolate
+      const heart = document.createElement('span');
+      heart.className = 'choco-pop-heart';
+      heart.textContent = '❤️';
+      btnEl.appendChild(heart);
+      setTimeout(() => heart.remove(), 950);
+
+      // Reveal romantic message
+      const box = document.getElementById('chocolate-secret-box');
+      const textEl = document.getElementById('chocolate-secret-text');
+      if (box && textEl) {
+        box.classList.remove('hidden');
+        textEl.textContent = SITE_CONFIG.chocolateNotes[noteIdx % SITE_CONFIG.chocolateNotes.length];
+      }
     }
 
     /* --------------------------------------------------------------------- */
