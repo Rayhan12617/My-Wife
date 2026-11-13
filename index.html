@@ -1,762 +1,1578 @@
-
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rimjhim & Mr. Han — Forever Love Gift ❤️</title>
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Beloved Wife Rimjhim ❤️ | From Mr. Han</title>
+  <meta name="description" content="A romantic interactive love gift dedicated exclusively to Rimjhim (My Pakhi) from her husband Mr. Han." />
+  <meta name="theme-color" content="#050505" />
+
+  <!-- Romantic & Bengali Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- React & ReactDOM -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <!-- Framer Motion -->
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+    :root {
+      --crimson: #ff003c;
+      --deep-black: #050505;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #050505;
       color: #ffffff;
+      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
       overflow-x: hidden;
+      margin: 0;
     }
-    .font-serif {
-      font-family: 'Playfair Display', serif;
+
+    .font-cursive {
+      font-family: 'Great Vibes', cursive;
     }
+
+    .font-serif-luxury {
+      font-family: 'Playfair Display', 'Hind Siliguri', serif;
+    }
+
+    .font-bengali {
+      font-family: 'Hind Siliguri', sans-serif;
+    }
+
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #050505;
     }
     ::-webkit-scrollbar-thumb {
-      background: #ff003c;
-      border-radius: 4px;
+      background: linear-gradient(180deg, #ff003c, #7a001d);
+      border-radius: 9999px;
     }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+
+    /* Ambient Falling Petals & Hearts */
+    @keyframes fallDown {
+      0% {
+        transform: translateY(-10vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      12% {
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateY(50vh) translateX(28px) rotate(180deg);
+      }
+      88% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) translateX(-20px) rotate(360deg);
+        opacity: 0;
+      }
     }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+
+    .ambient-particle {
+      position: fixed;
+      top: -40px;
+      pointer-events: none;
+      z-index: 10;
+      animation: fallDown linear infinite;
+    }
+
+    /* Heartbeat & Glow Animations */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.16); }
+      45% { transform: scale(0.98); }
+      65% { transform: scale(1.12); }
+    }
+
+    .animate-heartbeat {
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes spinVinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .vinyl-spinning {
+      animation: spinVinyl 8s linear infinite;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .animate-float {
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Desktop Cursor Trail Heart */
+    @keyframes cursorSpark {
+      0% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0.6);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -36px) scale(1.35);
+      }
+    }
+
+    .cursor-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 60;
+      color: #ff003c;
+      filter: drop-shadow(0 0 8px #ff003c);
+      animation: cursorSpark 0.85s ease-out forwards;
+    }
+
+    /* Confetti burst in surprise modal */
+    @keyframes floatBurst {
+      0% { transform: translateY(20px) scale(0.7); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
+    }
+
+    .surprise-particle {
+      position: absolute;
+      animation: floatBurst 3s ease-out infinite;
     }
   </style>
 </head>
 <body class="bg-[#050505] text-white selection:bg-[#ff003c] selection:text-white">
 
-  <!-- Root element for React app -->
-  <div id="root"></div>
+  <!-- Romantic Loading Screen -->
+  <div id="loading-screen" class="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-700">
+    <div class="relative mb-6 animate-heartbeat">
+      <div class="absolute inset-0 bg-[#ff003c] blur-2xl opacity-50 rounded-full"></div>
+      <svg class="w-16 h-16 text-[#ff003c] fill-[#ff003c] relative z-10" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <p class="font-cursive text-4xl sm:text-5xl text-rose-100 mb-2">For My Beloved Rimjhim...</p>
+    <p class="text-xs tracking-[0.25em] uppercase text-[#ff003c]">Crafted with Endless Love by Mr. Han</p>
+  </div>
 
-  <!-- Main Application Script -->
-  <script type="text/javascript">
-    const { useState, useEffect, useRef } = React;
-    const { motion, AnimatePresence } = window.Motion;
+  <!-- Ambient Falling Petals & Hearts Container -->
+  <div id="ambient-container" aria-hidden="true"></div>
 
-    // 100 Bengali Romantic Reasons
-    const bengaliReasons = [
-      "তোমার হাসি আমার পৃথিবী সুন্দর করে।",
-      "তুমি আমার সবচেয়ে প্রিয় মানুষ।",
-      "তোমার সঙ্গে প্রতিটি মুহূর্ত অসাধারণ।",
-      "তোমার ভালোবাসা আমার শান্তি।",
-      "তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।",
-      "তোমার চোখের চাউনিতে আমি হারিয়ে যাই।",
-      "তুমি পাশে থাকলে পৃথিবীর সব কষ্ট ভুলে যাই।",
-      "তোমার কণ্ঠস্বর আমার কাছে সবচেয়ে মধুর সঙ্গীত।",
-      "তুমি আমার হাসির পেছনের মূল কারণ।",
-      "তোমার হাত ধরে সারা জীবন চলতে চাই।",
-      "তুমি আমার জীবনের সেরা আশীর্বাদ।",
-      "তোমার প্রতি আমার ভালোবাসা প্রতিদিন বাড়ে।",
-      "তুমি আমার সুখ, আমার শান্তি, আমার পৃথিবী।",
-      "তোমার স্পর্শে আমার মন জুড়িয়ে যায়।",
-      "তোমার মতো এত যত্নশীল কেউ নেই।",
-      "তুমি আমার জীবনের একমাত্র রানি।",
-      "তোমার বিশ্বাস আমাকে শক্তি জোগায়।",
-      "তোমার প্রতিটি কথা আমার হৃদয়ে ছুঁয়ে যায়।",
-      "তুমি আমার স্বপ্নের চিরদিনের রাজকন্যা।",
-      "তোমার সাথে কাটানো সময়গুলো জাদুর মতো।",
-      "তুমি আমার ভোরের প্রথম আলো।",
-      "তুমি আমার রাতের গভীর শান্তির ঘুম।",
-      "তোমার জন্য আমার বুকভরা ভালোবাসা।",
-      "তুমি আমার অস্তিত্বের এক অবিচ্ছেদ্য অংশ।",
-      "তোমার নিঃশ্বাসে আমার জীবন স্পন্দিত হয়।",
-      "তুমি আমার হৃদয়ের সবচেয়ে পবিত্র কোণ জুড়ে আছো।",
-      "তোমার সরলতা আমাকে প্রতিদিন মুগ্ধ করে।",
-      "তুমি আমার মনের সব না বলা কথার ঠিকানা।",
-      "তোমার পাশে কাটানো প্রতিটি সেকেন্ড মূল্যবান।",
-      "তুমি আমার জীবনের সবচেয়ে মধুর অভ্যাস।",
-      "তোমার এক পলক হাসি আমার দিন বানিয়ে দেয়।",
-      "তুমি আমার ভালোবাসার পরম সংজ্ঞা।",
-      "তোমার কপালে ছোট্ট একটা চুমু আমার শান্তি।",
-      "তুমি আমার জীবনের শ্রেষ্ঠ প্রাপ্তি।",
-      "তোমার সান্নিধ্য আমার আত্মাকে শান্ত করে।",
-      "তুমি আমার চিরদিনের সুখের চাবিকাঠি।",
-      "তোমার চোখের জল আমি কখনো দেখতে চাই না।",
-      "তুমি আমার সব কষ্টের একমাত্র ওষুধ।",
-      "তোমার প্রতিটি পদক্ষেপে আমার প্রার্থনা থাকে।",
-      "তুমি আমার জীবনের অমূল্য রত্ন।",
-      "তোমার সাথে বুড়ো হতে চাই।",
-      "তুমি আমার সমস্ত আকাশ জুড়ে আছো।",
-      "তোমার সুবাস আমার চারপাশে লেপ্টে থাকে।",
-      "তুমি আমার নিখুঁত ভালোবাসার প্রতিচ্ছবি।",
-      "তোমার হৃদস্পন্দন আমার প্রিয় সুর।",
-      "তুমি আমার সব অন্ধকারের আলোর দিশারী।",
-      "তুমি আমার ভালোলাগার অপরিসীম আকাশ।",
-      "তুমি আমার কল্পনার চেয়েও অনেক সুন্দর।",
-      "তুমি আমার পাশে থাকলে সময়ের খেয়াল থাকে না।",
-      "তুমি আমার জীবনের শ্রেষ্ঠ কবিতা।",
-      "তোমার প্রেমে আমি প্রতি মুহূর্তে ধন্য।",
-      "তুমি আমার একান্তে ভাবার একমাত্র মানুষ।",
-      "তোমার মিষ্টি স্বভাব আমার মন কেড়ে নেয়।",
-      "তুমি আমার জীবনের সবচেয়ে বড় শক্তি।",
-      "তোমার চুলে আঙুল বুলিয়ে দিতে আমার খুব ভালো লাগে।",
-      "তুমি আমার ঘরের কোণের স্নিগ্ধ প্রদীপ।",
-      "তোমার প্রতিটি খামখেয়ালীপনা আমার খুব পছন্দ।",
-      "তুমি আমার জীবনের সবচেয়ে মধুর স্বপ্ন।",
-      "তোমার চাওয়া-পাওয়াগুলো আমার কাছে সবার আগে।",
-      "তুমি আমার হাসিমুখের আসল কারণ।",
-      "তোমার সাথে ঝগড়া করতেও আমার ভীষণ ভালো লাগে।",
-      "তুমি আমার জীবনের সেরা শিক্ষক ও বন্ধু।",
-      "তুমি আমার প্রতিটি ইচ্ছে পূরণ করতে আমি প্রস্তুত।",
-      "তুমি আমার হৃদয়ের সিংহাসনের একমাত্র অধীশ্বরী।",
-      "তুমি আমার উপস্থিতিতে আমার ঘর পরিপূর্ণ হয়।",
-      "তুমি আমার সমস্ত চাওয়া পাওয়ার ঊর্ধ্বে।",
-      "তুমি আমার নামের সাথে আমার নাম জড়ানো সৌভাগ্যের।",
-      "তুমি আমার অন্তরের গভীরতম ভালোবাসার মানুষ।",
-      "তুমি আমার সাথে কাটানো প্রতিটি মুহূর্ত সোনালী।",
-      "তুমি আমার জীবনের সবচেয়ে পবিত্র প্রতিশ্রুতি।",
-      "তুমি আমার চোখে চোখ রাখলে সব ভয় কেটে যায়।",
-      "তুমি আমার স্নিগ্ধ সকাল ও গোধূলি বেলা।",
-      "তুমি আমার মুখের একটি মাত্র মিষ্টি কথা আমার মন ভালো করে।",
-      "তুমি আমার হৃদয়ের চিরন্তন স্পন্দন।",
-      "তোমার বিশ্বাসই আমার সবচেয়ে বড় পুঁজি।",
-      "তুমি আমার জীবনের সবচেয়ে গভীর অনুরাগ।",
-      "তোমার ভালোবাসায় কোনো খাদ নেই, তা খাঁটি সোনা।",
-      "তুমি আমার আগামী দিনের সমস্ত আশার প্রদীপ।",
-      "তুমি আমার প্রতিটি নিশ্বাসে মিশে আছো।",
-      "তোমার সাথে পরিচয় না হলে জীবন অর্থহীন থাকত।",
-      "তুমি আমার জীবনের সবচেয়ে প্রিয় অধ্যায়।",
-      "তোমার মায়াবী রূপ আমার মন হরণ করে।",
-      "তুমি আমার সমস্ত দুশ্চিন্তার একমাত্র সান্ত্বনা।",
-      "তুমি আমার হৃদয়ের খুব কাছাকাছি এক জগত।",
-      "তোমার ভালোবাসার পরশ আমাকে অমর করে রাখে।",
-      "তুমি আমার জীবনের সবচেয়ে উজ্জ্বল নক্ষত্র।",
-      "তোমার জন্য আমার হৃদয়ে অনন্তকাল প্রেম থাকবে।",
-      "তুমি আমার খুশির ঝরনাধারা।",
-      "তোমার সাথে প্রতিটি ঋতু আমার বসন্ত।",
-      "তুমি আমার নিঃসঙ্গতার সেরা সঙ্গী।",
-      "তোমার এই পবিত্র ভালোবাসায় আমি চিরকৃতজ্ঞ।",
-      "তুমি আমার জীবনের সবচেয়ে দামি উপহার।",
-      "তোমার মিষ্টি রাগ আমার কাছে আরও সুন্দর লাগে।",
-      "তুমি আমার সমস্ত আবেগের কেন্দ্রবিন্দু।",
-      "তুমি আমার চিরদিনের 'পাখি'।",
-      "তোমার মুখের হাসি নিভে গেলে আমার পৃথিবী অন্ধকার হয়।",
-      "তুমি আমার জীবনের সেরা উপহার এবং অন্তিম আশ্রয়।",
-      "তুমি আমার সব জন্মের ভালোবাসা।",
-      "তোমাকে আমি আমার জীবনের চেয়েও বেশি ভালোবাসি Rimjhim।",
-      "Mr. Han চিরকাল শুধু তোমার Rimjhim এর জন্যই বেঁচে থাকবে।"
-    ];
+  <!-- Hidden HTML5 Audio Player for Custom MP3 URLs -->
+  <audio id="custom-audio" preload="none"></audio>
 
-    function App() {
-      const [activeTab, setActiveTab] = useState('home');
-      const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-      const [volume, setVolume] = useState(0.5);
-      const audioRef = useRef(null);
+  <!-- 3. RESPONSIVE NAVIGATION BAR -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-[#050505]/85 backdrop-blur-xl border-b border-[#ff003c]/25">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-full bg-[#ff003c]/15 border border-[#ff003c]/50 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.45)] group-hover:scale-110 transition">
+          <i data-lucide="heart" class="w-4 h-4 text-[#ff003c] fill-[#ff003c]"></i>
+        </div>
+        <span class="font-cursive text-2xl sm:text-3xl text-white tracking-wide leading-none">
+          Rimjhim <span class="text-[#ff003c]">&amp;</span> Mr. Han
+        </span>
+      </a>
 
-      // Live Counter State
-      const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-1.5" id="desktop-nav" aria-label="Primary Navigation">
+        <a href="#home" data-nav="home" class="nav-link active-nav px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-white bg-[#ff003c]/20 border border-[#ff003c] shadow-[0_0_15px_rgba(255,0,60,0.45)]">
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-[#ff003c]"></i><span>Home</span>
+        </a>
+        <a href="#letter" data-nav="letter" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="mail" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Love Letter</span>
+        </a>
+        <a href="#memories" data-nav="memories" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="image" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Memories</span>
+        </a>
+        <a href="#story" data-nav="story" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="book-open" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Our Story</span>
+        </a>
+        <a href="#reasons" data-nav="reasons" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-300/70"></i><span>100 Reasons</span>
+        </a>
+        <a href="#music" data-nav="music" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="music" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Music</span>
+        </a>
+        <a href="#surprise" data-nav="surprise" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="gift" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Surprise</span>
+        </a>
+        <a href="#secret" data-nav="secret" class="nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-rose-300/70"></i><span>Secret Page</span>
+        </a>
+      </nav>
 
-      // Love Letter State
-      const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
-      const [typedText, setTypedText] = useState("");
-      const fullLetter = "আমার প্রিয় পাখি ❤️\n\nতুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। তোমাকে পাওয়া আমার জীবনের সবচেয়ে সুন্দর অনুভূতি। তোমার হাসি আমার শান্তি, তোমার ভালোবাসা আমার পৃথিবী। প্রতিটি দিন তোমাকে আরও বেশি ভালোবাসতে চাই। জীবনের প্রতিটি মুহূর্তে তোমার পাশে থাকতে চাই। তুমি শুধু আমার স্ত্রী নও, তুমি আমার সবচেয়ে প্রিয় মানুষ, আমার সুখ, আমার শান্তি এবং আমার চিরদিনের ভালোবাসা।\n\nForever yours, Mr. Han ❤️";
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" aria-label="Toggle Menu" class="lg:hidden p-2.5 rounded-xl bg-white/5 border border-[#ff003c]/40 text-rose-100 hover:bg-[#ff003c]/20 transition">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
 
-      // Lightbox State
-      const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-[#0a0305]/95 border-b border-[#ff003c]/30 px-4 pb-4 pt-2">
+      <div class="grid grid-cols-2 gap-2">
+        <a href="#home" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="heart" class="w-4 h-4 text-[#ff003c]"></i><span>Home</span></a>
+        <a href="#letter" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="mail" class="w-4 h-4 text-[#ff003c]"></i><span>Love Letter</span></a>
+        <a href="#memories" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="image" class="w-4 h-4 text-[#ff003c]"></i><span>Memories</span></a>
+        <a href="#story" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="book-open" class="w-4 h-4 text-[#ff003c]"></i><span>Our Story</span></a>
+        <a href="#reasons" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="sparkles" class="w-4 h-4 text-[#ff003c]"></i><span>100 Reasons</span></a>
+        <a href="#music" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="music" class="w-4 h-4 text-[#ff003c]"></i><span>Music</span></a>
+        <a href="#surprise" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="gift" class="w-4 h-4 text-[#ff003c]"></i><span>Surprise</span></a>
+        <a href="#secret" class="mobile-nav-item flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-rose-100"><i data-lucide="lock" class="w-4 h-4 text-[#ff003c]"></i><span>Secret Page</span></a>
+      </div>
+    </div>
+  </header>
 
-      // 100 Reasons State
-      const [currentReasonIndex, setCurrentReasonIndex] = useState(0);
+  <main class="relative z-20 pt-16">
+    <!-- 2. HOMEPAGE / HERO SECTION -->
+    <section id="home" class="relative min-h-[94vh] flex items-center justify-center px-4 sm:px-6 py-16 overflow-hidden">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[540px] h-[540px] rounded-full bg-[#ff003c]/15 blur-[130px] pointer-events-none"></div>
 
-      // Surprise State
-      const [isSurpriseActive, setIsSurpriseActive] = useState(false);
+      <div class="max-w-6xl mx-auto w-full grid lg:grid-cols-12 gap-10 items-center">
+        <!-- Left Hero Text -->
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ff003c]/15 border border-[#ff003c]/40 text-xs sm:text-sm text-rose-200 mb-5 shadow-[0_0_20px_rgba(255,0,60,0.25)]">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
+            <span>Exclusively Dedicated to My Pakhi ♾️</span>
+          </div>
 
-      // Secret Page State
-      const [secretPasscode, setSecretPasscode] = useState("");
-      const [isSecretUnlocked, setIsSecretUnlocked] = useState(false);
-      const [secretError, setSecretError] = useState(false);
+          <p class="text-sm sm:text-base uppercase tracking-[0.28em] text-[#ff4d79] font-semibold mb-2">
+            To My Beloved Wife
+          </p>
 
-      // Interactive Modals
-      const [activeModal, setActiveModal] = useState(null);
-      const [heartClicks, setHeartClicks] = useState(0);
+          <h1 class="font-cursive text-6xl sm:text-7xl md:text-8xl text-white drop-shadow-[0_0_25px_rgba(255,0,60,0.65)] leading-tight mb-3">
+            Rimjhim
+          </h1>
 
-      // Exact 5 Real Photos provided
-      const photos = [
-        { url: "https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png", caption: "My Favorite Person ❤️" },
-        { url: "https://cdn.suipump.org/icons/07f7d686b0407b66130b82b34a453d29.png", caption: "Forever Together" },
-        { url: "https://cdn.suipump.org/icons/f9f702f556629b6e532ed1ef443f4374.png", caption: "My Beautiful Rimjhim" },
-        { url: "https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png", caption: "Our Precious Memories" },
-        { url: "https://cdn.suipump.org/icons/6b9abfefc44e06e3aca1effcde6fa84e.png", caption: "My Happiness ❤️" },
-      ];
+          <p class="text-base sm:text-lg text-amber-200/90 font-serif-luxury italic mb-5">
+            From your forever lover, Mr. Han ❤️
+          </p>
 
-      // Timer Effect (Jan 6, 2026)
-      useEffect(() => {
-        const startDate = new Date('2026-01-06T00:00:00');
-        const timer = setInterval(() => {
-          const now = new Date();
-          const difference = now - startDate;
-          if (difference > 0) {
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((difference / 1000 / 60) % 60);
-            const seconds = Math.floor((difference / 1000) % 60);
-            setTimeLeft({ days, hours, minutes, seconds });
-          }
-        }, 1000);
-        return () => clearInterval(timer);
-      }, []);
+          <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-[#ff003c]/35 shadow-[0_0_30px_rgba(255,0,60,0.15)] mb-4">
+            <p class="font-bengali text-xl sm:text-2xl md:text-3xl font-semibold text-rose-100 leading-relaxed">
+              &ldquo;তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।&rdquo;
+            </p>
+          </div>
 
-      // Typing effect for love letter
-      useEffect(() => {
-        if (isEnvelopeOpen) {
-          let i = 0;
-          setTypedText("");
-          const typingInterval = setInterval(() => {
-            if (i < fullLetter.length) {
-              setTypedText(prev => prev + fullLetter.charAt(i));
-              i++;
-            } else {
-              clearInterval(typingInterval);
-            }
-          }, 40);
-          return () => clearInterval(typingInterval);
+          <p class="text-rose-200/85 text-base sm:text-lg mb-8">
+            You are my favorite person in this entire world.
+          </p>
+
+          <!-- Main CTA Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+            <button onclick="openLetterAndScroll()" class="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#ff003c] to-[#c9002f] text-white font-semibold text-sm sm:text-base shadow-[0_0_25px_rgba(255,0,60,0.6)] hover:shadow-[0_0_38px_rgba(255,0,60,0.9)] hover:scale-105 active:scale-95 transition-all">
+              Open My Love Letter 💌
+            </button>
+
+            <a href="#memories" class="px-6 py-3.5 rounded-full bg-white/[0.06] hover:bg-[#ff003c]/20 border border-[#ff003c]/50 text-white font-semibold text-sm sm:text-base backdrop-blur-md hover:scale-105 active:scale-95 transition-all">
+              Our Memories ❤️
+            </a>
+
+            <button onclick="openSurpriseModal()" class="px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-500/20 to-[#ff003c]/25 border border-amber-400/50 text-amber-100 font-semibold text-sm sm:text-base hover:shadow-[0_0_25px_rgba(255,215,0,0.35)] hover:scale-105 active:scale-95 transition-all">
+              A Surprise for You 🎁
+            </button>
+          </div>
+
+          <!-- Extra Romantic Interactive Buttons -->
+          <div class="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+            <button onclick="showReaction('love')" class="px-3.5 py-1.5 rounded-full bg-[#ff003c]/15 border border-[#ff003c]/40 text-xs text-rose-200 hover:bg-[#ff003c]/30 transition">
+              ❤️ I Love You
+            </button>
+            <button onclick="showReaction('hug')" class="px-3.5 py-1.5 rounded-full bg-pink-500/15 border border-pink-400/40 text-xs text-pink-200 hover:bg-pink-500/30 transition">
+              🤗 Hug Me
+            </button>
+            <button onclick="showReaction('kiss')" class="px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/40 text-xs text-amber-200 hover:bg-amber-500/30 transition">
+              😘 Kiss Me
+            </button>
+            <button onclick="showHiddenWhisper()" class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs text-rose-300/80 hover:border-[#ff003c]/50 transition">
+              ✨ Hidden Whisper
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Anime-Style Couple Illustration & Featured Real Photos -->
+        <div class="lg:col-span-5 flex flex-col items-center">
+          <div class="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto flex items-center justify-center animate-float select-none">
+            <div class="absolute inset-0 rounded-full bg-[#ff003c]/25 blur-2xl animate-pulse"></div>
+            <svg viewBox="0 0 320 320" class="w-full h-full relative z-10 drop-shadow-[0_0_25px_rgba(255,0,60,0.45)]">
+              <defs>
+                <linearGradient id="heartGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff003c" stop-opacity="0.95" />
+                  <stop offset="50%" stop-color="#ff4d79" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#ffd700" stop-opacity="0.85" />
+                </linearGradient>
+                <linearGradient id="silhouetteGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#1e070e" />
+                  <stop offset="100%" stop-color="#090204" />
+                </linearGradient>
+                <radialGradient id="moonlightGrad" cx="50%" cy="45%" r="50%">
+                  <stop offset="0%" stop-color="#ff1e56" stop-opacity="0.55" />
+                  <stop offset="70%" stop-color="#660018" stop-opacity="0.2" />
+                  <stop offset="100%" stop-color="#050505" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <circle cx="160" cy="155" r="132" fill="url(#moonlightGrad)" />
+
+              <!-- Glowing Heart Frame -->
+              <path d="M160 272 C160 272 44 198 44 114 C44 74 75 46 112 46 C135 46 152 58 160 74 C168 58 185 46 208 46 C245 46 276 74 276 114 C276 198 160 272 160 272 Z"
+                    fill="rgba(255,0,60,0.08)" stroke="url(#heartGlowGrad)" stroke-width="3.5" />
+
+              <!-- Anime Couple Silhouette -->
+              <path d="M104 242 C104 195 114 176 134 172 C146 170 155 178 158 192 L156 244 Z" fill="url(#silhouetteGrad)" stroke="#ff003c" stroke-width="1.2" />
+              <circle cx="133" cy="142" r="21" fill="url(#silhouetteGrad)" stroke="#ff4d79" stroke-width="1.2" />
+              <path d="M113 138 C113 120 131 114 147 121 C154 125 156 135 152 143 C145 130 126 129 113 138 Z" fill="#ff003c" opacity="0.7" />
+
+              <path d="M158 244 L161 190 C165 176 176 171 189 174 C208 178 216 198 216 242 Z" fill="url(#silhouetteGrad)" stroke="#ff4d79" stroke-width="1.2" />
+              <path d="M167 135 C163 155 162 185 169 212 C185 215 204 208 210 185 C214 162 208 134 191 127 C179 123 170 127 167 135 Z" fill="#19050b" stroke="#ff003c" stroke-width="1.2" />
+              <circle cx="186" cy="147" r="19" fill="url(#silhouetteGrad)" stroke="#ffd700" stroke-width="1.1" />
+
+              <!-- Floating Mini Heart -->
+              <path d="M160 112 C160 112 149 104 149 97 C149 93 152 90 155.5 90 C158 90 159.5 91.5 160 93 C160.5 91.5 162 90 164.5 90 C168 90 171 93 171 97 C171 104 160 112 160 112 Z" fill="#ff003c" />
+
+              <!-- Corner Roses -->
+              <g transform="translate(76, 224)">
+                <circle cx="0" cy="0" r="13" fill="#990024" />
+                <circle cx="0" cy="0" r="8" fill="#ff003c" />
+                <circle cx="0" cy="0" r="3.5" fill="#ffd700" />
+              </g>
+              <g transform="translate(244, 224)">
+                <circle cx="0" cy="0" r="13" fill="#990024" />
+                <circle cx="0" cy="0" r="8" fill="#ff003c" />
+                <circle cx="0" cy="0" r="3.5" fill="#ffd700" />
+              </g>
+            </svg>
+          </div>
+
+          <!-- Hero Featured Real Photos -->
+          <div id="hero-photo-strip" class="mt-4 grid grid-cols-3 gap-3 w-full max-w-sm"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. LIVE LOVE COUNTER (SINCE JANUARY 6, 2026) -->
+    <section class="py-16 px-4 sm:px-6 reveal">
+      <div class="max-w-4xl mx-auto rounded-3xl bg-gradient-to-br from-[#160409]/90 via-[#0b0205]/95 to-[#160409]/90 backdrop-blur-xl border border-[#ff003c]/45 p-7 sm:p-10 text-center shadow-[0_0_45px_rgba(255,0,60,0.22)]">
+        <div class="flex items-center justify-center gap-3 mb-2">
+          <i data-lucide="heart" class="w-7 h-7 text-[#ff003c] fill-[#ff003c] animate-heartbeat drop-shadow-[0_0_12px_#ff003c]"></i>
+          <h2 class="font-cursive text-4xl sm:text-5xl text-white">Together Forever</h2>
+          <i data-lucide="infinity" class="w-7 h-7 text-amber-300"></i>
+        </div>
+
+        <p class="text-rose-200/90 text-sm sm:text-base font-medium mb-8">
+          Since January 6, 2026 ❤️
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-5">
+          <div class="rounded-2xl bg-black/60 border border-[#ff003c]/35 p-4 sm:p-5">
+            <div id="counter-days" class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-rose-300 tabular-nums">00</div>
+            <div class="text-xs uppercase tracking-widest text-[#ff4d79] mt-1.5 font-semibold">Days Together</div>
+          </div>
+          <div class="rounded-2xl bg-black/60 border border-[#ff003c]/35 p-4 sm:p-5">
+            <div id="counter-hours" class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-rose-300 tabular-nums">00</div>
+            <div class="text-xs uppercase tracking-widest text-[#ff4d79] mt-1.5 font-semibold">Hours</div>
+          </div>
+          <div class="rounded-2xl bg-black/60 border border-[#ff003c]/35 p-4 sm:p-5">
+            <div id="counter-minutes" class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-rose-300 tabular-nums">00</div>
+            <div class="text-xs uppercase tracking-widest text-[#ff4d79] mt-1.5 font-semibold">Minutes</div>
+          </div>
+          <div class="rounded-2xl bg-black/60 border border-[#ff003c]/35 p-4 sm:p-5">
+            <div id="counter-seconds" class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-rose-300 tabular-nums">00</div>
+            <div class="text-xs uppercase tracking-widest text-[#ff4d79] mt-1.5 font-semibold">Seconds</div>
+          </div>
+        </div>
+
+        <p class="mt-6 text-xs sm:text-sm text-rose-200/70 italic">
+          Every second with you is a heartbeat I never want to lose ♾️
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. ANIMATED BENGALI LOVE LETTER ENVELOPE -->
+    <section id="letter" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Straight From My Soul</p>
+        <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">A Love Letter For You</h2>
+        <p class="text-rose-200/75 text-sm sm:text-base mb-10">Tap the crimson wax seal to open Mr. Han&apos;s heart</p>
+
+        <!-- Closed Envelope -->
+        <div id="envelope-closed" onclick="openLoveLetter()" class="cursor-pointer mx-auto max-w-xl rounded-3xl bg-gradient-to-br from-[#24060f] via-[#130308] to-[#260610] border-2 border-[#ff003c]/60 p-10 sm:p-14 shadow-[0_0_50px_rgba(255,0,60,0.3)] hover:scale-[1.02] transition-all relative overflow-hidden group">
+          <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#ff003c]/20 to-transparent pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+
+          <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#ff003c] to-[#8a0020] border-4 border-rose-300/30 shadow-[0_0_30px_#ff003c] flex items-center justify-center mb-5 animate-heartbeat">
+            <i data-lucide="heart" class="w-9 h-9 text-white fill-white"></i>
+          </div>
+
+          <p class="font-cursive text-3xl sm:text-4xl text-rose-100 mb-2">For My Beloved Rimjhim</p>
+          <p class="text-xs uppercase tracking-widest text-amber-300/90 mb-6">Sealed with Eternal Love • Mr. Han</p>
+
+          <span class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#ff003c] text-white font-semibold text-sm shadow-[0_0_20px_#ff003c] group-hover:scale-105 transition">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            Read My Heart
+          </span>
+        </div>
+
+        <!-- Opened Letter -->
+        <div id="envelope-opened" class="hidden mx-auto max-w-2xl rounded-3xl bg-gradient-to-b from-[#19050b] to-[#0a0204] border border-[#ff003c]/55 p-7 sm:p-11 text-left shadow-[0_0_60px_rgba(255,0,60,0.28)]">
+          <div class="flex items-center justify-between border-b border-[#ff003c]/25 pb-4 mb-6">
+            <span class="font-bengali text-2xl sm:text-3xl font-bold text-[#ff4d79]">আমার প্রিয় পাখি ❤️</span>
+            <button onclick="closeLoveLetter()" class="text-xs px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-rose-200/80 border border-white/10">
+              Fold Envelope
+            </button>
+          </div>
+
+          <p id="letter-typed-text" class="font-bengali text-lg sm:text-xl md:text-2xl text-rose-50/95 leading-[1.95] min-h-[210px]"></p>
+
+          <div class="mt-8 pt-5 border-t border-[#ff003c]/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <p class="font-cursive text-3xl sm:text-4xl text-amber-200">Forever yours, Mr. Han ❤️</p>
+            <button onclick="showReaction('love')" class="px-4 py-2 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/50 text-xs font-semibold text-rose-100 hover:bg-[#ff003c]/35 transition self-start sm:self-auto">
+              Send Love Back ❤️
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. OUR MEMORIES GALLERY (ALL 5 REAL PHOTOS + LIGHTBOX) -->
+    <section id="memories" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Captured Forever</p>
+          <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">Our Precious Memories</h2>
+          <p class="text-rose-200/75 text-sm sm:text-base max-w-xl mx-auto">
+            Every photograph with you holds a universe of warmth. Tap any photo to view full size.
+          </p>
+        </div>
+
+        <div id="memories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+
+    <!-- 8. OUR LOVE STORY TIMELINE -->
+    <section id="story" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14">
+          <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Written In The Stars</p>
+          <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">Our Love Story</h2>
+          <p class="text-rose-200/75 text-sm sm:text-base">From our first hello to our eternal vows on January 6, 2026</p>
+        </div>
+
+        <div id="timeline-container" class="relative space-y-10 before:content-[''] before:absolute before:left-5 md:before:left-1/2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-[#ff003c] before:via-pink-500 before:to-amber-400"></div>
+      </div>
+    </section>
+
+    <!-- 11. 100 REASONS I LOVE YOU -->
+    <section id="reasons" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Endless Devotion</p>
+        <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">100 Reasons I Love You</h2>
+        <p class="text-rose-200/75 text-sm sm:text-base mb-10">One hundred heartfelt Bengali reasons why Mr. Han loves Rimjhim</p>
+
+        <div class="rounded-3xl bg-gradient-to-br from-[#19040b] via-[#0b0205] to-[#19040b] border border-[#ff003c]/50 p-7 sm:p-11 shadow-[0_0_45px_rgba(255,0,60,0.22)]">
+          <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 text-xs font-semibold text-amber-200 mb-6">
+            <i data-lucide="heart" class="w-3.5 h-3.5 text-[#ff003c] fill-[#ff003c]"></i>
+            <span id="reason-badge">Reason #1 of 100</span>
+          </div>
+
+          <div class="min-h-[120px] flex items-center justify-center px-2">
+            <p id="reason-text" class="font-bengali text-2xl sm:text-3xl font-semibold text-white leading-relaxed transition-opacity duration-300"></p>
+          </div>
+
+          <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden my-7">
+            <div id="reason-progress" class="h-full bg-gradient-to-r from-[#ff003c] to-amber-400 transition-all duration-300" style="width: 1%;"></div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button onclick="prevReason()" class="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-sm font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i> Previous
+            </button>
+            <button onclick="nextReason()" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff003c] to-[#c4002e] text-white text-sm font-semibold shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:scale-105 active:scale-95 flex items-center gap-2 transition">
+              <i data-lucide="heart" class="w-4 h-4 fill-white"></i> Next Reason
+            </button>
+            <button onclick="randomReason()" class="px-4 py-2.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-200 text-sm font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="shuffle" class="w-4 h-4"></i> Random
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. ROMANTIC VINYL MUSIC PLAYER -->
+    <section id="music" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10">
+          <p class="text-xs uppercase tracking-[0.28em] text-[#ff003c] font-semibold mb-2">Melody of Our Hearts</p>
+          <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-2">Romantic Serenade</h2>
+          <p class="text-rose-200/75 text-sm">Press play for a soothing melody dedicated to Rimjhim</p>
+        </div>
+
+        <div class="rounded-3xl bg-gradient-to-br from-[#17040a] to-[#090204] border border-[#ff003c]/45 p-6 sm:p-9 shadow-[0_0_40px_rgba(255,0,60,0.2)]">
+          <div class="flex flex-col sm:flex-row items-center gap-7">
+            <!-- Vinyl Record -->
+            <div class="relative w-36 h-36 sm:w-44 sm:h-44 shrink-0 flex items-center justify-center">
+              <div id="vinyl-disc" class="w-full h-full rounded-full bg-gradient-to-br from-neutral-900 via-black to-neutral-800 border-4 border-[#ff003c]/50 shadow-[0_0_25px_rgba(255,0,60,0.35)] flex items-center justify-center relative">
+                <div class="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center">
+                  <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#ff003c]">
+                    <img id="vinyl-cover" src="https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png" alt="Album Artwork" class="w-full h-full object-cover" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex-1 w-full text-center sm:text-left">
+              <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                <i data-lucide="music" class="w-4 h-4 text-[#ff003c]"></i>
+                <span id="track-number-label" class="text-xs uppercase tracking-widest text-rose-300/80">Track 1 of 3</span>
+              </div>
+
+              <h3 id="track-title" class="text-xl sm:text-2xl font-bold text-white mb-1">Amar Priyo Pakhi (Piano Serenade)</h3>
+              <p id="track-artist" class="text-sm text-rose-200/75 mb-4">For Rimjhim — Mr. Han</p>
+
+              <p id="playing-banner" class="hidden text-xs text-amber-200 bg-[#ff003c]/15 border border-[#ff003c]/30 rounded-xl px-3 py-1.5 mb-4">
+                ❤️ Every note whispers how much Mr. Han loves you, Rimjhim...
+              </p>
+
+              <!-- Progress Bar -->
+              <div class="mb-4">
+                <input id="music-progress" type="range" min="0" max="185" value="0" aria-label="Song Progress" class="w-full accent-[#ff003c] cursor-pointer h-1.5 bg-white/15 rounded-lg" />
+                <div class="flex justify-between text-[11px] text-rose-200/60 mt-1 tabular-nums">
+                  <span id="time-current">0:00</span>
+                  <span id="time-total">3:05</span>
+                </div>
+              </div>
+
+              <!-- Buttons & Volume -->
+              <div class="flex flex-wrap items-center justify-center sm:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <button onclick="prevTrack()" aria-label="Previous Track" class="p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition">
+                    <i data-lucide="skip-back" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="togglePlay()" id="play-pause-btn" aria-label="Play or Pause" class="w-12 h-12 rounded-full bg-[#ff003c] hover:bg-[#e00035] text-white flex items-center justify-center shadow-[0_0_20px_#ff003c] hover:scale-105 transition">
+                    <i data-lucide="play" class="w-5 h-5 ml-0.5"></i>
+                  </button>
+                  <button onclick="nextTrack()" aria-label="Next Track" class="p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition">
+                    <i data-lucide="skip-forward" class="w-4 h-4"></i>
+                  </button>
+                </div>
+
+                <div class="flex items-center gap-2.5">
+                  <button onclick="toggleMute()" id="mute-btn" aria-label="Mute or Unmute" class="p-2 rounded-lg bg-white/5 text-rose-200 hover:text-white">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                  </button>
+                  <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.75" aria-label="Volume" class="w-20 accent-[#ff003c] cursor-pointer h-1.5 bg-white/15 rounded-lg" />
+                  <button onclick="toggleMiniBar()" id="mini-bar-toggle" class="text-[11px] px-2.5 py-1 rounded-full border bg-[#ff003c]/20 border-[#ff003c]/50 text-rose-100 transition">
+                    Mini Bar: On
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SURPRISE SECTION -->
+    <section id="surprise" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-3xl mx-auto text-center rounded-3xl bg-gradient-to-br from-[#23050f] via-[#0e0206] to-[#23050f] border border-[#ff003c]/55 p-9 sm:p-14 shadow-[0_0_55px_rgba(255,0,60,0.28)]">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-[#ff003c]/20 border border-[#ff003c] flex items-center justify-center mb-5 shadow-[0_0_25px_rgba(255,0,60,0.5)] animate-heartbeat">
+          <i data-lucide="gift" class="w-8 h-8 text-[#ff003c]"></i>
+        </div>
+
+        <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">A Special Surprise For My Pakhi</h2>
+        <p class="text-rose-200/80 text-sm sm:text-base max-w-lg mx-auto mb-8">
+          Close your eyes for a second, make a wish, and tap the button below to unlock a magical moment created just for you.
+        </p>
+
+        <button onclick="openSurpriseModal()" class="px-8 py-4 rounded-full bg-gradient-to-r from-[#ff003c] via-rose-600 to-amber-500 text-white font-bold text-base sm:text-lg shadow-[0_0_35px_rgba(255,0,60,0.75)] hover:scale-105 active:scale-95 transition-all">
+          Open Your Surprise ❤️
+        </button>
+      </div>
+    </section>
+
+    <!-- 9. PASSWORD PROTECTED SECRET PAGE -->
+    <section id="secret" class="py-20 px-4 sm:px-6 reveal">
+      <div class="max-w-2xl mx-auto">
+        <div class="rounded-3xl bg-gradient-to-b from-[#16040a] to-[#080204] border border-[#ff003c]/50 p-7 sm:p-11 text-center shadow-[0_0_45px_rgba(255,0,60,0.22)]">
+          <div id="secret-lock-badge" class="w-16 h-16 mx-auto rounded-full bg-[#ff003c]/15 border border-[#ff003c]/60 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(255,0,60,0.4)]">
+            <i data-lucide="lock" class="w-7 h-7 text-[#ff003c]"></i>
+          </div>
+
+          <h2 class="font-cursive text-4xl sm:text-5xl text-white mb-2">Secret Sanctuary for Rimjhim</h2>
+
+          <!-- Locked View -->
+          <div id="secret-locked-view">
+            <p class="text-rose-200/75 text-sm mb-2">Enter our secret key to unlock Mr. Han&apos;s private vow</p>
+            <p id="secret-hint-text" class="text-xs text-amber-300/80 mb-6">Hint: Our special wedding date (DDMMYYYY) ❤️</p>
+
+            <form onsubmit="handleUnlockSecret(event)" class="max-w-sm mx-auto space-y-3.5">
+              <input id="secret-password-input" type="password" placeholder="Enter secret password..." class="w-full px-4 py-3 rounded-xl bg-black/70 border border-[#ff003c]/45 text-center text-white placeholder:text-rose-300/40 focus:outline-none focus:border-[#ff003c]" />
+              <p id="secret-error-msg" class="hidden text-xs text-[#ff4d79]">Not quite, my love! Try our wedding date: 06012026 ❤️</p>
+              <button type="submit" class="w-full py-3 rounded-xl bg-[#ff003c] hover:bg-[#dc0034] text-white font-semibold shadow-[0_0_20px_rgba(255,0,60,0.5)] transition">
+                Unlock My Heart 🔐
+              </button>
+            </form>
+          </div>
+
+          <!-- Unlocked View -->
+          <div id="secret-unlocked-view" class="hidden mt-6 text-left rounded-2xl bg-black/60 border border-amber-400/40 p-6 sm:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Unlocked For My Wife Only ❤️</span>
+              <button onclick="lockSecretAgain()" class="text-xs text-rose-300/70 hover:text-white">Lock Again</button>
+            </div>
+
+            <p class="font-bengali text-xl sm:text-2xl text-rose-100 leading-relaxed mb-4">
+              &ldquo;আমার প্রিয় রিমঝিম, পৃথিবীর সব কোলাহলের মাঝে তুমি আমার একমাত্র নীরব শান্তি। যতদিন আমার বুকে নিঃশ্বাস থাকবে, ততদিন আমি তোমাকে ঠিক এভাবেই আগলে রাখবো।&rdquo;
+            </p>
+            <p class="text-sm text-rose-200/85 leading-relaxed mb-5">
+              No matter how many years pass, I promise to always hold your hand, listen to your heart, celebrate your smiles, and love you deeper every single day.
+            </p>
+            <p class="font-cursive text-3xl text-amber-200 text-right">Eternally Yours, Mr. Han ♾️</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. FOREVER TOGETHER ENDING SECTION -->
+    <section class="py-20 px-4 sm:px-6 text-center reveal">
+      <div class="max-w-2xl mx-auto">
+        <div class="inline-flex items-center justify-center gap-3 mb-4">
+          <i data-lucide="heart" class="w-7 h-7 text-[#ff003c] fill-[#ff003c] animate-heartbeat"></i>
+          <i data-lucide="infinity" class="w-9 h-9 text-amber-300"></i>
+          <i data-lucide="heart" class="w-7 h-7 text-[#ff003c] fill-[#ff003c] animate-heartbeat"></i>
+        </div>
+        <h2 class="font-cursive text-5xl sm:text-6xl text-white mb-3">Forever Together</h2>
+        <p class="font-bengali text-xl text-rose-200 mb-3">তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরদিন।</p>
+        <p class="text-sm text-rose-300/75">Dedicated exclusively to Rimjhim ❤️ From Mr. Han ❤️ Forever: My Pakhi ♾️</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 13. ROMANTIC FOOTER -->
+  <footer class="relative z-20 border-t border-[#ff003c]/30 bg-[#050505]/90 backdrop-blur-lg py-10 px-4 text-center">
+    <p class="font-cursive text-3xl sm:text-4xl text-white mb-2">Made with endless love by Mr. Han ❤️</p>
+    <p class="text-sm text-rose-200/80 tracking-wide">Rimjhim &amp; Mr. Han — Together Forever ♾️</p>
+  </footer>
+
+  <!-- Floating Mini Music Bar -->
+  <div id="mini-music-bar" class="fixed bottom-4 right-4 z-40 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#120308]/90 backdrop-blur-xl border border-[#ff003c]/55 shadow-[0_0_25px_rgba(255,0,60,0.4)]">
+    <button onclick="togglePlay()" id="mini-play-btn" aria-label="Play or Pause Music" class="w-8 h-8 rounded-full bg-[#ff003c] text-white flex items-center justify-center">
+      <i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>
+    </button>
+    <span id="mini-track-title" class="max-w-[145px] truncate text-xs text-rose-100 font-medium">Amar Priyo Pakhi</span>
+  </div>
+
+  <!-- Fullscreen Swipeable Lightbox Modal -->
+  <div id="lightbox-modal" onclick="closeLightbox()" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex-col items-center justify-center p-4">
+    <button onclick="closeLightbox()" aria-label="Close Lightbox" class="absolute top-5 right-5 p-2.5 rounded-full bg-white/10 hover:bg-[#ff003c] text-white transition">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+
+    <div onclick="event.stopPropagation()" class="relative max-w-4xl w-full flex flex-col items-center">
+      <img id="lightbox-img" src="" alt="Memory" class="max-h-[75vh] w-auto max-w-full object-contain rounded-2xl border border-[#ff003c]/50 shadow-[0_0_40px_rgba(255,0,60,0.35)]" />
+      <div class="mt-4 text-center">
+        <p id="lightbox-caption" class="text-xl font-bold text-white"></p>
+        <p id="lightbox-subcaption" class="text-sm text-rose-200/80 mt-1"></p>
+        <p id="lightbox-counter" class="text-xs text-rose-400/70 mt-1">1 / 5 • Swipe or use arrows</p>
+      </div>
+      <div class="flex items-center gap-4 mt-4">
+        <button onclick="prevLightbox()" aria-label="Previous Photo" class="p-3 rounded-full bg-white/10 hover:bg-[#ff003c] text-white transition">
+          <i data-lucide="chevron-left" class="w-5 h-5"></i>
+        </button>
+        <button onclick="nextLightbox()" aria-label="Next Photo" class="p-3 rounded-full bg-white/10 hover:bg-[#ff003c] text-white transition">
+          <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cinematic Surprise Modal -->
+  <div id="surprise-modal" class="hidden fixed inset-0 z-50 bg-[#030102]/95 backdrop-blur-2xl items-center justify-center p-4 overflow-y-auto">
+    <div id="surprise-particles" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+    <div class="relative z-10 max-w-2xl w-full rounded-3xl bg-gradient-to-b from-[#1e040d] to-[#080103] border-2 border-[#ff003c]/70 p-7 sm:p-11 text-center shadow-[0_0_80px_rgba(255,0,60,0.5)]">
+      <button onclick="closeSurpriseModal()" aria-label="Close Surprise" class="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-[#ff003c] text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Blooming Rose Bouquet SVG -->
+      <div class="relative w-44 h-44 mx-auto my-3 flex items-center justify-center animate-float">
+        <div class="absolute inset-0 rounded-full bg-[#ff003c]/25 blur-2xl animate-pulse"></div>
+        <svg viewBox="0 0 200 200" class="w-full h-full relative z-10">
+          <path d="M100 185 L100 95" stroke="#15803d" stroke-width="4" stroke-linecap="round" />
+          <path d="M100 185 L68 108" stroke="#166534" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M100 185 L132 108" stroke="#166534" stroke-width="3.5" stroke-linecap="round" />
+          <ellipse cx="82" cy="142" rx="14" ry="7" transform="rotate(-30 82 142)" fill="#15803d" />
+          <ellipse cx="118" cy="142" rx="14" ry="7" transform="rotate(30 118 142)" fill="#15803d" />
+          <path d="M84 156 L116 156 L108 172 L92 172 Z" fill="#ffd700" opacity="0.9" />
+          <circle cx="100" cy="78" r="26" fill="#7f001e" /><circle cx="100" cy="78" r="19" fill="#cc0030" /><circle cx="100" cy="78" r="13" fill="#ff003c" /><circle cx="100" cy="78" r="6" fill="#ff7597" />
+          <circle cx="66" cy="102" r="21" fill="#7f001e" /><circle cx="66" cy="102" r="15" fill="#cc0030" /><circle cx="66" cy="102" r="10" fill="#ff003c" /><circle cx="66" cy="102" r="5" fill="#ff7597" />
+          <circle cx="134" cy="102" r="21" fill="#7f001e" /><circle cx="134" cy="102" r="15" fill="#cc0030" /><circle cx="134" cy="102" r="10" fill="#ff003c" /><circle cx="134" cy="102" r="5" fill="#ff7597" />
+        </svg>
+      </div>
+
+      <div class="space-y-5 mt-4">
+        <h3 id="surprise-line-1" class="font-serif-luxury text-2xl sm:text-4xl font-bold text-white leading-snug"></h3>
+        <p id="surprise-line-2" class="font-bengali text-xl sm:text-2xl font-semibold text-rose-200 opacity-0 transition-opacity duration-700">
+          তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরদিন।
+        </p>
+        <p id="surprise-line-3" class="font-cursive text-4xl sm:text-5xl text-amber-300 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)] opacity-0 transition-opacity duration-700 pt-2">
+          I Love You Forever, My Pakhi ❤️
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cute Affection Reaction Overlay (Hug Me / Kiss Me / I Love You) -->
+  <div id="reaction-toast" class="hidden fixed inset-0 z-50 pointer-events-none items-center justify-center p-4">
+    <div class="rounded-3xl bg-[#19040b]/95 border-2 border-[#ff003c] px-8 py-7 text-center shadow-[0_0_60px_rgba(255,0,60,0.75)]">
+      <div id="reaction-emoji" class="text-5xl mb-3">💖✨</div>
+      <p id="reaction-title" class="font-cursive text-4xl text-white mb-1"></p>
+      <p class="text-xs text-rose-200/80">Always &amp; Forever — Mr. Han ❤️</p>
+    </div>
+  </div>
+
+  <!-- Hidden Whisper Popup -->
+  <div id="whisper-modal" onclick="closeWhisperModal()" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="max-w-md w-full rounded-3xl bg-[#18040b] border border-amber-400/50 p-6 text-center shadow-[0_0_40px_rgba(255,0,60,0.45)]">
+      <i data-lucide="message-circle-heart" class="w-9 h-9 text-[#ff003c] mx-auto mb-3"></i>
+      <p class="text-base text-rose-100 leading-relaxed mb-4">
+        Secret Note: Even in a room full of art, I would still stare only at you, Rimjhim. — Mr. Han ❤️
+      </p>
+      <button onclick="closeWhisperModal()" class="px-5 py-2 rounded-full bg-[#ff003c] text-white text-xs font-semibold">
+        Keep In My Heart ❤️
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!--  CONFIGURATION & INTERACTIVE LOGIC (EASY TO CUSTOMIZE)                -->
+  <!-- ===================================================================== -->
+  <script>
+    const SITE_CONFIG = {
+      weddingDateISO: '2026-01-06T00:00:00',
+
+      // Secret Page Password (Configurable)
+      // Note: Frontend-only checks are for romantic surprise gating only, not server-grade security.
+      secretPassword: '06012026',
+
+      // Exact 5 Real Photos provided by Mr. Han
+      photos: [
+        {
+          url: 'https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png',
+          caption: 'My Favorite Person ❤️',
+          subCaption: 'Every glance at you feels like falling in love all over again.'
+        },
+        {
+          url: 'https://cdn.suipump.org/icons/07f7d686b0407b66130b82b34a453d29.png',
+          caption: 'Forever Together',
+          subCaption: 'Hand in hand through every season of life.'
+        },
+        {
+          url: 'https://cdn.suipump.org/icons/f9f702f556629b6e532ed1ef443f4374.png',
+          caption: 'My Beautiful Rimjhim',
+          subCaption: 'The brightest light in my universe.'
+        },
+        {
+          url: 'https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png',
+          caption: 'Our Precious Memories',
+          subCaption: 'Moments frozen in time that my heart treasures endlessly.'
+        },
+        {
+          url: 'https://cdn.suipump.org/icons/6b9abfefc44e06e3aca1effcde6fa84e.png',
+          caption: 'My Happiness ❤️',
+          subCaption: 'Where you are is where my home will always be.'
         }
-      }, [isEnvelopeOpen]);
+      ],
 
-      // Audio handler
-      useEffect(() => {
-        if (audioRef.current) {
-          audioRef.current.volume = volume;
-          if (isMusicPlaying) {
-            audioRef.current.play().catch(() => setIsMusicPlaying(false));
-          } else {
-            audioRef.current.pause();
-          }
+      // Add any direct .mp3 URL inside `url` to play your custom song
+      musicTracks: [
+        {
+          title: 'Amar Priyo Pakhi (Piano Serenade)',
+          artist: 'For Rimjhim — Mr. Han',
+          url: '',
+          durationSec: 185
+        },
+        {
+          title: 'Midnight Roses & Starlight',
+          artist: 'Mr. Han Romantic Collection',
+          url: '',
+          durationSec: 210
+        },
+        {
+          title: 'Since January 6, 2026',
+          artist: 'Forever Yours',
+          url: '',
+          durationSec: 196
         }
-      }, [isMusicPlaying, volume]);
+      ],
 
-      const toggleMusic = () => setIsMusicPlaying(!isMusicPlaying);
+      loveLetterText:
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। তোমাকে পাওয়া আমার জীবনের সবচেয়ে সুন্দর অনুভূতি। তোমার হাসি আমার শান্তি, তোমার ভালোবাসা আমার পৃথিবী। প্রতিটি দিন তোমাকে আরও বেশি ভালোবাসতে চাই। জীবনের প্রতিটি মুহূর্তে তোমার পাশে থাকতে চাই। তুমি শুধু আমার স্ত্রী নও, তুমি আমার সবচেয়ে প্রিয় মানুষ, আমার সুখ, আমার শান্তি এবং আমার চিরদিনের ভালোবাসা।',
 
-      // Secret unlock handler
-      const handleUnlockSecret = (e) => {
-        e.preventDefault();
-        if (secretPasscode.toLowerCase().trim() === 'rimjhim' || secretPasscode === '0106') {
-          setIsSecretUnlocked(true);
-          setSecretError(false);
+      timeline: [
+        {
+          phase: 'Chapter I',
+          dateLabel: 'The Spark',
+          title: 'Our Beginning',
+          description: 'The moment our paths crossed, my whole world quietly shifted. From our very first conversation, I knew my heart had found its home in you.',
+          photoUrl: 'https://cdn.suipump.org/icons/896c380124ff814fba95e77a4f1abf47.png',
+          highlight: false
+        },
+        {
+          phase: 'Chapter II',
+          dateLabel: 'Unforgettable Days',
+          title: 'Our Beautiful Memories',
+          description: 'Every laugh we shared, every late-night talk, and every quiet smile turned ordinary days into priceless treasures.',
+          photoUrl: 'https://cdn.suipump.org/icons/4e32f274b08f86b69cc276705773c204.png',
+          highlight: false
+        },
+        {
+          phase: 'Chapter III',
+          dateLabel: 'Heartbeats Closer',
+          title: 'Our Special Moments',
+          description: 'Through every little look and caring gesture, our bond grew deeper than words could ever express.',
+          photoUrl: 'https://cdn.suipump.org/icons/f9f702f556629b6e532ed1ef443f4374.png',
+          highlight: false
+        },
+        {
+          phase: 'Chapter IV',
+          dateLabel: 'Sacred Vows',
+          title: 'Our Wedding Day',
+          description: 'January 6, 2026 — The Beginning of Forever ❤️ The most magical day of my life, when you officially became my wife and my forever partner.',
+          photoUrl: 'https://cdn.suipump.org/icons/07f7d686b0407b66130b82b34a453d29.png',
+          highlight: true
+        },
+        {
+          phase: 'Chapter V',
+          dateLabel: 'Infinity & Beyond',
+          title: 'Our Forever Journey',
+          description: 'Every sunrise with you is a blessing. Today, tomorrow, and in every lifetime—I will always choose you, Rimjhim.',
+          photoUrl: 'https://cdn.suipump.org/icons/6b9abfefc44e06e3aca1effcde6fa84e.png',
+          highlight: false
+        }
+      ],
+
+      // All 100 Unique Bengali Romantic Reasons
+      reasons100: [
+        'তোমার হাসি আমার পৃথিবী সুন্দর করে।',
+        'তুমি আমার সবচেয়ে প্রিয় মানুষ।',
+        'তোমার সঙ্গে প্রতিটি মুহূর্ত অসাধারণ।',
+        'তোমার ভালোবাসা আমার শান্তি।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।',
+        'তোমার চোখের দিকে তাকালে আমি সব দুঃখ ভুলে যাই।',
+        'তোমার কণ্ঠস্বর আমার দিনের সবচেয়ে প্রিয় সুর।',
+        'তুমি আমার প্রতিটি সকালকে আলোকিত করো।',
+        'তোমার মায়াবী মুখটা দেখলে মন ভরে যায়।',
+        'তুমি আমাকে নিঃস্বার্থভাবে ভালোবাসো।',
+        'তোমার হাত ধরলে পৃথিবীর সব ভয় দূর হয়ে যায়।',
+        'তুমি আমার জীবনের প্রতিটি অপূর্ণতা পূর্ণ করেছো।',
+        'তোমার আদর আর যত্ন আমাকে নতুন করে বাঁচতে শেখায়।',
+        'তুমি আমার সেরা বন্ধু এবং জীবনসঙ্গী।',
+        'তোমার সরলতা আমার হৃদয় ছুঁয়ে যায়।',
+        'তুমি আমার কঠিন সময়ে সবচেয়ে বড় শক্তি।',
+        'তোমার হাসির শব্দ আমার কাছে সবচেয়ে মিষ্টি সংগীত।',
+        'তুমি আমার প্রতিটি স্বপ্নের নায়িকা।',
+        'তোমার উপস্থিতি আমার ঘরকে স্বর্গ বানিয়ে দেয়।',
+        'তুমি আমাকে যেমন আছি তেমনভাবেই ভালোবাসো।',
+        'তোমার চোখের মায়ায় আমি বারবার প্রেমে পড়ি।',
+        'তুমি আমার জীবনের সবচেয়ে দামি রত্ন।',
+        'তোমার প্রতিটি কথা আমার হৃদয়ে গেঁথে থাকে।',
+        'তুমি আমার ক্লান্ত দিনের একমাত্র বিশ্রাম।',
+        'তোমার ভালোবাসা আমাকে একজন ভালো মানুষ বানিয়েছে।',
+        'তুমি আমার হৃদয়ের প্রতিটি স্পন্দনে আছো।',
+        'তোমার অভিমানও আমার কাছে ভীষণ মিষ্টি লাগে।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর অধ্যায়।',
+        'তোমার সঙ্গে কাটানো প্রতিটি সেকেন্ড আমার কাছে অমূল্য।',
+        'তুমি আমার অন্ধকার জীবনের উজ্জ্বল নক্ষত্র।',
+        'তোমার স্পর্শে আমি অপার শান্তি খুঁজে পাই।',
+        'তুমি আমার সব প্রার্থনার সবচেয়ে সুন্দর উত্তর।',
+        'তোমার মনটা আকাশের মতো বিশাল ও পবিত্র।',
+        'তুমি আমার পাশে থাকলে কোনো কিছুই অসম্ভব মনে হয় না।',
+        'তোমার ছোট ছোট আনন্দগুলো আমাকে ভীষণ সুখী করে।',
+        'তুমি আমার জীবনের প্রতিটি রঙের উৎস।',
+        'তোমার ভালোবাসার গভীরতা আমাকে মুগ্ধ করে।',
+        'তুমি আমার একমাত্র ঠিকানা, যেখানে আমি বারবার ফিরে আসি।',
+        'তোমার মুখের এক চিলতে হাসি আমার সব ক্লান্তি মুছে দেয়।',
+        'তুমি আমার হৃদয়ের রানী, আমার প্রিয় পাখি।',
+        'তোমার সঙ্গে ভবিষ্যতের প্রতিটি দিন কল্পনা করতে ভালো লাগে।',
+        'তুমি আমাকে বুঝতে পারো কোনো কথা না বললেও।',
+        'তোমার চোখের জলে আমার হৃদয় কেঁদে ওঠে।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর কবিতা।',
+        'তোমার ভালোবাসা আমাকে প্রতিদিন নতুনভাবে অনুপ্রাণিত করে।',
+        'তুমি আমার সব সুখের মূল কারণ।',
+        'তোমার কপালে চুমু খেলে মনে হয় পুরো পৃথিবী জয় করেছি।',
+        'তুমি আমার জীবনের সবচেয়ে নিরাপদ আশ্রয়।',
+        'তোমার নামটা উচ্চারণ করলেই বুকের ভেতর ভালোবাসা জেগে ওঠে।',
+        'তুমি আমার প্রতিটি নিঃশ্বাসের সঙ্গে মিশে আছো।',
+        'তোমার কোমল হৃদয় আমাকে মুগ্ধ করে।',
+        'তুমি আমার জীবনের সবচেয়ে মিষ্টি অভ্যাস।',
+        'তোমার সঙ্গে বৃষ্টি ভেজার স্বপ্ন আমার ভীষণ প্রিয়।',
+        'তুমি আমার হৃদয়ের প্রতিটি কোণ ভালোবাসায় ভরিয়ে দিয়েছো।',
+        'তোমার চোখের চাহনিতে আমি হারিয়ে যেতে ভালোবাসি।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর বাস্তবতা।',
+        'তোমার ভালোবাসা সময়ের সাথে আরও গভীর হয়।',
+        'তুমি আমার সব রাগ এক নিমেষেই গলিয়ে দাও।',
+        'তোমার সঙ্গে একসাথে বুড়ো হওয়ার স্বপ্ন দেখি।',
+        'তুমি আমার জীবনের সবচেয়ে বড় আশীর্বাদ।',
+        'তোমার প্রতিটি ছোট যত্ন আমাকে ভীষণ আবেগপ্রবণ করে।',
+        'তুমি আমার হৃদয়ের একমাত্র ভালোবাসার মানুষ।',
+        'তোমার হাসিমুখ দেখলে মনে হয় জীবনটা সার্থক।',
+        'তুমি আমার মনের সব গোপন কথার একমাত্র সাথী।',
+        'তোমার ভালোবাসায় কোনো শর্ত নেই, আছে শুধু মায়া।',
+        'তুমি আমার জীবনের প্রতিটি মুহূর্তকে উৎসব বানিয়ে দাও।',
+        'তোমার পাশে হাঁটলে পথ কখনো শেষ হোক তা চাই না।',
+        'তুমি আমার হৃদয়ের সবচেয়ে কোমল অনুভূতি।',
+        'তোমার ভালোবাসা আমাকে পৃথিবীর সবচেয়ে ধনী মানুষ বানিয়েছে।',
+        'তুমি আমার প্রতিটি রাতের শান্তির ঘুম।',
+        'তোমার চোখে আমি আমার পুরো পৃথিবী দেখতে পাই।',
+        'তুমি আমার জীবনের সবচেয়ে প্রিয় গল্প।',
+        'তোমার হাসির জাদুতে আমি প্রতিদিন নতুন করে প্রেমে পড়ি।',
+        'তুমি আমার সব দুঃখ নিজের কাঁধে তুলে নিতে চাও।',
+        'তোমার ভালোবাসা আমাকে জীবনের মানে শিখিয়েছে।',
+        'তুমি আমার মনের আকাশের একমাত্র চাঁদ।',
+        'তোমার সঙ্গে কাটানো নীরব মুহূর্তগুলোও কথা বলে।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর সুর।',
+        'তোমার পবিত্র ভালোবাসা আমার আত্মাকে ছুঁয়ে যায়।',
+        'তুমি আমার সব স্বপ্নের চেয়েও অনেক বেশি সুন্দর।',
+        'তোমার হাতের ছোঁয়ায় আমার সব অস্থিরতা থেমে যায়।',
+        'তুমি আমার জীবনের প্রতিটি দিনের সেরা অংশ।',
+        'তোমার জন্যই আমার পৃথিবী এতটা রঙিন।',
+        'তুমি আমার হৃদয়ের চিরন্তন বসন্ত।',
+        'তোমার ভালোবাসা আমাকে কখনো একা হতে দেয় না।',
+        'তুমি আমার জীবনের সবচেয়ে সুন্দর সিদ্ধান্ত।',
+        'তোমার মিষ্টি খুনসুটি আমার দিনটাকে আনন্দে ভরিয়ে দেয়।',
+        'তুমি আমার আত্মার অর্ধেক, আমার পরিপূর্ণতা।',
+        'তোমার প্রতিটি হাসিতে আমার নতুন জন্ম হয়।',
+        'তুমি আমার জীবনের সবচেয়ে বড় গর্ব।',
+        'তোমার ভালোবাসার ছায়ায় আমি চিরকাল থাকতে চাই।',
+        'তুমি আমার সব ভালোবাসার শুরু এবং শেষ।',
+        'তোমার মুখের দিকে তাকিয়ে আমি অনন্তকাল কাটিয়ে দিতে পারি।',
+        'তুমি আমার হৃদয়ের সবচেয়ে গভীর বিশ্বাস।',
+        'তোমার ভালোবাসা আমাকে প্রতিদিন আরও ভালো স্বামী হতে শেখায়।',
+        'তুমি আমার জীবনের প্রতিটি ঋতুর সেরা উপহার।',
+        'তোমার সাথে কাটানো প্রতিটি দিন আমার কাছে ভালোবাসা দিবস।',
+        'তুমি আমার প্রাণ, আমার জান, আমার প্রিয় রিমঝিম।',
+        'জানুয়ারি ৬, ২০২৬ থেকে আমার জীবনের সেরা যাত্রা শুরু হয়েছে তোমার সাথে।',
+        'প্রতিটি জন্মে আমি শুধু তোমাকেই আমার স্ত্রী হিসেবে চাই, আমার প্রিয় পাখি।'
+      ]
+    };
+
+    /* --------------------------------------------------------------------- */
+    /*  INITIALIZE PAGE & RENDER DYNAMIC GALLERIES                           */
+    /* --------------------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+
+      // Hide Loading Screen
+      setTimeout(() => {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 750);
+        }
+      }, 1400);
+
+      spawnAmbientPetals();
+      renderHeroStrip();
+      renderMemoriesGrid();
+      renderTimeline();
+      initReasons();
+      startLiveCounter();
+      initScrollSpyAndReveal();
+      initDesktopHeartCursor();
+    });
+
+    /* Ambient Rose Petals & Hearts */
+    function spawnAmbientPetals() {
+      const container = document.getElementById('ambient-container');
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.className = 'ambient-particle';
+        el.style.left = `${(i * 5.7) % 100}%`;
+        el.style.animationDuration = `${11 + (i % 7) * 2}s`;
+        el.style.animationDelay = `${(i * 0.85) % 10}s`;
+        const size = 10 + (i % 4) * 4;
+        if (i % 3 === 0) {
+          el.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="rgba(255,0,60,0.35)" stroke="#ff003c" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
         } else {
-          setSecretError(true);
+          el.innerHTML = `<div style="width:${size}px;height:${size * 1.35}px;border-radius:999px 0 999px 0;background:linear-gradient(135deg,rgba(255,0,60,0.6),rgba(112,0,26,0.4));box-shadow:0 0 10px rgba(255,0,60,0.35);"></div>`;
         }
-      };
-
-      // Lucide icons initialization effect
-      useEffect(() => {
-        if (window.lucide) {
-          window.lucide.createIcons();
-        }
-      }, [activeTab, isEnvelopeOpen, isSurpriseActive, isSecretUnlocked, activeModal]);
-
-      return React.createElement('div', { className: 'min-h-screen bg-[#050505] text-white relative overflow-x-hidden' },
-        
-        /* Background Audio */
-        React.createElement('audio', {
-          ref: audioRef,
-          loop: true,
-          src: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=romantic-guitars-112133.mp3'
-        }),
-
-        /* Floating Petals & Hearts */
-        React.createElement('div', { className: 'fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30' },
-          [...Array(12)].map((_, i) => 
-            React.createElement('div', {
-              key: i,
-              className: 'absolute animate-bounce text-[#ff003c]',
-              style: {
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                fontSize: `${Math.random() * 1.5 + 0.8}rem`,
-                animationDuration: `${Math.random() * 6 + 4}s`,
-                animationDelay: `${Math.random() * 3}s`
-              }
-            }, i % 2 === 0 ? '❤️' : '🌹')
-          )
-        ),
-
-        /* NAVBAR */
-        React.createElement('nav', { className: 'sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-md border-b border-[#ff003c]/20 px-4 py-3' },
-          React.createElement('div', { className: 'max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4' },
-            React.createElement('div', { 
-              className: 'flex items-center gap-2 cursor-pointer',
-              onClick: () => setActiveTab('home')
-            },
-              React.createElement('div', { className: 'w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff003c] to-pink-500 flex items-center justify-center shadow-[0_0_15px_#ff003c]' },
-                React.createElement('i', { 'data-lucide': 'heart', className: 'w-5 h-5 text-white fill-white' })
-              ),
-              React.createElement('div', null,
-                React.createElement('h1', { className: 'text-lg font-bold tracking-wider bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'Rimjhim & Han'),
-                React.createElement('p', { className: 'text-[10px] text-gray-400 tracking-widest uppercase' }, 'Forever Love Gift')
-              )
-            ),
-
-            /* Nav Tabs */
-            React.createElement('div', { className: 'flex items-center gap-1 sm:gap-2 overflow-x-auto py-1 no-scrollbar' },
-              [
-                { id: 'home', label: 'Home', icon: 'sparkles' },
-                { id: 'letter', label: 'Love Letter', icon: 'mail' },
-                { id: 'memories', label: 'Memories', icon: 'image' },
-                { id: 'story', label: 'Our Story', icon: 'book-open' },
-                { id: 'reasons', label: '100 Reasons', icon: 'list-ordered' },
-                { id: 'music', label: 'Music', icon: 'music' },
-                { id: 'surprise', label: 'Surprise', icon: 'gift' },
-                { id: 'secret', label: 'Secret', icon: 'lock' },
-              ].map((tab) => {
-                const isActive = activeTab === tab.id;
-                return React.createElement('button', {
-                  key: tab.id,
-                  onClick: () => setActiveTab(tab.id),
-                  className: `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 relative whitespace-nowrap ${
-                    isActive ? 'bg-[#ff003c] text-white shadow-[0_0_20px_rgba(255,0,60,0.6)]' : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`
-                },
-                  React.createElement('i', { 'data-lucide': tab.icon, className: 'w-3.5 h-3.5' }),
-                  React.createElement('span', null, tab.label)
-                );
-              })
-            ),
-
-            /* Quick Music Toggle */
-            React.createElement('button', {
-              onClick: toggleMusic,
-              className: `p-2.5 rounded-full border transition-all ${
-                isMusicPlaying ? 'border-[#ff003c] bg-[#ff003c]/20 text-[#ff003c] shadow-[0_0_15px_#ff003c]' : 'border-white/10 text-gray-400 hover:text-white'
-              }`,
-              title: isMusicPlaying ? "Pause Music" : "Play Music"
-            },
-              React.createElement('i', { 'data-lucide': isMusicPlaying ? 'volume-2' : 'volume-x', className: 'w-4 h-4' })
-            )
-          )
-        ),
-
-        /* MAIN BODY */
-        React.createElement('main', { className: 'max-w-7xl mx-auto px-4 py-8 relative z-10' },
-
-          /* HOME TAB */
-          activeTab === 'home' && React.createElement('div', { className: 'space-y-16' },
-            React.createElement('div', { className: 'relative rounded-3xl p-8 sm:p-12 overflow-hidden border border-[#ff003c]/30 bg-gradient-to-b from-[#120306] via-[#050505] to-[#050505] shadow-[0_0_50px_rgba(255,0,60,0.15)]' },
-              React.createElement('div', { className: 'grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10' },
-                React.createElement('div', { className: 'space-y-6 text-center lg:text-left' },
-                  React.createElement('div', { className: 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ff003c]/10 border border-[#ff003c]/30 text-[#ff003c] text-xs font-semibold tracking-wider uppercase' },
-                    React.createElement('i', { 'data-lucide': 'flame', className: 'w-3.5 h-3.5' }), ' A Dedicated Love Gift for My Wife'
-                  ),
-                  React.createElement('h1', { className: 'text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight' },
-                    'To My Beloved Wife ',
-                    React.createElement('br', null),
-                    React.createElement('span', { className: 'bg-gradient-to-r from-[#ff003c] via-pink-500 to-red-400 bg-clip-text text-transparent' }, 'Rimjhim ❤️')
-                  ),
-                  React.createElement('p', { className: 'text-lg sm:text-xl text-gray-300 font-medium italic' }, '"তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার।"'),
-                  React.createElement('p', { className: 'text-sm sm:text-base text-gray-400' }, 'You are my favorite person in this entire world.'),
-                  React.createElement('div', { className: 'pt-2 text-sm text-[#ff003c] font-semibold' }, 'From your forever lover, Mr. Han ❤️'),
-                  
-                  React.createElement('div', { className: 'flex flex-wrap gap-4 justify-center lg:justify-start pt-4' },
-                    React.createElement('button', {
-                      onClick: () => setActiveTab('letter'),
-                      className: 'px-6 py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] hover:shadow-[0_0_30px_rgba(255,0,60,0.8)] transition-all flex items-center gap-2'
-                    },
-                      React.createElement('i', { 'data-lucide': 'mail', className: 'w-4 h-4' }), ' Open My Love Letter 💌'
-                    ),
-                    React.createElement('button', {
-                      onClick: () => setActiveTab('memories'),
-                      className: 'px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition-all flex items-center gap-2'
-                    },
-                      React.createElement('i', { 'data-lucide': 'image', className: 'w-4 h-4' }), ' Our Memories ❤️'
-                    ),
-                    React.createElement('button', {
-                      onClick: () => setActiveTab('surprise'),
-                      className: 'px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(244,63,94,0.4)] transition-all flex items-center gap-2'
-                    },
-                      React.createElement('i', { 'data-lucide': 'gift', className: 'w-4 h-4' }), ' A Surprise for You 🎁'
-                    )
-                  )
-                ),
-
-                React.createElement('div', { className: 'relative flex justify-center' },
-                  React.createElement('div', { className: 'w-72 sm:w-80 h-96 sm:h-[420px] rounded-3xl overflow-hidden border-2 border-[#ff003c]/40 shadow-[0_0_40px_rgba(255,0,60,0.4)] relative bg-[#0a0a0a]' },
-                    React.createElement('img', { src: photos[0].url, alt: 'Rimjhim & Mr. Han', className: 'w-full h-full object-cover' }),
-                    React.createElement('div', { className: 'absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80' }),
-                    React.createElement('div', { className: 'absolute bottom-6 left-6 right-6 text-center' },
-                      React.createElement('div', { className: 'inline-block p-2 rounded-full bg-[#ff003c]/30 backdrop-blur-md mb-2 border border-[#ff003c]/50' },
-                        React.createElement('i', { 'data-lucide': 'heart', className: 'w-6 h-6 text-[#ff003c] fill-[#ff003c]' })
-                      ),
-                      React.createElement('h3', { className: 'text-xl font-bold text-white' }, 'Rimjhim & Mr. Han'),
-                      React.createElement('p', { className: 'text-xs text-gray-300 mt-1' }, 'Together Forever ♾️')
-                    )
-                  )
-                )
-              )
-            ),
-
-            /* Live Counter */
-            React.createElement('div', { className: 'rounded-3xl p-8 bg-gradient-to-r from-[#120306] via-[#0b0406] to-[#120306] border border-[#ff003c]/30 shadow-[0_0_30px_rgba(255,0,60,0.15)] text-center relative' },
-              React.createElement('div', { className: 'relative z-10 space-y-4' },
-                React.createElement('div', { className: 'inline-flex p-3 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 text-[#ff003c] mb-2 shadow-[0_0_20px_#ff003c]' },
-                  React.createElement('i', { 'data-lucide': 'heart', className: 'w-8 h-8 fill-[#ff003c]' })
-                ),
-                React.createElement('h2', { className: 'text-2xl sm:text-3xl font-extrabold tracking-tight' }, 'Together Forever ❤️'),
-                React.createElement('p', { className: 'text-sm text-gray-400' }, 'Since January 6, 2026 ❤️'),
-                React.createElement('div', { className: 'grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto pt-4' },
-                  [
-                    { label: 'Days', value: timeLeft.days },
-                    { label: 'Hours', value: timeLeft.hours },
-                    { label: 'Minutes', value: timeLeft.minutes },
-                    { label: 'Seconds', value: timeLeft.seconds },
-                  ].map((item, idx) => 
-                    React.createElement('div', { key: idx, className: 'bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-[0_0_15px_rgba(255,0,60,0.1)]' },
-                      React.createElement('div', { className: 'text-3xl sm:text-4xl font-black text-[#ff003c] font-mono' }, item.value),
-                      React.createElement('div', { className: 'text-xs uppercase tracking-wider text-gray-400 mt-1 font-semibold' }, item.label)
-                    )
-                  )
-                )
-              )
-            ),
-
-            /* Quick Interactive Cards */
-            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-6' },
-              React.createElement('div', {
-                onClick: () => setActiveModal('hug'),
-                className: 'p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer text-center space-y-3 shadow-lg'
-              },
-                React.createElement('div', { className: 'w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-2xl' }, '🤗'),
-                React.createElement('h3', { className: 'text-lg font-bold' }, 'Hug Me'),
-                React.createElement('p', { className: 'text-xs text-gray-400' }, 'Click to send a warm cozy hug straight to Mr. Han\'s arms.')
-              ),
-              React.createElement('div', {
-                onClick: () => setActiveModal('kiss'),
-                className: 'p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer text-center space-y-3 shadow-lg'
-              },
-                React.createElement('div', { className: 'w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-2xl' }, '😘'),
-                React.createElement('h3', { className: 'text-lg font-bold' }, 'Kiss Me'),
-                React.createElement('p', { className: 'text-xs text-gray-400' }, 'Send a sweet flying kiss filled with endless affection.')
-              ),
-              React.createElement('div', {
-                onClick: () => setHeartClicks(prev => prev + 1),
-                className: 'p-6 rounded-3xl bg-[#0a0a0a] border border-white/10 hover:border-[#ff003c] transition-all cursor-pointer text-center space-y-3 shadow-lg'
-              },
-                React.createElement('div', { className: 'w-12 h-12 rounded-2xl bg-[#ff003c]/10 border border-[#ff003c]/30 flex items-center justify-center mx-auto text-2xl' }, '❤️'),
-                React.createElement('h3', { className: 'text-lg font-bold' }, `Tap For Love (${heartClicks})`),
-                React.createElement('p', { className: 'text-xs text-gray-400' }, 'Click to shower hearts for Rimjhim & Mr. Han.')
-              )
-            )
-          ),
-
-          /* LOVE LETTER TAB */
-          activeTab === 'letter' && React.createElement('div', { className: 'max-w-3xl mx-auto space-y-8' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'A Love Letter For Rimjhim 💌'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'Written with pure soul and eternal devotion by Mr. Han.')
-            ),
-            !isEnvelopeOpen ? React.createElement('div', { className: 'flex flex-col items-center justify-center py-12' },
-              React.createElement('div', {
-                onClick: () => setIsEnvelopeOpen(true),
-                className: 'w-72 sm:w-80 h-48 sm:h-56 bg-gradient-to-br from-rose-950 via-zinc-900 to-black border-2 border-[#ff003c] rounded-2xl shadow-[0_0_40px_rgba(255,0,60,0.5)] flex flex-col items-center justify-center cursor-pointer relative group hover:scale-105 transition-transform'
-              },
-                React.createElement('div', { className: 'absolute top-4 w-12 h-12 rounded-full bg-[#ff003c] border-2 border-white/40 flex items-center justify-center shadow-[0_0_20px_#ff003c]' },
-                  React.createElement('i', { 'data-lucide': 'heart', className: 'w-6 h-6 text-white fill-white' })
-                ),
-                React.createElement('i', { 'data-lucide': 'mail', className: 'w-12 h-12 text-[#ff003c] mt-6 mb-2' }),
-                React.createElement('p', { className: 'text-lg font-bold text-white tracking-wide' }, 'Click to Open Envelope 💌'),
-                React.createElement('p', { className: 'text-xs text-gray-400 mt-1' }, 'For My Dearest Rimjhim')
-              )
-            ) : React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/40 p-6 sm:p-10 rounded-3xl shadow-[0_0_50px_rgba(255,0,60,0.2)] relative' },
-              React.createElement('div', { className: 'absolute top-6 right-6' },
-                React.createElement('button', {
-                  onClick: () => setIsEnvelopeOpen(false),
-                  className: 'text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/20 transition-all'
-                }, 'Close Envelope')
-              ),
-              React.createElement('div', { className: 'space-y-6 pt-4' },
-                React.createElement('div', { className: 'flex items-center gap-3' },
-                  React.createElement('div', { className: 'w-10 h-10 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 flex items-center justify-center text-[#ff003c]' },
-                    React.createElement('i', { 'data-lucide': 'heart', className: 'w-5 h-5 fill-[#ff003c]' })
-                  ),
-                  React.createElement('div', null,
-                    React.createElement('h4', { className: 'font-bold text-white' }, 'From Mr. Han to Rimjhim'),
-                    React.createElement('p', { className: 'text-xs text-gray-400' }, 'January 6, 2026 & Forever')
-                  )
-                ),
-                React.createElement('div', { className: 'bg-black/40 border border-white/10 p-6 rounded-2xl' },
-                  React.createElement('p', { className: 'whitespace-pre-line text-gray-200 text-base sm:text-lg leading-relaxed font-serif' },
-                    typedText,
-                    React.createElement('span', { className: 'inline-block w-2 h-5 bg-[#ff003c] ml-1 animate-pulse' })
-                  )
-                )
-              )
-            )
-          ),
-
-          /* MEMORIES TAB */
-          activeTab === 'memories' && React.createElement('div', { className: 'space-y-8' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'Our Precious Memories 📸'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'Every single moment with you is a treasure, Rimjhim.')
-            ),
-            React.createElement('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' },
-              photos.map((photo, index) =>
-                React.createElement('div', {
-                  key: index,
-                  onClick: () => setSelectedImageIndex(index),
-                  className: 'group bg-[#0a0a0a] border border-[#ff003c]/30 rounded-3xl overflow-hidden shadow-[0_0_20px_rgba(255,0,60,0.1)] cursor-pointer relative hover:-translate-y-1 transition-transform'
-                },
-                  React.createElement('div', { className: 'h-72 overflow-hidden relative' },
-                    React.createElement('img', { src: photo.url, alt: photo.caption, loading: 'lazy', className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500' }),
-                    React.createElement('div', { className: 'absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70' }),
-                    React.createElement('div', { className: 'absolute bottom-4 left-4 right-4 flex items-center justify-between' },
-                      React.createElement('span', { className: 'text-sm font-bold text-white bg-black/60 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md' }, photo.caption),
-                      React.createElement('div', { className: 'w-8 h-8 rounded-full bg-[#ff003c] flex items-center justify-center text-white shadow-[0_0_10px_#ff003c]' },
-                        React.createElement('i', { 'data-lucide': 'eye', className: 'w-4 h-4' })
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          ),
-
-          /* OUR STORY TAB */
-          activeTab === 'story' && React.createElement('div', { className: 'max-w-4xl mx-auto space-y-12' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'Our Love Story 💑'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'The beautiful milestones of Mr. Han & Rimjhim.')
-            ),
-            React.createElement('div', { className: 'relative border-l-2 border-[#ff003c]/40 ml-4 sm:ml-8 space-y-12 py-4' },
-              [
-                { title: "Our Beginning", date: "When Our Paths Crossed", desc: "The magical moment when our eyes first met, and my heart instantly knew you were the one, Rimjhim.", img: photos[0].url },
-                { title: "Our Beautiful Memories", date: "Growing Closer Every Day", desc: "Countless late-night conversations, shared smiles, laughter, and building a world built entirely on love.", img: photos[1].url },
-                { title: "Our Special Moments", date: "Hand in Hand", desc: "Every challenge conquered together made our bond unbreakable and our love deeper than the ocean.", img: photos[2].url },
-                { title: "Our Wedding Day", date: "January 6, 2026 — The Beginning of Forever ❤️", desc: "The glorious day we became one soul in two bodies. Mr. Han & Rimjhim, bound together for eternity.", img: photos[3].url },
-                { title: "Our Forever Journey", date: "Today & All Tomorrows ♾️", desc: "Walking hand-in-hand towards a future filled with endless joy, peace, and eternal companionship.", img: photos[4].url },
-              ].map((milestone, idx) =>
-                React.createElement('div', { key: idx, className: 'relative pl-8 sm:pl-12 group' },
-                  React.createElement('div', { className: 'absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-[#050505] border-2 border-[#ff003c] flex items-center justify-center shadow-[0_0_15px_#ff003c]' },
-                    React.createElement('i', { 'data-lucide': 'heart', className: 'w-3.5 h-3.5 text-[#ff003c] fill-[#ff003c]' })
-                  ),
-                  React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/30 rounded-3xl p-6 sm:p-8 shadow-[0_0_20px_rgba(255,0,60,0.1)] grid grid-cols-1 md:grid-cols-3 gap-6 items-center' },
-                    React.createElement('div', { className: 'md:col-span-2 space-y-3' },
-                      React.createElement('span', { className: 'text-xs font-semibold text-[#ff003c] tracking-widest uppercase' }, milestone.date),
-                      React.createElement('h3', { className: 'text-2xl font-bold text-white' }, milestone.title),
-                      React.createElement('p', { className: 'text-gray-300 text-sm leading-relaxed' }, milestone.desc)
-                    ),
-                    React.createElement('div', { className: 'h-40 rounded-2xl overflow-hidden border border-white/10 shadow-md' },
-                      React.createElement('img', { src: milestone.img, alt: milestone.title, className: 'w-full h-full object-cover group-hover:scale-105 transition-transform' })
-                    )
-                  )
-                )
-              )
-            )
-          ),
-
-          /* 100 REASONS TAB */
-          activeTab === 'reasons' && React.createElement('div', { className: 'max-w-3xl mx-auto space-y-8' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, '100 Reasons Why I Love You ❤️'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'Click below to discover why Mr. Han loves Rimjhim endlessly.')
-            ),
-            React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.2)]' },
-              React.createElement('div', { className: 'inline-flex p-3 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/40 text-[#ff003c] shadow-[0_0_15px_#ff003c]' },
-                React.createElement('i', { 'data-lucide': 'heart', className: 'w-6 h-6 fill-[#ff003c]' })
-              ),
-              React.createElement('div', { className: 'text-xs uppercase tracking-widest text-[#ff003c] font-semibold' }, `Reason #${currentReasonIndex + 1} of 100`),
-              React.createElement('h3', { className: 'text-2xl sm:text-3xl font-bold text-white font-serif leading-relaxed min-h-[100px] flex items-center justify-center' }, `"${bengaliReasons[currentReasonIndex]}"`),
-              React.createElement('div', { className: 'flex flex-wrap gap-4 justify-center pt-4' },
-                React.createElement('button', {
-                  onClick: () => setCurrentReasonIndex((currentReasonIndex + 1) % 100),
-                  className: 'px-6 py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] transition-all'
-                }, 'Next Reason ❤️'),
-                React.createElement('button', {
-                  onClick: () => setCurrentReasonIndex(Math.floor(Math.random() * 100)),
-                  className: 'px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition-all'
-                }, 'Random Reason 🎲')
-              )
-            )
-          ),
-
-          /* MUSIC TAB */
-          activeTab === 'music' && React.createElement('div', { className: 'max-w-2xl mx-auto space-y-8' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'Our Romantic Soundtrack 🎵'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'The melody of love dedicated to Rimjhim by Mr. Han.')
-            ),
-            React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-8 shadow-[0_0_40px_rgba(255,0,60,0.2)] text-center' },
-              React.createElement('div', { className: 'relative w-48 h-48 sm:w-56 sm:h-56 mx-auto flex items-center justify-center' },
-                React.createElement('div', { className: `w-full h-full rounded-full bg-black border-4 border-zinc-800 shadow-[0_0_30px_rgba(255,0,60,0.3)] flex items-center justify-center ${isMusicPlaying ? 'animate-spin' : ''}`, style: { animationDuration: '6s' } },
-                  React.createElement('div', { className: 'w-20 h-20 rounded-full bg-gradient-to-tr from-[#ff003c] to-pink-500 border-2 border-white flex items-center justify-center' },
-                    React.createElement('i', { 'data-lucide': 'heart', className: 'w-8 h-8 text-white fill-white' })
-                  )
-                )
-              ),
-              React.createElement('div', { className: 'space-y-1' },
-                React.createElement('h3', { className: 'text-xl font-bold text-white' }, 'Romantic Guitars & Love Melody'),
-                React.createElement('p', { className: 'text-xs text-gray-400' }, 'Playing exclusively for Rimjhim ❤️')
-              ),
-              React.createElement('div', { className: 'flex items-center justify-center gap-6' },
-                React.createElement('button', {
-                  onClick: toggleMusic,
-                  className: 'w-16 h-16 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white flex items-center justify-center shadow-[0_0_25px_#ff003c] hover:scale-105 transition-transform'
-                },
-                  React.createElement('i', { 'data-lucide': isMusicPlaying ? 'pause' : 'play', className: 'w-7 h-7' })
-                )
-              ),
-              React.createElement('div', { className: 'flex items-center justify-center gap-4 pt-4' },
-                React.createElement('i', { 'data-lucide': 'volume-x', className: 'w-4 h-4 text-gray-400' }),
-                React.createElement('input', {
-                  type: 'range',
-                  min: '0',
-                  max: '1',
-                  step: '0.01',
-                  value: volume,
-                  onChange: (e) => setVolume(parseFloat(e.target.value)),
-                  className: 'w-48 accent-[#ff003c] cursor-pointer'
-                }),
-                React.createElement('i', { 'data-lucide': 'volume-2', className: 'w-4 h-4 text-gray-400' })
-              )
-            )
-          ),
-
-          /* SURPRISE TAB */
-          activeTab === 'surprise' && React.createElement('div', { className: 'max-w-2xl mx-auto space-y-8 text-center' },
-            React.createElement('div', { className: 'space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'A Magical Surprise 🎁'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'A special interactive surprise crafted just for my wife Rimjhim.')
-            ),
-            !isSurpriseActive ? React.createElement('div', { className: 'py-12' },
-              React.createElement('button', {
-                onClick: () => setIsSurpriseActive(true),
-                className: 'px-8 py-4 rounded-full bg-gradient-to-r from-[#ff003c] via-pink-600 to-red-600 text-white font-bold text-lg shadow-[0_0_30px_rgba(255,0,60,0.6)] hover:shadow-[0_0_50px_rgba(255,0,60,0.9)] transition-all flex items-center gap-3 mx-auto'
-              },
-                React.createElement('i', { 'data-lucide': 'gift', className: 'w-6 h-6 animate-bounce' }), ' Open Your Surprise ❤️'
-              )
-            ) : React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-12 space-y-8 shadow-[0_0_60px_rgba(255,0,60,0.3)] relative overflow-hidden' },
-              React.createElement('div', { className: 'text-6xl animate-bounce' }, '🌹'),
-              React.createElement('div', { className: 'space-y-4' },
-                React.createElement('h3', { className: 'text-2xl sm:text-3xl font-extrabold text-white font-serif' }, '"I would choose you in every lifetime, Rimjhim."'),
-                React.createElement('p', { className: 'text-lg text-[#ff003c] font-semibold' }, 'তুমি আমার আজ, তুমি আমার আগামী, তুমি আমার চিরদিন।'),
-                React.createElement('p', { className: 'text-gray-300 text-sm' }, 'I Love You Forever, My Pakhi ❤️')
-              ),
-              React.createElement('div', { className: 'pt-4' },
-                React.createElement('button', {
-                  onClick: () => setIsSurpriseActive(false),
-                  className: 'px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all'
-                }, 'Close Surprise')
-              )
-            )
-          ),
-
-          /* SECRET TAB */
-          activeTab === 'secret' && React.createElement('div', { className: 'max-w-xl mx-auto space-y-8' },
-            React.createElement('div', { className: 'text-center space-y-2' },
-              React.createElement('h2', { className: 'text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-[#ff003c] to-pink-400 bg-clip-text text-transparent' }, 'Secret Love Vault 🔐'),
-              React.createElement('p', { className: 'text-sm text-gray-400' }, 'Locked exclusively for Rimjhim by Mr. Han.')
-            ),
-            !isSecretUnlocked ? React.createElement('form', { onSubmit: handleUnlockSecret, className: 'bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.2)] text-center' },
-              React.createElement('div', { className: 'w-16 h-16 rounded-full bg-[#ff003c]/20 border border-[#ff003c]/50 flex items-center justify-center mx-auto text-[#ff003c] shadow-[0_0_20px_#ff003c]' },
-                React.createElement('i', { 'data-lucide': 'lock', className: 'w-8 h-8' })
-              ),
-              React.createElement('div', { className: 'space-y-1' },
-                React.createElement('h3', { className: 'text-xl font-bold text-white' }, 'Enter Passcode'),
-                React.createElement('p', { className: 'text-xs text-gray-400' }, 'Hint: Try entering "rimjhim" or wedding date code')
-              ),
-              React.createElement('div', { className: 'space-y-4' },
-                React.createElement('input', {
-                  type: 'password',
-                  value: secretPasscode,
-                  onChange: (e) => setSecretPasscode(e.target.value),
-                  placeholder: 'Enter passcode...',
-                  className: 'w-full bg-black/60 border border-white/20 rounded-full px-6 py-3 text-center text-white placeholder-gray-500 focus:border-[#ff003c] focus:outline-none shadow-inner'
-                }),
-                secretError && React.createElement('p', { className: 'text-xs text-red-500 font-semibold' }, 'Incorrect passcode! Try \'rimjhim\' or \'0106\'.'),
-                React.createElement('button', {
-                  type: 'submit',
-                  className: 'w-full py-3 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(255,0,60,0.5)] transition-all'
-                }, 'Unlock Secret Vault 🔓')
-              )
-            ) : React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/40 rounded-3xl p-8 sm:p-10 space-y-6 shadow-[0_0_40px_rgba(255,0,60,0.3)] text-center' },
-              React.createElement('div', { className: 'w-16 h-16 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center mx-auto text-green-400' },
-                React.createElement('i', { 'data-lucide': 'sparkles', className: 'w-8 h-8' })
-              ),
-              React.createElement('h3', { className: 'text-2xl font-bold text-white' }, 'Vault Unlocked Successfully! ❤️'),
-              React.createElement('p', { className: 'text-gray-300 text-sm leading-relaxed font-serif' }, '"আমার সোনা পাখি Rimjhim, তুমি আমার জীবনের একমাত্র কবিতা। তোমার সাথে কাটানো প্রতিটি মুহূর্ত আমার কাছে স্বর্গের মতো। Mr. Han তোমাকে পৃথিবীর সবকিছুর চেয়ে বেশি ভালোবাসে।"'),
-              React.createElement('button', {
-                onClick: () => setIsSecretUnlocked(false),
-                className: 'px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all'
-              }, 'Lock Vault Again')
-            )
-          )
-
-        ),
-
-        /* FOOTER */
-        React.createElement('footer', { className: 'mt-20 border-t border-[#ff003c]/20 bg-[#050505] py-8 text-center text-gray-400 text-xs sm:text-sm space-y-2 relative z-10' },
-          React.createElement('div', { className: 'flex items-center justify-center gap-2' },
-            React.createElement('i', { 'data-lucide': 'heart', className: 'w-4 h-4 text-[#ff003c] fill-[#ff003c]' }),
-            React.createElement('span', { className: 'font-semibold text-white' }, 'Made with endless love by Mr. Han ❤️')
-          ),
-          React.createElement('p', { className: 'text-gray-500' }, 'Rimjhim & Mr. Han — Together Forever ♾️')
-        ),
-
-        /* LIGHTBOX MODAL */
-        selectedImageIndex !== null && React.createElement('div', { className: 'fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4' },
-          React.createElement('button', {
-            onClick: () => setSelectedImageIndex(null),
-            className: 'absolute top-6 right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50'
-          }, React.createElement('i', { 'data-lucide': 'x', className: 'w-6 h-6' })),
-          React.createElement('button', {
-            onClick: () => setSelectedImageIndex((selectedImageIndex - 1 + photos.length) % photos.length),
-            className: 'absolute left-4 sm:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50'
-          }, React.createElement('i', { 'data-lucide': 'chevron-left', className: 'w-6 h-6' })),
-          React.createElement('button', {
-            onClick: () => setSelectedImageIndex((selectedImageIndex + 1) % photos.length),
-            className: 'absolute right-4 sm:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-50'
-          }, React.createElement('i', { 'data-lucide': 'chevron-right', className: 'w-6 h-6' })),
-          React.createElement('div', { className: 'max-w-4xl max-h-[85vh] flex flex-col items-center space-y-4' },
-            React.createElement('img', { src: photos[selectedImageIndex].url, alt: 'Fullscreen memory', className: 'max-h-[75vh] max-w-full object-contain rounded-2xl border border-[#ff003c]/40 shadow-[0_0_50px_rgba(255,0,60,0.3)]' }),
-            React.createElement('p', { className: 'text-white font-semibold text-base sm:text-lg bg-black/60 px-6 py-2 rounded-full border border-white/10' }, photos[selectedImageIndex].caption)
-          )
-        ),
-
-        /* INTERACTIVE MODAL (HUG/KISS) */
-        activeModal && React.createElement('div', { className: 'fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4' },
-          React.createElement('div', { className: 'bg-[#0a0a0a] border border-[#ff003c]/50 rounded-3xl p-8 max-w-md w-full text-center space-y-6 shadow-[0_0_50px_rgba(255,0,60,0.4)]' },
-            React.createElement('div', { className: 'text-6xl animate-bounce' }, activeModal === 'hug' ? '🤗' : '😘'),
-            React.createElement('h3', { className: 'text-2xl font-bold text-white' }, activeModal === 'hug' ? 'Warm Hug Sent to Mr. Han! ❤️' : 'Sweet Flying Kiss Sent! ❤️'),
-            React.createElement('p', { className: 'text-xs sm:text-sm text-gray-300' },
-              activeModal === 'hug' ? 'Rimjhim, your virtual hug has wrapped Mr. Han in infinite warmth and comfort.' : 'A lovely kiss loaded with sweetness delivered straight to your forever lover!'
-            ),
-            React.createElement('button', {
-              onClick: () => setActiveModal(null),
-              className: 'px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff003c] to-red-600 text-white font-semibold text-xs shadow-[0_0_20px_#ff003c]'
-            }, 'Close ❤️')
-          )
-        )
-
-      );
+        container.appendChild(el);
+      }
     }
 
-    ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    /* Desktop Floating Heart Cursor */
+    function initDesktopHeartCursor() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      let lastTime = 0;
+      window.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastTime < 90) return;
+        lastTime = now;
+        const heart = document.createElement('div');
+        heart.className = 'cursor-heart';
+        heart.style.left = `${e.clientX}px`;
+        heart.style.top = `${e.clientY}px`;
+        heart.innerHTML = '❤️';
+        heart.style.fontSize = '12px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 850);
+      }, { passive: true });
+    }
+
+    /* Render Hero Photo Strip */
+    function renderHeroStrip() {
+      const strip = document.getElementById('hero-photo-strip');
+      strip.innerHTML = SITE_CONFIG.photos.slice(0, 3).map((photo, idx) => `
+        <button onclick="openLightbox(${idx})" class="group relative aspect-square rounded-2xl overflow-hidden border border-[#ff003c]/50 shadow-[0_0_18px_rgba(255,0,60,0.3)] hover:-translate-y-1 transition-all">
+          <img src="${photo.url}" alt="${photo.caption}" loading="lazy" onerror="handleImgError(this, '${photo.caption}')" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-2">
+            <span class="text-[10px] font-medium text-rose-100 truncate">${photo.caption}</span>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    /* Render All 5 Real Photos in Gallery */
+    function renderMemoriesGrid() {
+      const grid = document.getElementById('memories-grid');
+      grid.innerHTML = SITE_CONFIG.photos.map((photo, idx) => `
+        <div onclick="openLightbox(${idx})" class="group cursor-pointer rounded-3xl bg-white/[0.03] backdrop-blur-md border border-[#ff003c]/40 overflow-hidden shadow-[0_0_28px_rgba(255,0,60,0.18)] hover:border-[#ff003c] hover:shadow-[0_0_40px_rgba(255,0,60,0.45)] hover:-translate-y-1.5 transition-all ${idx === 0 ? 'sm:col-span-2 lg:col-span-2' : ''}">
+          <div class="aspect-[4/3] w-full overflow-hidden relative bg-[#120408]">
+            <img src="${photo.url}" alt="${photo.caption}" loading="lazy" onerror="handleImgError(this, '${photo.caption}')" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/20 to-transparent opacity-80"></div>
+            <div class="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-[#ff003c]/50 flex items-center justify-center">
+              <span class="text-xs">❤️</span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5">
+              <h3 class="text-lg sm:text-xl font-bold text-white mb-1">${photo.caption}</h3>
+              <p class="text-xs sm:text-sm text-rose-200/80">${photo.subCaption}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* Graceful Image Fallback */
+    function handleImgError(img, caption) {
+      img.onerror = null;
+      img.parentElement.innerHTML = `
+        <div class="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#1f050c] to-[#090204]">
+          <span class="text-3xl mb-2">❤️</span>
+          <p class="text-sm font-medium text-rose-200">${caption}</p>
+          <p class="text-xs text-rose-400/70 mt-1">Rimjhim &amp; Mr. Han</p>
+        </div>
+      `;
+    }
+
+    /* Render Love Story Timeline */
+    function renderTimeline() {
+      const container = document.getElementById('timeline-container');
+      container.innerHTML = SITE_CONFIG.timeline.map((item, idx) => `
+        <div class="relative flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-center gap-6">
+          <div class="absolute left-5 md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-[#050505] border-2 border-[#ff003c] shadow-[0_0_18px_#ff003c] flex items-center justify-center z-10 text-xs">
+            ❤️
+          </div>
+          <div class="w-full md:w-[calc(50%-2rem)] pl-14 md:pl-0">
+            <div class="rounded-3xl p-5 sm:p-6 backdrop-blur-xl border transition-all ${item.highlight ? 'bg-gradient-to-br from-[#2b0612]/90 to-[#110307]/95 border-amber-400/70 shadow-[0_0_38px_rgba(255,0,60,0.35)]' : 'bg-white/[0.04] border-[#ff003c]/35 shadow-[0_0_24px_rgba(255,0,60,0.14)]'}">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#ff4d79]">${item.phase}</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#ff003c]/20 text-amber-200 border border-[#ff003c]/30">${item.dateLabel}</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-white mb-2">${item.title}</h3>
+              <p class="text-sm text-rose-100/85 leading-relaxed mb-4">${item.description}</p>
+              <div class="aspect-[16/10] rounded-2xl overflow-hidden border border-[#ff003c]/30 bg-[#120408]">
+                <img src="${item.photoUrl}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  LIVE LOVE COUNTER (SINCE JANUARY 6, 2026)                            */
+    /* --------------------------------------------------------------------- */
+    function startLiveCounter() {
+      const startMs = new Date(SITE_CONFIG.weddingDateISO).getTime();
+      const update = () => {
+        const diff = Math.max(0, Date.now() - startMs);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById('counter-days').textContent = String(days).padStart(2, '0');
+        document.getElementById('counter-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('counter-minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('counter-seconds').textContent = String(seconds).padStart(2, '0');
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  ANIMATED BENGALI LOVE LETTER ENVELOPE                                */
+    /* --------------------------------------------------------------------- */
+    let letterInterval = null;
+
+    function openLetterAndScroll() {
+      document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(openLoveLetter, 500);
+    }
+
+    function openLoveLetter() {
+      document.getElementById('envelope-closed').classList.add('hidden');
+      document.getElementById('envelope-opened').classList.remove('hidden');
+
+      const target = document.getElementById('letter-typed-text');
+      target.textContent = '';
+      let idx = 0;
+      clearInterval(letterInterval);
+      letterInterval = setInterval(() => {
+        idx += 2;
+        target.textContent = SITE_CONFIG.loveLetterText.slice(0, idx);
+        if (idx >= SITE_CONFIG.loveLetterText.length) {
+          clearInterval(letterInterval);
+        }
+      }, 28);
+    }
+
+    function closeLoveLetter() {
+      clearInterval(letterInterval);
+      document.getElementById('envelope-opened').classList.add('hidden');
+      document.getElementById('envelope-closed').classList.remove('hidden');
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  FULLSCREEN SWIPEABLE LIGHTBOX                                        */
+    /* --------------------------------------------------------------------- */
+    let currentLightboxIdx = 0;
+    let touchStartX = 0;
+
+    function openLightbox(idx) {
+      currentLightboxIdx = idx;
+      updateLightboxView();
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function updateLightboxView() {
+      const p = SITE_CONFIG.photos[currentLightboxIdx];
+      document.getElementById('lightbox-img').src = p.url;
+      document.getElementById('lightbox-caption').textContent = p.caption;
+      document.getElementById('lightbox-subcaption').textContent = p.subCaption;
+      document.getElementById('lightbox-counter').textContent = `${currentLightboxIdx + 1} / ${SITE_CONFIG.photos.length} • Swipe or use arrows`;
+    }
+
+    function nextLightbox() {
+      currentLightboxIdx = (currentLightboxIdx + 1) % SITE_CONFIG.photos.length;
+      updateLightboxView();
+    }
+
+    function prevLightbox() {
+      currentLightboxIdx = (currentLightboxIdx - 1 + SITE_CONFIG.photos.length) % SITE_CONFIG.photos.length;
+      updateLightboxView();
+    }
+
+    const lbModal = document.getElementById('lightbox-modal');
+    lbModal.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    lbModal.addEventListener('touchend', (e) => {
+      const diff = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(diff) > 45) diff < 0 ? nextLightbox() : prevLightbox();
+    }, { passive: true });
+
+    window.addEventListener('keydown', (e) => {
+      if (lbModal.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextLightbox();
+      if (e.key === 'ArrowLeft') prevLightbox();
+    });
+
+    /* --------------------------------------------------------------------- */
+    /*  100 REASONS I LOVE YOU                                               */
+    /* --------------------------------------------------------------------- */
+    let currentReasonIdx = Number(localStorage.getItem('rimjhim_reason_idx') || 0);
+    if (currentReasonIdx >= SITE_CONFIG.reasons100.length) currentReasonIdx = 0;
+
+    function initReasons() {
+      renderReason();
+    }
+
+    function renderReason() {
+      localStorage.setItem('rimjhim_reason_idx', String(currentReasonIdx));
+      const textEl = document.getElementById('reason-text');
+      textEl.style.opacity = '0';
+      setTimeout(() => {
+        textEl.textContent = `“${SITE_CONFIG.reasons100[currentReasonIdx]}”`;
+        textEl.style.opacity = '1';
+      }, 150);
+      document.getElementById('reason-badge').textContent = `Reason #${currentReasonIdx + 1} of ${SITE_CONFIG.reasons100.length}`;
+      document.getElementById('reason-progress').style.width = `${((currentReasonIdx + 1) / SITE_CONFIG.reasons100.length) * 100}%`;
+    }
+
+    function nextReason() {
+      currentReasonIdx = (currentReasonIdx + 1) % SITE_CONFIG.reasons100.length;
+      renderReason();
+    }
+
+    function prevReason() {
+      currentReasonIdx = (currentReasonIdx - 1 + SITE_CONFIG.reasons100.length) % SITE_CONFIG.reasons100.length;
+      renderReason();
+    }
+
+    function randomReason() {
+      let r = Math.floor(Math.random() * SITE_CONFIG.reasons100.length);
+      if (r === currentReasonIdx) r = (r + 1) % SITE_CONFIG.reasons100.length;
+      currentReasonIdx = r;
+      renderReason();
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  MUSIC PLAYER (CUSTOM MP3 OR BUILT-IN ROMANTIC PIANO SYNTHESIZER)     */
+    /* --------------------------------------------------------------------- */
+    let trackIdx = 0;
+    let isPlaying = false;
+    let isMuted = false;
+    let progressSec = 0;
+    let miniBarOn = true;
+    let progressTimer = null;
+    let synthTimer = null;
+    let audioCtx = null;
+
+    const customAudio = document.getElementById('custom-audio');
+    const progressSlider = document.getElementById('music-progress');
+    const volumeSlider = document.getElementById('volume-slider');
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function loadTrack(idx) {
+      trackIdx = idx;
+      progressSec = 0;
+      const t = SITE_CONFIG.musicTracks[trackIdx];
+      document.getElementById('track-number-label').textContent = `Track ${trackIdx + 1} of ${SITE_CONFIG.musicTracks.length}`;
+      document.getElementById('track-title').textContent = t.title;
+      document.getElementById('mini-track-title').textContent = t.title;
+      document.getElementById('track-artist').textContent = t.artist;
+      document.getElementById('vinyl-cover').src = SITE_CONFIG.photos[trackIdx % SITE_CONFIG.photos.length].url;
+      progressSlider.max = t.durationSec;
+      progressSlider.value = 0;
+      document.getElementById('time-current').textContent = '0:00';
+      document.getElementById('time-total').textContent = formatTime(t.durationSec);
+      if (t.url) customAudio.src = t.url;
+    }
+
+    function startSynth() {
+      stopSynth();
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const notes = [349.23, 440.0, 523.25, 659.25, 523.25, 440.0, 392.0, 493.88, 587.33, 493.88, 349.23, 440.0];
+      let step = 0;
+      const playNote = () => {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(notes[step % notes.length], now);
+        const vol = isMuted ? 0 : Number(volumeSlider.value) * 0.14;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, vol), now + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 1.4);
+        step++;
+      };
+      playNote();
+      synthTimer = setInterval(playNote, 750);
+    }
+
+    function stopSynth() {
+      if (synthTimer) {
+        clearInterval(synthTimer);
+        synthTimer = null;
+      }
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      const t = SITE_CONFIG.musicTracks[trackIdx];
+      const vinyl = document.getElementById('vinyl-disc');
+      const banner = document.getElementById('playing-banner');
+      const playBtn = document.getElementById('play-pause-btn');
+      const miniBtn = document.getElementById('mini-play-btn');
+
+      if (isPlaying) {
+        vinyl.classList.add('vinyl-spinning');
+        banner.classList.remove('hidden');
+        playBtn.innerHTML = '<i data-lucide="pause" class="w-5 h-5"></i>';
+        miniBtn.innerHTML = '<i data-lucide="pause" class="w-3.5 h-3.5"></i>';
+
+        if (t.url) {
+          customAudio.volume = isMuted ? 0 : Number(volumeSlider.value);
+          customAudio.play().catch(() => startSynth());
+        } else {
+          startSynth();
+        }
+
+        clearInterval(progressTimer);
+        progressTimer = setInterval(() => {
+          progressSec++;
+          if (progressSec >= t.durationSec) {
+            nextTrack();
+            return;
+          }
+          progressSlider.value = progressSec;
+          document.getElementById('time-current').textContent = formatTime(progressSec);
+        }, 1000);
+      } else {
+        vinyl.classList.remove('vinyl-spinning');
+        banner.classList.add('hidden');
+        playBtn.innerHTML = '<i data-lucide="play" class="w-5 h-5 ml-0.5"></i>';
+        miniBtn.innerHTML = '<i data-lucide="play" class="w-3.5 h-3.5 ml-0.5"></i>';
+        customAudio.pause();
+        stopSynth();
+        clearInterval(progressTimer);
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function nextTrack() {
+      const wasPlaying = isPlaying;
+      if (isPlaying) togglePlay();
+      loadTrack((trackIdx + 1) % SITE_CONFIG.musicTracks.length);
+      if (wasPlaying) togglePlay();
+    }
+
+    function prevTrack() {
+      const wasPlaying = isPlaying;
+      if (isPlaying) togglePlay();
+      loadTrack((trackIdx - 1 + SITE_CONFIG.musicTracks.length) % SITE_CONFIG.musicTracks.length);
+      if (wasPlaying) togglePlay();
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      customAudio.volume = isMuted ? 0 : Number(volumeSlider.value);
+      document.getElementById('mute-btn').innerHTML = isMuted
+        ? '<i data-lucide="volume-x" class="w-4 h-4"></i>'
+        : '<i data-lucide="volume-2" class="w-4 h-4"></i>';
+      if (window.lucide) lucide.createIcons();
+    }
+
+    progressSlider.addEventListener('input', (e) => {
+      progressSec = Number(e.target.value);
+      document.getElementById('time-current').textContent = formatTime(progressSec);
+      if (SITE_CONFIG.musicTracks[trackIdx].url) customAudio.currentTime = progressSec;
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      isMuted = false;
+      customAudio.volume = Number(e.target.value);
+    });
+
+    function toggleMiniBar() {
+      miniBarOn = !miniBarOn;
+      document.getElementById('mini-music-bar').classList.toggle('hidden', !miniBarOn);
+      document.getElementById('mini-bar-toggle').textContent = `Mini Bar: ${miniBarOn ? 'On' : 'Off'}`;
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  CINEMATIC SURPRISE EXPERIENCE                                        */
+    /* --------------------------------------------------------------------- */
+    let surpriseTimers = [];
+
+    function openSurpriseModal() {
+      const modal = document.getElementById('surprise-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      const particles = document.getElementById('surprise-particles');
+      particles.innerHTML = '';
+      for (let i = 0; i < 24; i++) {
+        const p = document.createElement('div');
+        p.className = 'surprise-particle';
+        p.style.left = `${(i * 19) % 95}%`;
+        p.style.top = `${25 + (i * 23) % 65}%`;
+        p.style.animationDelay = `${(i % 6) * 0.35}s`;
+        p.textContent = i % 2 === 0 ? '❤️' : '✨';
+        p.style.fontSize = i % 2 === 0 ? '18px' : '15px';
+        particles.appendChild(p);
+      }
+
+      const line1 = document.getElementById('surprise-line-1');
+      const line2 = document.getElementById('surprise-line-2');
+      const line3 = document.getElementById('surprise-line-3');
+      line1.textContent = '';
+      line2.style.opacity = '0';
+      line3.style.opacity = '0';
+
+      const msg = '“I would choose you in every lifetime, Rimjhim.”';
+      let i = 0;
+      surpriseTimers.forEach(clearTimeout);
+      surpriseTimers = [];
+
+      const typeTimer = setInterval(() => {
+        i++;
+        line1.textContent = msg.slice(0, i);
+        if (i >= msg.length) clearInterval(typeTimer);
+      }, 38);
+      surpriseTimers.push(typeTimer);
+
+      surpriseTimers.push(setTimeout(() => { line2.style.opacity = '1'; }, 2100));
+      surpriseTimers.push(setTimeout(() => { line3.style.opacity = '1'; }, 3300));
+    }
+
+    function closeSurpriseModal() {
+      surpriseTimers.forEach(clearInterval);
+      surpriseTimers.forEach(clearTimeout);
+      const modal = document.getElementById('surprise-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  PASSWORD-PROTECTED SECRET PAGE                                       */
+    /* --------------------------------------------------------------------- */
+    function handleUnlockSecret(e) {
+      e.preventDefault();
+      const val = document.getElementById('secret-password-input').value.trim();
+      const err = document.getElementById('secret-error-msg');
+      if (val === SITE_CONFIG.secretPassword) {
+        err.classList.add('hidden');
+        document.getElementById('secret-locked-view').classList.add('hidden');
+        document.getElementById('secret-unlocked-view').classList.remove('hidden');
+        document.getElementById('secret-lock-badge').innerHTML = '<i data-lucide="unlock" class="w-7 h-7 text-amber-300"></i>';
+        if (window.lucide) lucide.createIcons();
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function lockSecretAgain() {
+      document.getElementById('secret-password-input').value = '';
+      document.getElementById('secret-unlocked-view').classList.add('hidden');
+      document.getElementById('secret-locked-view').classList.remove('hidden');
+      document.getElementById('secret-lock-badge').innerHTML = '<i data-lucide="lock" class="w-7 h-7 text-[#ff003c]"></i>';
+      if (window.lucide) lucide.createIcons();
+    }
+
+    /* --------------------------------------------------------------------- */
+    /*  CUTE AFFECTION REACTIONS & NAVIGATION                                */
+    /* --------------------------------------------------------------------- */
+    let reactionTimer = null;
+    function showReaction(type) {
+      const toast = document.getElementById('reaction-toast');
+      const emoji = document.getElementById('reaction-emoji');
+      const title = document.getElementById('reaction-title');
+
+      if (type === 'hug') {
+        emoji.textContent = '🤗❤️';
+        title.textContent = 'Warmest Tight Hug For My Pakhi!';
+      } else if (type === 'kiss') {
+        emoji.textContent = '😘💋';
+        title.textContent = 'Sweetest Kiss For My Rimjhim!';
+      } else {
+        emoji.textContent = '💖✨';
+        title.textContent = 'I Love You Endless Times, Rimjhim!';
+      }
+
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(reactionTimer);
+      reactionTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 2400);
+    }
+
+    function showHiddenWhisper() {
+      const m = document.getElementById('whisper-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeWhisperModal() {
+      const m = document.getElementById('whisper-modal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    /* Mobile Nav Drawer & Scroll Spy */
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-nav-item').forEach((link) => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+
+    function initScrollSpyAndReveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach((r) => observer.observe(r));
+
+      const sections = ['home', 'letter', 'memories', 'story', 'reasons', 'music', 'surprise', 'secret'];
+      window.addEventListener('scroll', () => {
+        const pos = window.scrollY + 180;
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (el && pos >= el.offsetTop && pos < el.offsetTop + el.offsetHeight) {
+            document.querySelectorAll('.nav-link').forEach((a) => {
+              const active = a.getAttribute('data-nav') === id;
+              a.className = active
+                ? 'nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-white bg-[#ff003c]/20 border border-[#ff003c] shadow-[0_0_15px_rgba(255,0,60,0.45)]'
+                : 'nav-link px-3.5 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all text-rose-100/75 hover:text-white hover:bg-white/5 border border-transparent';
+            });
+            break;
+          }
+        }
+      }, { passive: true });
+    }
   </script>
 </body>
 </html>
-```
